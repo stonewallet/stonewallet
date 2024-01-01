@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/Users/apple/stone_wallet/android/app/src/main/res/values/styles.xml",
+                    "source": "/Users/apple/stonewallet/android/app/src/main/res/values/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

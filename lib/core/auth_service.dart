@@ -1,0 +1,142 @@
+// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+// import 'package:mobx/mobx.dart';
+// import 'dart:io';
+// import 'package:shared_preferences/shared_preferences.dart';
+//
+// import '../entities/secret_store_key.dart';
+//
+// class AuthService with Store {
+//   AuthService({
+//     required this.secureStorage,
+//     required this.sharedPreferences,
+//     required this.settingsStore,
+//   });
+//
+//   static const List<String> _alwaysAuthenticateRoutes = [
+//     Routes.showKeys,
+//     Routes.backup,
+//     Routes.setupPin,
+//     Routes.setup_2faPage,
+//     Routes.modify2FAPage,
+//     Routes.newWallet,
+//     Routes.newWalletType,
+//     Routes.addressBookAddContact,
+//     Routes.restoreOptions,
+//   ];
+//
+//   final FlutterSecureStorage secureStorage;
+//   final SharedPreferences sharedPreferences;
+//   final SettingsStore settingsStore;
+//
+//   Future<void> setPassword(String password) async {
+//     final key = generateStoreKeyFor(key: SecretStoreKey.pinCodePassword);
+//     final encodedPassword = encodedPinCode(pin: password);
+//     // secure storage has a weird bug on macOS, where overwriting a key doesn't work, unless
+//     // we delete what's there first:
+//     if (Platform.isMacOS) {
+//       await secureStorage.delete(key: key);
+//     }
+//     await secureStorage.write(key: key, value: encodedPassword);
+//   }
+//
+//   Future<bool> canAuthenticate() async {
+//     final key = generateStoreKeyFor(key: SecretStoreKey.pinCodePassword);
+//     final walletName = sharedPreferences.getString(PreferencesKey.currentWalletName) ?? '';
+//     var password = '';
+//
+//     try {
+//       password = await secureStorage.read(key: key) ?? '';
+//     } catch (e) {
+//       print(e);
+//     }
+//
+//     return walletName.isNotEmpty && password.isNotEmpty;
+//   }
+//
+//   Future<bool> authenticate(String pin) async {
+//     final key = generateStoreKeyFor(key: SecretStoreKey.pinCodePassword);
+//     final encodedPin = await secureStorage.read(key: key);
+//     final decodedPin = decodedPinCode(pin: encodedPin!);
+//
+//     return decodedPin == pin;
+//   }
+//
+//   void saveLastAuthTime() {
+//     int timestamp = DateTime.now().millisecondsSinceEpoch;
+//     sharedPreferences.setInt(PreferencesKey.lastAuthTimeMilliseconds, timestamp);
+//   }
+//
+//   bool requireAuth() {
+//     final timestamp = sharedPreferences.getInt(PreferencesKey.lastAuthTimeMilliseconds);
+//     final duration = _durationToRequireAuth(timestamp ?? 0);
+//     final requiredPinInterval = settingsStore.pinTimeOutDuration;
+//
+//     return duration >= requiredPinInterval.value;
+//   }
+//
+//   int _durationToRequireAuth(int timestamp) {
+//     DateTime before = DateTime.fromMillisecondsSinceEpoch(timestamp);
+//     DateTime now = DateTime.now();
+//     Duration timeDifference = now.difference(before);
+//
+//     return timeDifference.inMinutes;
+//   }
+//
+//   Future<void> authenticateAction(BuildContext context,
+//       {Function(bool)? onAuthSuccess,
+//         String? route,
+//         Object? arguments,
+//         required bool conditionToDetermineIfToUse2FA}) async {
+//     assert(route != null || onAuthSuccess != null,
+//     'Either route or onAuthSuccess param must be passed.');
+//
+//     if (!conditionToDetermineIfToUse2FA) {
+//       if (!requireAuth() && !_alwaysAuthenticateRoutes.contains(route)) {
+//         if (onAuthSuccess != null) {
+//           onAuthSuccess(true);
+//         } else {
+//           Navigator.of(context).pushNamed(
+//             route ?? '',
+//             arguments: arguments,
+//           );
+//         }
+//         return;
+//       }
+//     }
+//
+//     Navigator.of(context).pushNamed(Routes.auth,
+//         arguments: (bool isAuthenticatedSuccessfully, AuthPageState auth) async {
+//           if (!isAuthenticatedSuccessfully) {
+//             onAuthSuccess?.call(false);
+//             return;
+//           } else {
+//             if (settingsStore.useTOTP2FA && conditionToDetermineIfToUse2FA) {
+//               auth.close(
+//                 route: Routes.totpAuthCodePage,
+//                 arguments: TotpAuthArgumentsModel(
+//                   isForSetup: !settingsStore.useTOTP2FA,
+//                   onTotpAuthenticationFinished:
+//                       (bool isAuthenticatedSuccessfully, TotpAuthCodePageState totpAuth) async {
+//                     if (!isAuthenticatedSuccessfully) {
+//                       onAuthSuccess?.call(false);
+//                       return;
+//                     }
+//                     if (onAuthSuccess != null) {
+//                       totpAuth.close().then((value) => onAuthSuccess.call(true));
+//                     } else {
+//                       totpAuth.close(route: route, arguments: arguments);
+//                     }
+//                   },
+//                 ),
+//               );
+//             } else {
+//               if (onAuthSuccess != null) {
+//                 auth.close().then((value) => onAuthSuccess.call(true));
+//               } else {
+//                 auth.close(route: route, arguments: arguments);
+//               }
+//             }
+//           }
+//         });
+//   }
+// }
