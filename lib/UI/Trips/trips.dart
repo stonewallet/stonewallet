@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stone_wallet_main/Responses/travel_list_response.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Trips/trips_next.dart';
 
+import '../../API/api_provider.dart';
 import '../Constants/colors.dart';
 
 
@@ -14,11 +16,25 @@ class TripsPage extends StatefulWidget {
 
 class _TripsPageState extends State<TripsPage> {
 
+  List<TravelList> travelList = <TravelList>[];
+  bool isSwitch = true;
 
   @override
   void initState() {
     super.initState();
   }
+
+  fetch() async {
+    travelList.clear();
+    travelList = await ApiProvider().processTravel();
+    if(travelList.isNotEmpty){
+      print(travelList);
+      isSwitch = false;
+    }else{
+      isSwitch = true;
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

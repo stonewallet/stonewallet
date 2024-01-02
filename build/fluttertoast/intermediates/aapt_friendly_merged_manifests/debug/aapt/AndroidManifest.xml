@@ -3,7 +3,7 @@
     package="io.github.ponnamkarthik.toast.fluttertoast" >
 
     <uses-sdk
-        android:minSdkVersion="21"
-        android:targetSdkVersion="21" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="16" />
 
 </manifest>

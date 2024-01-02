@@ -3,9 +3,9 @@
 3    package="io.github.ponnamkarthik.toast.fluttertoast" >
 4
 5    <uses-sdk
-6        android:minSdkVersion="21"
-6-->/Users/apple/.pub-cache/hosted/pub.dev/fluttertoast-8.2.4/android/src/main/AndroidManifest.xml
-7        android:targetSdkVersion="21" />
-7-->/Users/apple/.pub-cache/hosted/pub.dev/fluttertoast-8.2.4/android/src/main/AndroidManifest.xml
+6        android:minSdkVersion="16"
+6-->/Users/apple/.pub-cache/hosted/pub.dev/fluttertoast-8.1.4/android/src/main/AndroidManifest.xml
+7        android:targetSdkVersion="16" />
+7-->/Users/apple/.pub-cache/hosted/pub.dev/fluttertoast-8.1.4/android/src/main/AndroidManifest.xml
 8
 9</manifest>

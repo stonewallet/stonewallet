@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.stone_wallet_main.app-mergeDebugResources-9:/values-night-v8/values-night-v8.xml",
+            "outputFile": "com.example.stone_wallet_main.app-mergeDebugResources-11:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
                     "source": "/Users/apple/stonewallet/android/app/src/main/res/values-night/styles.xml",
