@@ -16,24 +16,13 @@ class TripsPage extends StatefulWidget {
 
 class _TripsPageState extends State<TripsPage> {
 
-  List<TravelList> travelList = <TravelList>[];
-  bool isSwitch = true;
+
 
   @override
   void initState() {
     super.initState();
   }
 
-  fetch() async {
-    travelList.clear();
-    travelList = await ApiProvider().processTravel();
-    if(travelList.isNotEmpty){
-      print(travelList);
-      isSwitch = false;
-    }else{
-      isSwitch = true;
-    }
-  }
   
   @override
   Widget build(BuildContext context) {

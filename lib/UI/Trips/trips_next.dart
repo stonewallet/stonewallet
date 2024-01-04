@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 
+import '../../API/api_provider.dart';
+import '../../Responses/travel_list_response.dart';
 import '../Constants/colors.dart';
 import 'new_trip.dart';
 
@@ -14,11 +16,75 @@ class TripsNextPage extends StatefulWidget {
 
 class _TripsNextPageState extends State<TripsNextPage> {
 
+  List<TravelList> travelList = <TravelList>[];
+  bool isSwitch = true;
+
+  List travelListDummy = [
+    {
+      "id": 2,
+      "name": "120",
+      "quantity": 150,
+      "price_paid": 100,
+      "price_sold": 160,
+      "expenses": {
+        "transport": 120,
+        "hotel": 150,
+        "food": 110
+      },
+      "created_at": "2023-12-19"
+    },
+    {
+      "id": 3,
+      "name": "new",
+      "quantity": 150,
+      "price_paid": 100,
+      "price_sold": 160,
+      "expenses": {
+        "transport": 120,
+        "hotel": 150,
+        "food": 110
+      },
+      "created_at": "2023-12-19"
+    },
+    {
+      "id": 4,
+      "name": "new1",
+      "quantity": 150,
+      "price_paid": 100,
+      "price_sold": 160,
+      "expenses": {
+        "transport": 120,
+        "hotel": 150,
+        "food": 110
+      },
+      "created_at": "2023-12-19"
+    }
+  ];
+
 
   @override
   void initState() {
+    // ApiProvider().processLogin();
+    fetch();
     super.initState();
   }
+
+  fetch() async {
+    travelList.clear();
+    travelList = await ApiProvider().processTravel();
+    setState(() {
+
+    });
+    print("travelList $travelList");
+
+    // if(travelList.isNotEmpty){
+    //   isSwitch = false;
+    // }else{
+    //   isSwitch = true;
+    // }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -40,7 +106,7 @@ class _TripsNextPageState extends State<TripsNextPage> {
           // )
           // ),
         ),        body: SingleChildScrollView(
-          child: Container(
+          child:  Container(
               width: width,
               decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -82,75 +148,111 @@ class _TripsNextPageState extends State<TripsNextPage> {
 
                             const SizedBox(height: 30,),
 
-                            SizedBox(
-                              height: 65,
-                              width: width * 0.75,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: buttonColor2,
-                                      surfaceTintColor: blackColor,
-                                      shadowColor: whiteColor,
-                                      elevation: 4
-                                  ),
-                                  onPressed: (){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context)
-                                      => const NewTripPage()),
-                                    );
-                                  },
-                                  child:  Text("Trip A",
-                                      textAlign: TextAlign.center,
-                                      style: LargeTextStyle.large20700(whiteColor))
-                              ),
+                            travelList.isEmpty ? const CircularProgressIndicator(color: whiteColor,) :   ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: travelList.length,
+                                itemBuilder: (c, i){
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 65,
+                                      width: width * 0.75,
+                                      child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                              backgroundColor: buttonColor2,
+                                              surfaceTintColor: blackColor,
+                                              shadowColor: whiteColor,
+                                              elevation: 4
+                                          ),
+                                          onPressed: (){
+                                            // fetch();
+                                            // ApiProvider().processRegister();
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(builder: (context)
+                                            //   =>  NewTripPage(travelList[i])),
+                                            // );
+                                          },
+                                          child:  Text("Trip ${travelList[i].name}",
+                                              textAlign: TextAlign.center,
+                                              style: LargeTextStyle.large20700(whiteColor))
+                                      ),
+                                    ),
+                                    const SizedBox(height: 30,),
+                                  ],
+                                );
+                                }
                             ),
-                            const SizedBox(height: 30,),
-                            SizedBox(
-                              height: 65,
-                              width: width * 0.75,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: buttonColor2,
-                                      surfaceTintColor: blackColor,
-                                      shadowColor: whiteColor,
-                                      elevation: 4
-                                  ),
-                                  onPressed: (){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context)
-                                      => const NewTripPage()),
-                                    );
-                                  },
-                                  child:  Text("Trip B",
-                                      textAlign: TextAlign.center,
-                                      style: LargeTextStyle.large20700(whiteColor) )
-                              ),
-                            ),
-                            const SizedBox(height: 30,),
-                            SizedBox(
-                              height: 65,
-                              width: width * 0.75,
-                              child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      backgroundColor: buttonColor2,
-                                      surfaceTintColor: blackColor,
-                                      shadowColor: whiteColor,
-                                      elevation: 4
-                                  ),
-                                  onPressed: (){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context)
-                                      => const NewTripPage()),
-                                    );
-                                  },
-                                  child:  Text("Trip C",
-                                      textAlign: TextAlign.center,
-                                      style: LargeTextStyle.large20700(whiteColor))
-                              ),
-                            ),
-                            const SizedBox(height: 50,),
+                            // SizedBox(
+                            //   height: 65,
+                            //   width: width * 0.75,
+                            //   child: ElevatedButton(
+                            //       style: ElevatedButton.styleFrom(
+                            //           backgroundColor: buttonColor2,
+                            //           surfaceTintColor: blackColor,
+                            //           shadowColor: whiteColor,
+                            //           elevation: 4
+                            //       ),
+                            //       onPressed: (){
+                            //         Navigator.push(
+                            //           context,
+                            //           MaterialPageRoute(builder: (context)
+                            //           => const NewTripPage()),
+                            //         );
+                            //       },
+                            //       child:  Text("Trip A",
+                            //           textAlign: TextAlign.center,
+                            //           style: LargeTextStyle.large20700(whiteColor))
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 30,),
+                            // SizedBox(
+                            //   height: 65,
+                            //   width: width * 0.75,
+                            //   child: ElevatedButton(
+                            //       style: ElevatedButton.styleFrom(
+                            //           backgroundColor: buttonColor2,
+                            //           surfaceTintColor: blackColor,
+                            //           shadowColor: whiteColor,
+                            //           elevation: 4
+                            //       ),
+                            //       onPressed: (){
+                            //         Navigator.push(
+                            //           context,
+                            //           MaterialPageRoute(builder: (context)
+                            //           => const NewTripPage()),
+                            //         );
+                            //       },
+                            //       child:  Text("Trip B",
+                            //           textAlign: TextAlign.center,
+                            //           style: LargeTextStyle.large20700(whiteColor) )
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 30,),
+                            // SizedBox(
+                            //   height: 65,
+                            //   width: width * 0.75,
+                            //   child: ElevatedButton(
+                            //       style: ElevatedButton.styleFrom(
+                            //           backgroundColor: buttonColor2,
+                            //           surfaceTintColor: blackColor,
+                            //           shadowColor: whiteColor,
+                            //           elevation: 4
+                            //       ),
+                            //       onPressed: (){
+                            //         Navigator.push(
+                            //           context,
+                            //           MaterialPageRoute(builder: (context)
+                            //           => const NewTripPage()),
+                            //         );
+                            //       },
+                            //       child:  Text("Trip C",
+                            //           textAlign: TextAlign.center,
+                            //           style: LargeTextStyle.large20700(whiteColor))
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 50,),
 
                             Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 15),

@@ -5,7 +5,8 @@ import '../Constants/colors.dart';
 
 
 class NewTripPage extends StatefulWidget {
-  const NewTripPage({super.key});
+  final Map travelList;
+  const NewTripPage(this.travelList, {super.key});
 
   @override
   State<NewTripPage> createState() => _NewTripPageState();
@@ -83,7 +84,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                 children: [
                                   Text("Date",
                                     style: RegularTextStyle.regular16600(whiteColor)),
-                                  Text("01/12/2023",
+                                  Text(widget.travelList["created_at"],
                                     style: RegularTextStyle.regular16600(whiteColor),)
                                 ],
                               ),
@@ -101,15 +102,15 @@ class _NewTripPageState extends State<NewTripPage> {
                                       children: [
                                         Text("Name",
                                           style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text("Iphone 15 pro max",style:  RegularTextStyle.regular16600(whiteColor),)
+                                        Text(widget.travelList["name"],style:  RegularTextStyle.regular16600(whiteColor),)
                                       ],
                                     ),
                                     const SizedBox(height: 5,),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("Quatity", style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text("15",style:  RegularTextStyle.regular16600(whiteColor),)
+                                        Text("Quantity", style:  RegularTextStyle.regular16600(whiteColor),),
+                                        Text(widget.travelList["quantity"].toString(),style:  RegularTextStyle.regular16600(whiteColor),)
                                       ],
                                     ),
                                     const SizedBox(height: 5,),
@@ -117,7 +118,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Price Paid", style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text("\$22500",style:  RegularTextStyle.regular16600(whiteColor),)
+                                        Text("\$ ${widget.travelList["price_paid"]}",style:  RegularTextStyle.regular16600(whiteColor),)
                                       ],
                                     ),
                                     const SizedBox(height: 5,),
@@ -125,7 +126,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Price Sold", style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text("\$22500",style:  RegularTextStyle.regular16600(whiteColor),)
+                                        Text("\$ ${widget.travelList["price_sold"]}",style:  RegularTextStyle.regular16600(whiteColor),)
                                       ],
                                     ),
 
@@ -152,7 +153,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Transport", style:  RegularTextStyle.regular16600(whiteColor)),
-                                        Text("\$120.00",style:  RegularTextStyle.regular16600(whiteColor))
+                                        Text("\$ ${widget.travelList["expenses"]["transport"]}",style:  RegularTextStyle.regular16600(whiteColor))
                                       ],
                                     ),
                                     const SizedBox(height: 5,),
@@ -160,7 +161,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Hotel", style: RegularTextStyle.regular16600(whiteColor)),
-                                        Text("\$150.00",style:  RegularTextStyle.regular16600(whiteColor),)
+                                        Text("\$ ${widget.travelList["expenses"]["hotel"]}",style:  RegularTextStyle.regular16600(whiteColor),)
                                       ],
                                     ),
                                     const SizedBox(height: 5,),
@@ -168,17 +169,17 @@ class _NewTripPageState extends State<NewTripPage> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text("Food", style:  RegularTextStyle.regular16600(whiteColor)),
-                                        Text("\$100.00",style: RegularTextStyle.regular16600(whiteColor))
+                                        Text("\$ ${widget.travelList["expenses"]["food"]}",style: RegularTextStyle.regular16600(whiteColor))
                                       ],
                                     ),
-                                    const SizedBox(height: 5,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Maintanence", style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text("\$50.00",style: RegularTextStyle.regular16600(whiteColor),)
-                                      ],
-                                    ),
+                                    // const SizedBox(height: 5,),
+                                    // Row(
+                                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //   children: [
+                                    //     Text("Maintanence", style:  RegularTextStyle.regular16600(whiteColor),),
+                                    //     Text("\$50.00",style: RegularTextStyle.regular16600(whiteColor),)
+                                    //   ],
+                                    // ),
                                     const SizedBox(height: 5,),
                                     const Row(
                                       children: [
