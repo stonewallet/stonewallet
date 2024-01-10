@@ -35,7 +35,6 @@ Future<List<TravelList>> processTravel() async {
     Response response = await _dio.get(
         travelListUrl,
       options: Options(headers: {"Cookie": "csrftoken=mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX; sessionid=t8wr4andqnjmtdr7m4b16mqb6m8l9a9s"
-        // ,"sessionid" : "t8wr4andqnjmtdr7m4b16mqb6m8l9a9s"
       }),
 
     );
@@ -71,7 +70,8 @@ Future<List<TravelList>> processTravel() async {
   }
 }
 
-  Future<TravelPostResponse> processPostTravel() async {
+  Future<TravelPostResponse> processPostTravel(String? name, int? quantity, int? pricePaid, int? priceSold,
+      int? transport, int? hotel, int? food) async {
 
     try {
 
@@ -79,19 +79,24 @@ Future<List<TravelList>> processTravel() async {
         print("Post travel api hit");
       }
       Response response = await _dio.post(
+        // "https://3.94.82.56/travel/list/",
         travelPostListUrl,
         data: {
-          "name": "new1",
-          "quantity": 150,
-          "price_paid": 100,
-          "price_sold": 160,
+          "name": name,
+          "quantity": quantity,
+          "price_paid": pricePaid,
+          "price_sold": priceSold,
           "expenses": {
-            "transport": 120,
-            "hotel": 150,
-            "food": 110
+            "transport": transport,
+            "hotel": hotel,
+            "food": food
           }
           },
-        // options: Options(headers: {"Authorization": token}),
+
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          "Cookie": "csrftoken=mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX; sessionid=t8wr4andqnjmtdr7m4b16mqb6m8l9a9s",
+          "X-CSRFToken": "mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX"}),
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
@@ -165,20 +170,24 @@ Future<List<TravelList>> processTravel() async {
   }
 
 
-  Future<Travel2Response> processTravel2() async {
+  Future<Travel2Response> processTravel2(int id) async {
 
     try {
 
       if (kDebugMode) {
-        print("Post travel api hit");
+        print("Next travel api hit");
+        print("$travelList2Url/$id/");
       }
       Response response = await _dio.get(
-        travelList2Url,
+        "$travelList2Url/$id/",
+        options: Options(headers: {
+          "Cookie": "csrftoken=mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX; sessionid=t8wr4andqnjmtdr7m4b16mqb6m8l9a9s"
+        }),
 
         // options: Options(headers: {"Authorization": token}),
       );
       if (kDebugMode) {
-        print("travelPost ${response.data}");
+        print("travel next ${response.data}");
       }
 
       Travel2Response travel2response =
@@ -193,34 +202,43 @@ Future<List<TravelList>> processTravel() async {
   }
 
 
-  Future<Travel2Response> processTravelPut() async {
+  Future<Travel2Response> processTravelPut(int id, String? name, int? quantity, int? pricePaid, int? priceSold,
+      int? transport, int? hotel, int? food, String createdAt, int profit) async {
 
     try {
 
       if (kDebugMode) {
-        print("Post travel api hit");
+        print("Edit travel api hit");
+        print("$travelList2Url/$id/");
       }
       Response response = await _dio.put(
-        travelList2Url,
+        "$travelList2Url/$id/",
         data: {
-          "id": 2,
-          "name": "120",
-          "quantity": 150,
-          "price_paid": 100,
-          "price_sold": 160,
+          "id": id,
+          "name": name,
+          "quantity": quantity,
+          "price_paid": pricePaid,
+          "price_sold": priceSold,
           "expenses": {
-            "transport": 120,
-            "hotel": 150,
-            "food": 110
+            "transport": transport,
+            "hotel": hotel,
+            "food": food
           },
-          "created_at": "2023-12-19",
-          "profit": -320
+          "created_at": createdAt,
+          "profit": profit
         },
 
-        // options: Options(headers: {"Authorization": token}),
+        options: Options(
+            headers: {
+          'Content-Type': 'application/json',
+          "Cookie": "csrftoken=mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX; sessionid=t8wr4andqnjmtdr7m4b16mqb6m8l9a9s",
+          "X-CSRFToken": "mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX"
+            }
+        ),
       );
+
       if (kDebugMode) {
-        print("travelPost ${response.data}");
+        print("Travel Edit ${response.data}");
       }
 
       Travel2Response travel2response =

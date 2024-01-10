@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Trips/create_new_trip.dart';
 
 import '../../API/api_provider.dart';
 import '../../Responses/travel_list_response.dart';
@@ -105,15 +106,15 @@ class _TripsNextPageState extends State<TripsNextPage> {
           //     color: whiteColor, fontSize: 20, fontWeight: FontWeight.w500
           // )
           // ),
-        ),        body: SingleChildScrollView(
-          child:  Container(
-              width: width,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/background_new_wallet.png"),
-                    fit: BoxFit.fill,
-                  )
-              ),
+        ),        body: Container(
+            width: width,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/background_new_wallet.png"),
+                  fit: BoxFit.fill,
+                )
+            ),
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -140,7 +141,7 @@ class _TripsNextPageState extends State<TripsNextPage> {
                         const SizedBox(height: 8,),
                         Container(width: width*0.15, height: 2, color:  lineColor,),
                         Container(width: width*0.9, height: 1, color:  lineColor2,),
-                        SizedBox(height: height*0.1,),
+                        SizedBox(height: height*0.05,),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -148,42 +149,104 @@ class _TripsNextPageState extends State<TripsNextPage> {
 
                             const SizedBox(height: 30,),
 
-                            travelList.isEmpty ? const CircularProgressIndicator(color: whiteColor,) :   ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: travelList.length,
-                                itemBuilder: (c, i){
-                                return Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 65,
-                                      width: width * 0.75,
-                                      child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor: buttonColor2,
-                                              surfaceTintColor: blackColor,
-                                              shadowColor: whiteColor,
-                                              elevation: 4
-                                          ),
-                                          onPressed: (){
-                                            // fetch();
-                                            // ApiProvider().processRegister();
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(builder: (context)
-                                            //   =>  NewTripPage(travelList[i])),
-                                            // );
-                                          },
-                                          child:  Text("Trip ${travelList[i].name}",
-                                              textAlign: TextAlign.center,
-                                              style: LargeTextStyle.large20700(whiteColor))
+                            travelList.isEmpty ? const CircularProgressIndicator(color: whiteColor,) :
+                            SizedBox(
+                              height: height * 0.5,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: travelList.length,
+                                  itemBuilder: (c, i){
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 65,
+                                        width: width * 0.75,
+                                        child: ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                                backgroundColor: buttonColor2,
+                                                surfaceTintColor: blackColor,
+                                                shadowColor: whiteColor,
+                                                elevation: 4
+                                            ),
+                                            onPressed: (){
+                                              // fetch();
+                                              // ApiProvider().processRegister();
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context)
+                                                =>  NewTripPage(travelList[i].id)),
+                                              );
+                                            },
+                                            child:  Text("Trip ${travelList[i].name}",
+                                                textAlign: TextAlign.center,
+                                                style: LargeTextStyle.large20700(whiteColor))
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 30,),
-                                  ],
-                                );
-                                }
+                                      const SizedBox(height: 30,),
+                                    ],
+                                  );
+                                  }
+                              ),
                             ),
+                            SizedBox(height: 15,),
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    height: 45,
+                                    width: width * 0.43,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: buttonColor2,
+                                            surfaceTintColor: blackColor,
+                                            shadowColor: whiteColor,
+                                            elevation: 4
+                                        ),
+                                        onPressed: (){
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(builder: (context)
+                                          //   => const CreateNewWalletPage()),
+                                          // );
+                                        },
+                                        child:  Text("Join Existing trip",
+                                            textAlign: TextAlign.center,
+                                            style: RegularTextStyle.regular14600(whiteColor) )
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 45,
+                                    width: width * 0.43,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: buttonColor2,
+                                            surfaceTintColor: blackColor,
+                                            shadowColor: whiteColor,
+                                            elevation: 4
+                                        ),
+                                        onPressed: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context)
+                                            => const CreateNewTripPage()),
+                                          ).then((value) {
+                                            return fetch();
+                                          });
+
+                                          },
+                                        child:   Text("Create new trip",
+                                            textAlign: TextAlign.center,
+                                            style: RegularTextStyle.regular14600(whiteColor) )
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+
                             // SizedBox(
                             //   height: 65,
                             //   width: width * 0.75,
@@ -254,66 +317,14 @@ class _TripsNextPageState extends State<TripsNextPage> {
                             // ),
                             // const SizedBox(height: 50,),
 
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    height: 45,
-                                    width: width * 0.43,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: buttonColor2,
-                                            surfaceTintColor: blackColor,
-                                            shadowColor: whiteColor,
-                                            elevation: 4
-                                        ),
-                                        onPressed: (){
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(builder: (context)
-                                          //   => const CreateNewWalletPage()),
-                                          // );
-                                        },
-                                        child:  Text("Join Existing trip",
-                                            textAlign: TextAlign.center,
-                                            style: RegularTextStyle.regular14600(whiteColor) )
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 45,
-                                    width: width * 0.43,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: buttonColor2,
-                                            surfaceTintColor: blackColor,
-                                            shadowColor: whiteColor,
-                                            elevation: 4
-                                        ),
-                                        onPressed: (){
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(builder: (context)
-                                          //   => const CreateNewWalletPage()),
-                                          // );
-                                        },
-                                        child:  Text("Create new trip",
-                                            textAlign: TextAlign.center,
-                                            style: RegularTextStyle.regular14600(whiteColor) )
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
                           ],
                         ),
                       ],
                     ),
                   ),
                 ],
-              )
-          ),
+              ),
+            )
         )
     );
   }
