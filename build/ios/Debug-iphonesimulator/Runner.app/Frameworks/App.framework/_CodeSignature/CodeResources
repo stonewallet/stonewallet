@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		uWQQWci/PCcDPmBLtEpZXI5vJF4=
+		Bcnj6GcRSa69PPyJ7g+knscMyeQ=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		O1s0LX/xFfy+FlYbw5pR2Ka88ng=
+		DBhXaRk27eUk0SeroFQDLz22FKA=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -68,6 +68,10 @@
 		<data>
 		kI7AAOzp1qF9RdozR3Q0BTYm8i8=
 		</data>
+		<key>flutter_assets/assets/Icons/btc.png</key>
+		<data>
+		1IyEMYy4MjkWsxbnZ8gz3l1bVmM=
+		</data>
 		<key>flutter_assets/assets/Icons/car.png</key>
 		<data>
 		wUualQXxZLCrjNiku7D4ugNXOxA=
@@ -83,6 +87,10 @@
 		<key>flutter_assets/assets/Icons/download.png</key>
 		<data>
 		TwLjUmhAlOyxMy+w1AEcCSwfZMM=
+		</data>
+		<key>flutter_assets/assets/Icons/eth.png</key>
+		<data>
+		PnLMtYOqzA4vXlS39myOLux1wFw=
 		</data>
 		<key>flutter_assets/assets/Icons/ethereum.png</key>
 		<data>
@@ -100,6 +108,10 @@
 		<data>
 		OXCakMeR0Vovcc/LKhvptAuL7Go=
 		</data>
+		<key>flutter_assets/assets/Icons/iitc.png</key>
+		<data>
+		dEySBkPk7YZr007mNuyKPpr/otc=
+		</data>
 		<key>flutter_assets/assets/Icons/light-mode.png</key>
 		<data>
 		x8IwRNaRLu3k5qGiXFvQeFfvQvw=
@@ -111,6 +123,10 @@
 		<key>flutter_assets/assets/Icons/monero-symbol-on-white-480.png</key>
 		<data>
 		sIib8vPPlPdDxztJDIHcm/qZR2M=
+		</data>
+		<key>flutter_assets/assets/Icons/monero.png</key>
+		<data>
+		1Fth7xwOKnKlULlbdmfKSJmIvRQ=
 		</data>
 		<key>flutter_assets/assets/Icons/money.png</key>
 		<data>
@@ -226,7 +242,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		iem9MNDFOWma6c7xLXzwBJdfHo0=
+		6Fp9PVj6XSkJ5uaYkVWlu7b2dcw=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -255,14 +271,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			4EsjhjMZIxG59V4RT7U6OR6yLN1XO5BYWuLysjgRBjY=
+			/PNlGsJIUWUQfI/byIKeQGTLclBn1Ec0YINjOoDbPPA=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ycrONlkKWZ5MeSkV0zUB5ZBQcl7H6tUI04t/b7tXY84=
+			Y+DGMidKRICgOaUWeSMbG7SPaITJx5mRHoDXL5omag0=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -349,6 +365,13 @@
 			BumYyfbsUoEUhYCza2cYTnM7YIz/HQwFbkTcLHniihE=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/Icons/btc.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			g4W5lE5N/DeUmjGPLi8Mf+VvExrvauOfgEhW0qpDJIo=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/Icons/car.png</key>
 		<dict>
 			<key>hash2</key>
@@ -375,6 +398,13 @@
 			<key>hash2</key>
 			<data>
 			LMD/qZGNY8NbYIusTCxljMUWz5BoYMkg7gkkYGsDvrA=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/Icons/eth.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zmK3BFjCouHh/GzyktnK7anIDohW+6ogeNq6yCFRXTU=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/Icons/ethereum.png</key>
@@ -405,6 +435,13 @@
 			jYvaO4mDOJVZC1FPDblEkuGHD9VM1DlqeDY4tw52SS4=
 			</data>
 		</dict>
+		<key>flutter_assets/assets/Icons/iitc.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			a5GiMR2YQdMMY0tyhKSBBAxuE1zEZFitu0F4T7eCUIY=
+			</data>
+		</dict>
 		<key>flutter_assets/assets/Icons/light-mode.png</key>
 		<dict>
 			<key>hash2</key>
@@ -424,6 +461,13 @@
 			<key>hash2</key>
 			<data>
 			Ux+uyTBY43M43dhgGR1Gd6Gnd3jM+hJd4iMsTNJVT7E=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/Icons/monero.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TX8t1Up7SKM5yxTkiz5irOvQJuzY2hBGLAhh3FkdYKY=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/Icons/money.png</key>
@@ -626,7 +670,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			b4ACvxgF2iFAycLXtdmpgIjg9T2DBNXya8A/MpcCxfY=
+			2M+rcAb7xeGM3SQF/++4O+Yd6j2GaFmKYZOQVr+rN3k=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>

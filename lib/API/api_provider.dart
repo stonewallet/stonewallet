@@ -34,8 +34,12 @@ Future<List<TravelList>> processTravel() async {
 
     Response response = await _dio.get(
         travelListUrl,
-      options: Options(headers: {"Cookie": "csrftoken=mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX; sessionid=t8wr4andqnjmtdr7m4b16mqb6m8l9a9s"
-      }),
+      options: Options(
+          headers: {
+            "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
+            "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"
+      }
+      ),
 
     );
     if (kDebugMode) {
@@ -95,8 +99,8 @@ Future<List<TravelList>> processTravel() async {
 
         options: Options(headers: {
           'Content-Type': 'application/json',
-          "Cookie": "csrftoken=mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX; sessionid=t8wr4andqnjmtdr7m4b16mqb6m8l9a9s",
-          "X-CSRFToken": "mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX"}),
+          "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
+          "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"}),
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
@@ -181,7 +185,7 @@ Future<List<TravelList>> processTravel() async {
       Response response = await _dio.get(
         "$travelList2Url/$id/",
         options: Options(headers: {
-          "Cookie": "csrftoken=mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX; sessionid=t8wr4andqnjmtdr7m4b16mqb6m8l9a9s"
+          "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff"
         }),
 
         // options: Options(headers: {"Authorization": token}),
@@ -231,8 +235,8 @@ Future<List<TravelList>> processTravel() async {
         options: Options(
             headers: {
           'Content-Type': 'application/json',
-          "Cookie": "csrftoken=mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX; sessionid=t8wr4andqnjmtdr7m4b16mqb6m8l9a9s",
-          "X-CSRFToken": "mjC4o6wbH3FHyVpMBwYCXcvvnudRm1UX"
+          "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
+          "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"
             }
         ),
       );
@@ -253,7 +257,7 @@ Future<List<TravelList>> processTravel() async {
   }
 
 
-  Future<TravelPostResponse> processTravelDelete() async {
+  Future<TravelPostResponse> processTravelDelete(int id) async {
 
     try {
 
@@ -261,10 +265,15 @@ Future<List<TravelList>> processTravel() async {
         print("Post travel api hit");
       }
       Response response = await _dio.delete(
-        travelList2Url,
+        "$travelList2Url/$id/",
 
-        // options: Options(headers: {"Authorization": token}),
-      );
+        options: Options(
+            headers: {
+              'Content-Type': 'application/json',
+              "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
+              "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"
+            }
+        ),      );
       if (kDebugMode) {
         print("travelDelete ${response.data}");
       }
@@ -279,6 +288,38 @@ Future<List<TravelList>> processTravel() async {
       rethrow;
     }
   }
+
+  Future<TravelPostResponse> processAddUser() async {
+
+    try {
+
+      if (kDebugMode) {
+        print("Post travel api hit");
+      }
+      Response response = await _dio.post(
+        addUserUrl,
+        data: { "trip_id" : "1"},
+        options: Options(
+            headers: {
+          "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
+          "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"
+        }),
+      );
+      if (kDebugMode) {
+        print("addUser ${response.data}");
+      }
+
+      TravelPostResponse travelPostResponse =
+      TravelPostResponse.fromJson(json.decode(response.toString()));
+      return travelPostResponse;
+    } catch (error){
+      if(kDebugMode){
+        print("Error Add User $error");
+      }
+      rethrow;
+    }
+  }
+
 
 
 }

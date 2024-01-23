@@ -1,3 +1,5 @@
+import 'package:stone_wallet_main/Responses/travel_list_response.dart';
+
 class Travel2Response {
   int? id;
   String? name;
@@ -47,24 +49,3 @@ class Travel2Response {
   }
 }
 
-class Expenses {
-  int? transport;
-  int? hotel;
-  int? food;
-
-  Expenses({this.transport, this.hotel, this.food});
-
-  Expenses.fromJson(Map<String, dynamic> json) {
-    transport = json['transport'];
-    hotel = json['hotel'];
-    food = json['food'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['transport'] = this.transport;
-    data['hotel'] = this.hotel;
-    data['food'] = this.food;
-    return data;
-  }
-}

@@ -1,4 +1,4 @@
-#Wed Jan 10 18:36:53 IST 2024
+#Tue Jan 23 11:42:19 IST 2024
 base.0=/Users/apple/stonewallet/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/Users/apple/stonewallet/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
 base.2=/Users/apple/stonewallet/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex

@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		sF+tSDlIPkkJ9mJrWA8frHLaJTM=
+		AN2xtqoXxH1eQnv/ttrhGWcgl3s=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -54,15 +54,15 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		5Y8emctzfrrs/rdZOy2Ww9iFHds=
+		unfCLy3xaoMh3U7OwKvzKV4tNGw=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<data>
-		uWQQWci/PCcDPmBLtEpZXI5vJF4=
+		Bcnj6GcRSa69PPyJ7g+knscMyeQ=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<data>
-		O1s0LX/xFfy+FlYbw5pR2Ka88ng=
+		DBhXaRk27eUk0SeroFQDLz22FKA=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
 		<data>
@@ -112,6 +112,10 @@
 		<data>
 		kI7AAOzp1qF9RdozR3Q0BTYm8i8=
 		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/Icons/btc.png</key>
+		<data>
+		1IyEMYy4MjkWsxbnZ8gz3l1bVmM=
+		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/car.png</key>
 		<data>
 		wUualQXxZLCrjNiku7D4ugNXOxA=
@@ -127,6 +131,10 @@
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/download.png</key>
 		<data>
 		TwLjUmhAlOyxMy+w1AEcCSwfZMM=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/Icons/eth.png</key>
+		<data>
+		PnLMtYOqzA4vXlS39myOLux1wFw=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/ethereum.png</key>
 		<data>
@@ -144,6 +152,10 @@
 		<data>
 		OXCakMeR0Vovcc/LKhvptAuL7Go=
 		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/Icons/iitc.png</key>
+		<data>
+		dEySBkPk7YZr007mNuyKPpr/otc=
+		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/light-mode.png</key>
 		<data>
 		x8IwRNaRLu3k5qGiXFvQeFfvQvw=
@@ -155,6 +167,10 @@
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/monero-symbol-on-white-480.png</key>
 		<data>
 		sIib8vPPlPdDxztJDIHcm/qZR2M=
+		</data>
+		<key>Frameworks/App.framework/flutter_assets/assets/Icons/monero.png</key>
+		<data>
+		1Fth7xwOKnKlULlbdmfKSJmIvRQ=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/money.png</key>
 		<data>
@@ -270,7 +286,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		iem9MNDFOWma6c7xLXzwBJdfHo0=
+		6Fp9PVj6XSkJ5uaYkVWlu7b2dcw=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -378,15 +394,19 @@
 		</data>
 		<key>Frameworks/Toast.framework/Info.plist</key>
 		<data>
-		+u9ib5nq8/QNc4CCHuQIYH2TpCA=
+		k9L+KkyQUVC0/EEk5edHgPaj6is=
+		</data>
+		<key>Frameworks/Toast.framework/PrivacyInfo.xcprivacy</key>
+		<data>
+		s7O0r0d6vJFCcROYSLBf8TMqEFs=
 		</data>
 		<key>Frameworks/Toast.framework/Toast</key>
 		<data>
-		O7nKGOIL+BCRPjz0k2/Sr8if7tE=
+		AQEcJ+paXzc9rKmemIDXE2sMIHY=
 		</data>
 		<key>Frameworks/Toast.framework/_CodeSignature/CodeResources</key>
 		<data>
-		uXHP84tzfjLFfvP+d6gXtJ1qDtU=
+		ynuRPgki2R8LT9bBdVfqEQoYjLo=
 		</data>
 		<key>Frameworks/device_info_plus.framework/Info.plist</key>
 		<data>
@@ -438,7 +458,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		PwVO2Dypv6grDX4absCIuIQtrsE=
+		uLVVGyaWgjQlHleimcUesDWq4bw=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -521,7 +541,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			STkPdkiQY95ziwkl+UxQCHmO6I6AeUXtcmhgCQY8+gA=
+			DfuiUn3L656WGI+uopnRrneAqMMV29dSbLiNPFZ6Oiw=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -535,21 +555,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			bdpjUDBvPRUOZgyE6i8Pi3EHLfBHhra63IWeIOB77zg=
+			euuJ/8Yz6eGEN95R98sp3s/4OfB5fVVAPLJR+t3bJzQ=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			4EsjhjMZIxG59V4RT7U6OR6yLN1XO5BYWuLysjgRBjY=
+			/PNlGsJIUWUQfI/byIKeQGTLclBn1Ec0YINjOoDbPPA=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ycrONlkKWZ5MeSkV0zUB5ZBQcl7H6tUI04t/b7tXY84=
+			Y+DGMidKRICgOaUWeSMbG7SPaITJx5mRHoDXL5omag0=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/FontManifest.json</key>
@@ -636,6 +656,13 @@
 			BumYyfbsUoEUhYCza2cYTnM7YIz/HQwFbkTcLHniihE=
 			</data>
 		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/Icons/btc.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			g4W5lE5N/DeUmjGPLi8Mf+VvExrvauOfgEhW0qpDJIo=
+			</data>
+		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/car.png</key>
 		<dict>
 			<key>hash2</key>
@@ -662,6 +689,13 @@
 			<key>hash2</key>
 			<data>
 			LMD/qZGNY8NbYIusTCxljMUWz5BoYMkg7gkkYGsDvrA=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/Icons/eth.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zmK3BFjCouHh/GzyktnK7anIDohW+6ogeNq6yCFRXTU=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/ethereum.png</key>
@@ -692,6 +726,13 @@
 			jYvaO4mDOJVZC1FPDblEkuGHD9VM1DlqeDY4tw52SS4=
 			</data>
 		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/Icons/iitc.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			a5GiMR2YQdMMY0tyhKSBBAxuE1zEZFitu0F4T7eCUIY=
+			</data>
+		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/light-mode.png</key>
 		<dict>
 			<key>hash2</key>
@@ -711,6 +752,13 @@
 			<key>hash2</key>
 			<data>
 			Ux+uyTBY43M43dhgGR1Gd6Gnd3jM+hJd4iMsTNJVT7E=
+			</data>
+		</dict>
+		<key>Frameworks/App.framework/flutter_assets/assets/Icons/monero.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			TX8t1Up7SKM5yxTkiz5irOvQJuzY2hBGLAhh3FkdYKY=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/assets/Icons/money.png</key>
@@ -913,7 +961,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			b4ACvxgF2iFAycLXtdmpgIjg9T2DBNXya8A/MpcCxfY=
+			2M+rcAb7xeGM3SQF/++4O+Yd6j2GaFmKYZOQVr+rN3k=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
@@ -1102,21 +1150,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9uTGf5q1pvnWqxr9dlv0jmMoW1bofTWan08/Im2oN+0=
+			MtQ7H8BLi5+S5v4SbGTw7uICYdoUK/d6sAlfUBtSUGE=
+			</data>
+		</dict>
+		<key>Frameworks/Toast.framework/PrivacyInfo.xcprivacy</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			dvMMADsfOLu5EVzPdOPenetakOfEpnBaa14Xz2QIbJM=
 			</data>
 		</dict>
 		<key>Frameworks/Toast.framework/Toast</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			XMdNMIb5gCDOuXIlUgM90bfj5YfdjeoE1XlbkEXLWFo=
+			EZ5PuImWxjTJg96vzqY5VTcpi6DA2ZpI7Zw1pycd12U=
 			</data>
 		</dict>
 		<key>Frameworks/Toast.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Rc1/KucrHVBFlzwXsYDg8UTUbzBmNSToBwa4lH3KirI=
+			yAgVkB4QIJcDHkB0Lcw0dAAbZRlg0iUF1WZgbn1S+3o=
 			</data>
 		</dict>
 		<key>Frameworks/device_info_plus.framework/Info.plist</key>

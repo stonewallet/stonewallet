@@ -6,3 +6,5 @@ const travelPostListUrl ="$baseUrl/travel/list/";
 const travelList2Url ="$baseUrl/travel/list";
 const travelLoginUrl ="$baseUrl/travel/login/";
 const travelRegisterUrl ="$baseUrl/travel/register/";
+const getWalletUrl = "$baseUrl/travel/get/wallet/";
+const addUserUrl = "$baseUrl/travel/add/user/trip/";
