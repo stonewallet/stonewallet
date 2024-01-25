@@ -36,8 +36,8 @@ Future<List<TravelList>> processTravel() async {
         travelListUrl,
       options: Options(
           headers: {
-            "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
-            "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"
+            "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+            "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
       }
       ),
 
@@ -74,7 +74,7 @@ Future<List<TravelList>> processTravel() async {
   }
 }
 
-  Future<TravelPostResponse> processPostTravel(String? name, int? quantity, int? pricePaid, int? priceSold,
+  Future<TravelPostResponse> processPostTravel(String? name,String? item, int? quantity, int? pricePaid, int? priceSold,
       int? transport, int? hotel, int? food) async {
 
     try {
@@ -86,10 +86,15 @@ Future<List<TravelList>> processTravel() async {
         // "https://3.94.82.56/travel/list/",
         travelPostListUrl,
         data: {
-          "name": name,
-          "quantity": quantity,
-          "price_paid": pricePaid,
-          "price_sold": priceSold,
+          "trip_name": name,
+          "product" : [
+            {
+            "product_name" : item,
+            "quantity": quantity,
+            "price_paid": pricePaid,
+            "price_sold": priceSold,
+          }
+          ],
           "expenses": {
             "transport": transport,
             "hotel": hotel,
@@ -99,8 +104,8 @@ Future<List<TravelList>> processTravel() async {
 
         options: Options(headers: {
           'Content-Type': 'application/json',
-          "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
-          "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"}),
+          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+          "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"}),
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
@@ -117,6 +122,39 @@ Future<List<TravelList>> processTravel() async {
     }
   }
 
+
+  Future<TravelPostResponse> processAddEvent(Map<String, dynamic> addEvents, int id) async {
+
+    try {
+
+      if (kDebugMode) {
+        print("Post travel api hit");
+        print(addEvents);
+      }
+      Response response = await _dio.put(
+        // "https://3.94.82.56/travel/list/",
+        "$travelList2Url/$id/",
+        data: addEvents,
+
+        options: Options(headers: {
+          'Content-Type': 'application/json',
+          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+          "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"}),
+      );
+      if (kDebugMode) {
+        print("travelPost ${response.data}");
+      }
+
+      TravelPostResponse travelPostResponse =
+      TravelPostResponse.fromJson(json.decode(response.toString()));
+      return travelPostResponse;
+    } catch (error){
+      if(kDebugMode){
+        print("Error travel list $error");
+      }
+      rethrow;
+    }
+  }
 
   Future<TravelPostResponse> processLogin() async {
 
@@ -185,7 +223,7 @@ Future<List<TravelList>> processTravel() async {
       Response response = await _dio.get(
         "$travelList2Url/$id/",
         options: Options(headers: {
-          "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff"
+          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2"
         }),
 
         // options: Options(headers: {"Authorization": token}),
@@ -207,7 +245,7 @@ Future<List<TravelList>> processTravel() async {
 
 
   Future<Travel2Response> processTravelPut(int id, String? name, int? quantity, int? pricePaid, int? priceSold,
-      int? transport, int? hotel, int? food, String createdAt, int profit) async {
+      int? transport, int? hotel, int? food, String createdAt) async {
 
     try {
 
@@ -229,14 +267,14 @@ Future<List<TravelList>> processTravel() async {
             "food": food
           },
           "created_at": createdAt,
-          "profit": profit
+          // "profit": profit
         },
 
         options: Options(
             headers: {
           'Content-Type': 'application/json',
-          "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
-          "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"
+          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+          "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
             }
         ),
       );
@@ -270,8 +308,8 @@ Future<List<TravelList>> processTravel() async {
         options: Options(
             headers: {
               'Content-Type': 'application/json',
-              "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
-              "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"
+              "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+              "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
             }
         ),      );
       if (kDebugMode) {
@@ -289,7 +327,7 @@ Future<List<TravelList>> processTravel() async {
     }
   }
 
-  Future<TravelPostResponse> processAddUser() async {
+  Future<TravelPostResponse> processAddUser(int? id) async {
 
     try {
 
@@ -298,11 +336,11 @@ Future<List<TravelList>> processTravel() async {
       }
       Response response = await _dio.post(
         addUserUrl,
-        data: { "trip_id" : "1"},
+        data: { "trip_id" : id},
         options: Options(
             headers: {
-          "Cookie": "csrftoken=eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7; sessionid=bhrn2ciit3lzkp8ppa6v9sml8cjcfxff",
-          "X-CSRFToken": "eaRSlo1JbD8HuVtrRbi0rMzlUvsYFaL7"
+          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+          "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
         }),
       );
       if (kDebugMode) {

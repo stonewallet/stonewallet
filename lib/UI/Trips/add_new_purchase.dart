@@ -1,14 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
+import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import '../../API/api_provider.dart';
 import '../../Responses/travel_list_response.dart';
 import '../Constants/colors.dart';
-import 'new_trip.dart';
 
 
 class AddNewPurchasePage extends StatefulWidget {
-  const AddNewPurchasePage({super.key});
+  final trip.Travel2Response travel2response;
+  const AddNewPurchasePage(this.travel2response,{super.key});
 
   @override
   State<AddNewPurchasePage> createState() => _AddNewPurchasePageState();
@@ -16,7 +19,7 @@ class AddNewPurchasePage extends StatefulWidget {
 
 class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
 
-  List<TravelList> travelList = <TravelList>[];
+  // List<TravelList> travelList = <TravelList>[];
   bool isSwitch = true;
   bool isLoading = false;
 
@@ -283,46 +286,69 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                     elevation: 4
                                 ),
                                 onPressed: () async{
-                                  print(nameController.text);
-                                  print(quantityController.text);
-                                  print(pricePaidController.text);
-                                  print(priceSoldController.text);
-                                  // print(transportController.text);
-                                  // print(hotelController.text);
-                                  // print(foodController.text);
-                                  // setState(() {
-                                  //
-                                  //   isLoading = true;
-                                  // });
-                                  // var response = await ApiProvider().processPostTravel(
-                                  //     nameController.text, int.parse(quantityController.text),int.parse(pricePaidController.text),
-                                  //     int.parse(priceSoldController.text),int.parse(transportController.text), int.parse(hotelController.text),
-                                  //     int.parse(foodController.text)
-                                  // );
-                                  //
-                                  // if(response.message == "Trip created successfully"){
-                                  //   setState(() {
-                                  //     isLoading = false;
-                                  //   });
-                                  //   Navigator.pop(context);
-                                  //   var snackBar = SnackBar(content: Text(response.message!));
-                                  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  //
-                                  // }else{
-                                  //   setState(() {
-                                  //     isLoading = false;
-                                  //   });
-                                  //   var snackBar = SnackBar(content: Text("Something gone wrong"));
-                                  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  //
-                                  // }
+                                  List <Map<String, dynamic>> list = [];
+
+                                  print("nnn ${widget.travel2response.product!.length}" );
+                                  for(int i = 0; i<= widget.travel2response.product!.length -1; i++){
+                                    list.add(
+                                      {
+                                        "product_name" :  widget.travel2response.product![i].productName,
+                                        "quantity" : widget.travel2response.product![i].quantity,
+                                        "price_paid" : widget.travel2response.product![i].pricePaid,
+                                        "price_sold" : widget.travel2response.product![i].priceSold
+                                      });
+                                  }
+                                  list.add(
+                                      {
+                                      "product_name" : nameController.text,
+                                      "quantity" : int.parse(quantityController.text),
+                                      "price_paid" : int.parse(pricePaidController.text),
+                                      "price_sold" : int.parse(priceSoldController.text)
+                                      }
+                                      );
+
+
+                                  Map<String, dynamic> addEvents = {
+                                    "trip_name": widget.travel2response.tripName,
+                                    "product": list,
+                                    "expenses": {
+                                      "transport": widget.travel2response.expenses!.transport,
+                                      "hotel": widget.travel2response.expenses!.hotel,
+                                      "food": widget.travel2response.expenses!.food
+                                    }
+                                  };
+
+                                  print(addEvents);
+
+                                  setState(() {
+
+                                    isLoading = true;
+                                  });
+                                  var response = await ApiProvider().processAddEvent(addEvents, widget.travel2response.id!);
+
+                                  if(response.message != null){
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.pop(context);
+                                    var snackBar = SnackBar(content: Text("Event created successfully"));
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                  }else{
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    var snackBar = SnackBar(content: Text("Something gone wrong"));
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                  }
 
 
 
 
                                 },
                                 child:
-                                // isLoading == true ? CircularProgressIndicator(color: Colors.white,) :
+                                isLoading == true ? CircularProgressIndicator(color: Colors.white,) :
                                 Text("Add Event",
                                     textAlign: TextAlign.center,
                                     style: RegularTextStyle.regular14600(whiteColor) )

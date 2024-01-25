@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 
 import '../../API/api_provider.dart';
-import '../../Responses/travel2_response.dart';
+import '../../Responses/travel2_response.dart' as trip;
 import '../../Responses/travel_list_response.dart';
 import '../Constants/colors.dart';
 import 'new_trip.dart';
@@ -11,14 +11,12 @@ import 'new_trip.dart';
 class EditTripPage extends StatefulWidget {
   final int id;
   final String name;
-  final int quantity;
-  final int pricePaid;
-  final int priceSold;
+  final List<Product> product;
   final Expenses expenses;
   final String createdAt;
-  final int profit;
-  const EditTripPage(this.id,this.name,this.quantity, this.pricePaid, this.priceSold, this.expenses,
-      this.createdAt,this.profit,{super.key});
+  // final int profit;
+  const EditTripPage(this.id,this.name,this.product,  this.expenses,
+      this.createdAt,{super.key});
 
   @override
   State<EditTripPage> createState() => _EditTripPageState();
@@ -32,26 +30,28 @@ class _EditTripPageState extends State<EditTripPage> {
   late TextEditingController nameController ;
 
   // TextEditingController nameController = TextEditingController();
+  late TextEditingController itemController;
   late TextEditingController quantityController;
   late TextEditingController pricePaidController;
   late TextEditingController priceSoldController;
   late TextEditingController transportController;
   late TextEditingController hotelController;
   late TextEditingController foodController;
-  late TextEditingController profitController;
+  // late TextEditingController profitController;
 
 
 
   @override
   void initState() {
     nameController = TextEditingController(text: widget.name);
-    quantityController = TextEditingController(text: widget.quantity.toString());
-    pricePaidController = TextEditingController(text: widget.pricePaid.toString());
-    priceSoldController = TextEditingController(text: widget.priceSold.toString());
+    itemController = TextEditingController(text: widget.product.first.productName);
+    quantityController = TextEditingController(text: widget.product.first.quantity.toString());
+    pricePaidController = TextEditingController(text: widget.product.first.pricePaid.toString());
+    priceSoldController = TextEditingController(text: widget.product.first.priceSold.toString());
     transportController = TextEditingController(text: widget.expenses.transport.toString());
     hotelController = TextEditingController(text: widget.expenses.hotel.toString());
     foodController = TextEditingController(text: widget.expenses.food.toString());
-    profitController = TextEditingController(text: widget.profit.toString());
+    // profitController = TextEditingController(text: widget.profit.toString());
 
 
     super.initState();
@@ -410,47 +410,47 @@ class _EditTripPageState extends State<EditTripPage> {
                           ),
                         ),
 
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Profit", style: RegularTextStyle.regular16600(Colors.white) ),
-                              SizedBox(height: 6,),
-
-                              SizedBox(
-                                height: 45,
-                                width: width ,
-                                // padding: EdgeInsets.only(left: 15, right: 15),
-                                // alignment: Alignment.center,
-                                child: TextField(
-                                  // autofocus: true,
-                                  cursorColor: Colors.blue,
-                                  controller: profitController,
-                                  textAlign: TextAlign.start,
-                                  textAlignVertical: TextAlignVertical.center,
-                                  style: RegularTextStyle.regular16600(whiteColor) ,
-                                  decoration: const InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(color: borderColor, width: 1.0),
-                                    ),
-                                    fillColor:  fillColor,
-                                    filled: true,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(color: borderColor, width: 1.0),
-                                    ),
-                                    contentPadding: EdgeInsets.only(left: 20),
-                                  ),
-                                  textInputAction: TextInputAction.next,
-
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        //   child: Column(
+                        //     mainAxisAlignment: MainAxisAlignment.start,
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       Text("Profit", style: RegularTextStyle.regular16600(Colors.white) ),
+                        //       SizedBox(height: 6,),
+                        //
+                        //       SizedBox(
+                        //         height: 45,
+                        //         width: width ,
+                        //         // padding: EdgeInsets.only(left: 15, right: 15),
+                        //         // alignment: Alignment.center,
+                        //         child: TextField(
+                        //           // autofocus: true,
+                        //           cursorColor: Colors.blue,
+                        //           controller: profitController,
+                        //           textAlign: TextAlign.start,
+                        //           textAlignVertical: TextAlignVertical.center,
+                        //           style: RegularTextStyle.regular16600(whiteColor) ,
+                        //           decoration: const InputDecoration(
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.all(Radius.circular(30)),
+                        //               borderSide: BorderSide(color: borderColor, width: 1.0),
+                        //             ),
+                        //             fillColor:  fillColor,
+                        //             filled: true,
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.all(Radius.circular(30)),
+                        //               borderSide: BorderSide(color: borderColor, width: 1.0),
+                        //             ),
+                        //             contentPadding: EdgeInsets.only(left: 20),
+                        //           ),
+                        //           textInputAction: TextInputAction.next,
+                        //
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
 
                         SizedBox(height: 20,),
 
@@ -477,7 +477,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                   print(hotelController.text);
                                   print(foodController.text);
                                   print(widget.createdAt);
-                                  print(profitController.text);
+                                  // print(profitController.text);
 
                                   setState(() {
 
@@ -486,7 +486,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                   var response = await ApiProvider().processTravelPut(
                                     widget.id, nameController.text, int.parse(quantityController.text),int.parse(pricePaidController.text),
                                       int.parse(priceSoldController.text),int.parse(transportController.text), int.parse(hotelController.text),
-                                      int.parse(foodController.text), widget.createdAt, int.parse(profitController.text)
+                                      int.parse(foodController.text), widget.createdAt
                                   );
 
                                   if(response.expenses != null){

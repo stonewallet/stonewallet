@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
-import 'package:stone_wallet_main/Responses/travel2_response.dart';
+import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
 import 'package:stone_wallet_main/Responses/travel_list_response.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_purchase.dart';
-import 'package:stone_wallet_main/UI/Trips/edit_trip.dart';
+import 'package:stone_wallet_main/UI/Trips/add_user_trip.dart';
 
 import '../Constants/colors.dart';
 
@@ -19,6 +19,8 @@ class NewTripPage extends StatefulWidget {
 
 class _NewTripPageState extends State<NewTripPage> {
 
+  List<trip.Product> events = [] ;
+  List<Map<String, dynamic>> newData = [];
 
   @override
   void initState() {
@@ -27,19 +29,54 @@ class _NewTripPageState extends State<NewTripPage> {
   }
 
   fetch() async{
+    events.clear();
     travel2response = await ApiProvider().processTravel2(widget.travelId);
+    await ApiProvider().processTravel2(widget.travelId).then((value) {
+      events.addAll(value.product!);
+      for(int i=0; i<=events.length -1; i++ ){
+        newData.add({
+          "Item Name" : events[i].productName,
+          "Quantity" : events[i].quantity,
+          "Price Bought" : events[i].pricePaid,
+          "Price Sold" : events[i].priceSold
+        });
+      }
+
+    });
     setState(() {
 
     });
   }
 
-  Travel2Response travel2response = Travel2Response();
+  trip.Travel2Response travel2response = trip.Travel2Response();
 
   @override
   Widget build(BuildContext context) {
     print("travel2response ${travel2response.id}");
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
+    List<DataColumn> getColumns() {
+      return newData.isNotEmpty
+          ? newData.first.keys
+          .map((String key) => DataColumn(
+        label: Center(child: Text(key, style: RegularTextStyle.regular14600(whiteColor) )),
+      ))
+          .toList()
+          : [];
+    }
+
+    List<DataRow> getRows() {
+      return newData.map((Map<String, dynamic> rowData) {
+        return DataRow(
+          cells: rowData.keys.map((String key) {
+            return DataCell(
+              Center(child: Text(rowData[key].toString(), style: RegularTextStyle.regular14600(whiteColor) ,)),
+            );
+          }).toList(),
+        );
+      }).toList();
+    }
 
     return Scaffold(
         backgroundColor: Colors.transparent,
@@ -87,7 +124,7 @@ class _NewTripPageState extends State<NewTripPage> {
                         child: CircularProgressIndicator(color: whiteColor,))) : Column(
                       children: [
                         SizedBox(height: height*0.03,),
-                        Text("Trip ${travel2response.name}",
+                        Text("Trip ${travel2response.tripName}",
                             style: LargeTextStyle.large20700(whiteColor)),
                         const SizedBox(height: 8,),
                         Container(width: width*0.3, height: 2, color:  lineColor,),
@@ -100,14 +137,14 @@ class _NewTripPageState extends State<NewTripPage> {
                             children: [
                               InkWell(
                                   onTap:(){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context)
-                                      =>  EditTripPage(travel2response.id!, travel2response.name!, travel2response.quantity!,travel2response.pricePaid!,
-                                          travel2response.priceSold!, travel2response.expenses!, travel2response.createdAt!,travel2response.profit!)),
-                                    ).then((value) {
-                                      return fetch();
-                                    });
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(builder: (context)
+                                    //   =>  EditTripPage(travel2response.id!, travel2response.name!, travel2response.quantity!,travel2response.pricePaid!,
+                                    //       travel2response.priceSold!, travel2response.expenses!, travel2response.createdAt!,travel2response.profit!)),
+                                    // ).then((value) {
+                                    //   return fetch();
+                                    // });
                                   },
                                   child: Icon(Icons.edit, color: whiteColor,)),
                               SizedBox(width: 10,),
@@ -140,47 +177,46 @@ class _NewTripPageState extends State<NewTripPage> {
                                 ],
                               ),
                               const SizedBox(height: 15,),
-
-                              Container(
-                                padding: const EdgeInsets.only(right: 15, left: 15, top: 10, bottom: 0),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: lineColor2)
-                                ),
-                                child: Column(
+                              SizedBox(
+                                height: 150,
+                                child: ListView(
+                                  // padding: EdgeInsets.symmetric(horizontal: 10),
+                                  // physics:,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Name",
-                                          style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text(travel2response.name!,style:  RegularTextStyle.regular16600(whiteColor),)
-                                      ],
+                                    DataTable(
+
+                                      headingRowHeight: 30,
+                                      dataRowMaxHeight: double.infinity,       // Code to be changed.
+                                      dataRowMinHeight: 30,
+                                      columnSpacing: 5,
+                                      border: TableBorder.all(color: lineColor2,borderRadius: BorderRadius.circular(15) ),
+                                      // dataRowColor: MaterialStateProperty.all(Colors.transparent),
+
+                                      columns: getColumns(),
+                                      // [
+                                      //   DataColumn(label: Center(child: Text("Item Name", style: RegularTextStyle.regular16600(whiteColor),textAlign: TextAlign.center, ))),
+                                      //   DataColumn(label: Center(child: Text("Quantity",style: RegularTextStyle.regular16600(whiteColor)))),
+                                      //   DataColumn(label: Center(child: Text("Price Bought",style: RegularTextStyle.regular16600(whiteColor)))),
+                                      //   DataColumn(label: Center(child: Text("Price Sold",style: RegularTextStyle.regular16600(whiteColor)))),
+                                      // ],
+                                      rows: getRows(),
+                                      // [
+                                      //   DataRow(
+                                      //       color : MaterialStateProperty.all(Colors.transparent),
+                                      //       cells: [
+                                      //         DataCell(Center(child: Text("Iphone 12", style: RegularTextStyle.regular16600(whiteColor),))),
+                                      //         DataCell(Center(child: Text("5", style:  RegularTextStyle.regular16600(whiteColor),textAlign: TextAlign.center,))),
+                                      //         DataCell(Center(child: Text("3500 \$", style:  RegularTextStyle.regular16600(whiteColor),))),
+                                      //         DataCell(Center(child: Text("4500 \$", style:  RegularTextStyle.regular16600(whiteColor),))),
+                                      //       ]),
+                                      // ],
                                     ),
-                                    const SizedBox(height: 5,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Quantity", style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text(travel2response.quantity!.toString(),style:  RegularTextStyle.regular16600(whiteColor),)
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Price Paid", style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text("\$ ${travel2response.pricePaid!.toString()}",style:  RegularTextStyle.regular16600(whiteColor),)
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5,),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Price Sold", style:  RegularTextStyle.regular16600(whiteColor),),
-                                        Text("\$ ${travel2response.priceSold!.toString()}",style:  RegularTextStyle.regular16600(whiteColor),)
-                                      ],
-                                    ),
+                                  ],
+                                ),
+                              ),
+
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -189,18 +225,17 @@ class _NewTripPageState extends State<NewTripPage> {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(builder: (context)
-                                                => const AddNewPurchasePage()),
-                                              );
+                                                =>  AddNewPurchasePage( travel2response)),
+                                              ).then((value) {
+                                                return fetch();
+                                              });
 
                                             },
                                             child: Icon(Icons.add,color: whiteColor,))
                                       ],
-                                    )
+                                    ),
 
 
-                                  ],
-                                ),
-                              ),
                               const SizedBox(height: 15,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -298,11 +333,11 @@ class _NewTripPageState extends State<NewTripPage> {
                                             elevation: 4
                                         ),
                                         onPressed: (){
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(builder: (context)
-                                          //   => const NewTripPage()),
-                                          // );
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context)
+                                            => const AddUserTripPage()),
+                                          );
                                         },
                                         child:  Text("Invite Trip Partner",
                                             textAlign: TextAlign.center,

@@ -126,15 +126,18 @@ class _TripsPageState extends State<TripsPage> {
                                                   onPressed: (){
                                                     // fetch();
                                                     // ApiProvider().processRegister();
+                                                    // print(travelList[i].id);
+                                                    int id = travelList[i].id;
+                                                    print(id);
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(builder: (context)
-                                                      =>  NewTripPage(travelList[i].id)),
+                                                      =>  NewTripPage(id)),
                                                     ).then((value) {
                                                       return fetch();
                                                     });
                                                   },
-                                                  child:  Text("Trip ${travelList[i].name}",
+                                                  child:  Text("Trip ${travelList[i].tripName}",
                                                       textAlign: TextAlign.center,
                                                       style: LargeTextStyle.large20700(whiteColor))
                                               ),
@@ -147,8 +150,7 @@ class _TripsPageState extends State<TripsPage> {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(builder: (context)
-                                                      =>  EditTripPage(travelList[i].id, travelList[i].name, travelList[i].quantity,travelList[i].pricePaid,
-                                                          travelList[i].priceSold, travelList[i].expenses, travelList[i].createdAt.toString(),0)),
+                                                      =>  EditTripPage(travelList[i].id, travelList[i].tripName, travelList[i].product, travelList[i].expenses, travelList[i].createdAt.toString())),
                                                     ).then((value) {
                                                       return fetch();
                                                     });

@@ -21,6 +21,7 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
   bool isLoading = false;
 
   TextEditingController nameController = TextEditingController();
+  TextEditingController itemController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   TextEditingController pricePaidController = TextEditingController();
   TextEditingController priceSoldController = TextEditingController();
@@ -74,7 +75,7 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
               SizedBox(height: height*0.04,),
               Container(
                 width: width,
-                height: height,
+                // height: height,
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment(0.00, -1.00),
@@ -122,18 +123,59 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                   textAlign: TextAlign.start,
                                   textAlignVertical: TextAlignVertical.center,
                                   style: RegularTextStyle.regular16600(whiteColor) ,
-                                  decoration: InputDecoration(
-                                    focusedBorder: const OutlineInputBorder(
+                                  decoration: const InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(color: borderColor, width: 1.0),
                                     ),
                                     fillColor:  fillColor,
                                     filled: true,
-                                    enabledBorder: const OutlineInputBorder(
+                                    enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(color: borderColor, width: 1.0),
                                     ),
-                                    contentPadding: const EdgeInsets.only(left: 20),
+                                    contentPadding: EdgeInsets.only(left: 20),
+                                  ),
+                                  textInputAction: TextInputAction.next,
+
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Item Name", style: RegularTextStyle.regular16600(Colors.white) ),
+                              SizedBox(height: 6,),
+
+                              SizedBox(
+                                height: 45,
+                                width: width ,
+                                // padding: EdgeInsets.only(left: 15, right: 15),
+                                // alignment: Alignment.center,
+                                child: TextField(
+                                  // autofocus: true,
+                                  cursorColor: Colors.blue,
+                                  controller: itemController,
+                                  textAlign: TextAlign.start,
+                                  textAlignVertical: TextAlignVertical.center,
+                                  style: RegularTextStyle.regular16600(whiteColor) ,
+                                  decoration: const InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(color: borderColor, width: 1.0),
+                                    ),
+                                    fillColor:  fillColor,
+                                    filled: true,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(color: borderColor, width: 1.0),
+                                    ),
+                                    contentPadding: EdgeInsets.only(left: 20),
                                   ),
                                   textInputAction: TextInputAction.next,
 
@@ -406,6 +448,7 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                 ),
                                 onPressed: () async{
                                   print(nameController.text);
+                                  print(itemController.text);
                                   print(quantityController.text);
                                   print(pricePaidController.text);
                                   print(priceSoldController.text);
@@ -417,7 +460,7 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                   isLoading = true;
                                   });
                                  var response = await ApiProvider().processPostTravel(
-                                      nameController.text, int.parse(quantityController.text),int.parse(pricePaidController.text),
+                                      nameController.text,itemController.text, int.parse(quantityController.text),int.parse(pricePaidController.text),
                                       int.parse(priceSoldController.text),int.parse(transportController.text), int.parse(hotelController.text),
                                     int.parse(foodController.text)
                                   );
@@ -449,7 +492,8 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                     style: RegularTextStyle.regular14600(whiteColor) )
                             ),
                           ),
-                        )
+                        ),
+                        SizedBox(height: 15,)
                       ],
                     ),
                   ],
