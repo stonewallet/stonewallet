@@ -147,13 +147,13 @@ class _TripsPageState extends State<TripsPage> {
                                               children: [
                                                 InkWell(
                                                   onTap:(){
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(builder: (context)
-                                                      =>  EditTripPage(travelList[i].id, travelList[i].tripName, travelList[i].product, travelList[i].expenses, travelList[i].createdAt.toString())),
-                                                    ).then((value) {
-                                                      return fetch();
-                                                    });
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(builder: (context)
+                                                    //   =>  EditTripPage(travelList[i].id, travelList[i].tripName, travelList[i].product, travelList[i].expenses, travelList[i].createdAt.toString())),
+                                                    // ).then((value) {
+                                                    //   return fetch();
+                                                    // });
                                                   },
                                                     child: Icon(Icons.edit,color: whiteColor,)),
                                                 SizedBox(height: 10,),

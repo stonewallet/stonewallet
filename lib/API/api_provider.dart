@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import '../Responses/travel2_response.dart';
 import '../Responses/travel_list_response.dart';
+import '../Responses/trip_edit_response.dart';
 import '../UI/Constants/urls.dart';
 
 class ApiProvider {
@@ -244,8 +245,10 @@ Future<List<TravelList>> processTravel() async {
   }
 
 
-  Future<Travel2Response> processTravelPut(int id, String? name, int? quantity, int? pricePaid, int? priceSold,
-      int? transport, int? hotel, int? food, String createdAt) async {
+  Future<TripEditResponse> processTravelPut(int id,Map<String, dynamic> edit ,
+      // int id, String? name, int? quantity, int? pricePaid, int? priceSold,
+      // int? transport, int? hotel, int? food, String createdAt
+      ) async {
 
     try {
 
@@ -255,20 +258,21 @@ Future<List<TravelList>> processTravel() async {
       }
       Response response = await _dio.put(
         "$travelList2Url/$id/",
-        data: {
-          "id": id,
-          "name": name,
-          "quantity": quantity,
-          "price_paid": pricePaid,
-          "price_sold": priceSold,
-          "expenses": {
-            "transport": transport,
-            "hotel": hotel,
-            "food": food
-          },
-          "created_at": createdAt,
-          // "profit": profit
-        },
+        data: edit,
+        // {
+        //   "id": id,
+        //   "name": name,
+        //   "quantity": quantity,
+        //   "price_paid": pricePaid,
+        //   "price_sold": priceSold,
+        //   "expenses": {
+        //     "transport": transport,
+        //     "hotel": hotel,
+        //     "food": food
+        //   },
+        //   "created_at": createdAt,
+        //   // "profit": profit
+        // },
 
         options: Options(
             headers: {
@@ -283,9 +287,9 @@ Future<List<TravelList>> processTravel() async {
         print("Travel Edit ${response.data}");
       }
 
-      Travel2Response travel2response =
-      Travel2Response.fromJson(json.decode(response.toString()));
-      return travel2response;
+      TripEditResponse tripEditResponse =
+      TripEditResponse.fromJson(json.decode(response.toString()));
+      return tripEditResponse;
     } catch (error){
       if(kDebugMode){
         print("Error travel list $error");

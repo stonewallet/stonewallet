@@ -311,11 +311,11 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                   Map<String, dynamic> addEvents = {
                                     "trip_name": widget.travel2response.tripName,
                                     "product": list,
-                                    "expenses": {
-                                      "transport": widget.travel2response.expenses!.transport,
-                                      "hotel": widget.travel2response.expenses!.hotel,
-                                      "food": widget.travel2response.expenses!.food
-                                    }
+                                    // "expenses": {
+                                    //   "transport": widget.travel2response.expenses!.transport,
+                                    //   "hotel": widget.travel2response.expenses!.hotel,
+                                    //   "food": widget.travel2response.expenses!.food
+                                    // }
                                   };
 
                                   print(addEvents);

@@ -2,7 +2,7 @@ class Travel2Response {
   int? id;
   String? tripName;
   List<Product>? product;
-  Expenses? expenses;
+  List<Expenses>? expenses;
   String? createdAt;
   int? profit;
 
@@ -23,9 +23,12 @@ class Travel2Response {
         product!.add( Product.fromJson(v));
       });
     }
-    expenses = json['expenses'] != null
-        ?  Expenses.fromJson(json['expenses'])
-        : null;
+    if (json['expenses'] != null) {
+      expenses = <Expenses>[];
+      json['expenses'].forEach((v) {
+        expenses!.add( Expenses.fromJson(v));
+      });
+    }
     createdAt = json['created_at'];
     profit = json['profit'];
   }
@@ -38,7 +41,7 @@ class Travel2Response {
       data['product'] = product!.map((v) => v.toJson()).toList();
     }
     if (expenses != null) {
-      data['expenses'] = expenses!.toJson();
+      data['expenses'] = expenses!.map((v) => v.toJson()).toList();
     }
     data['created_at'] = createdAt;
     data['profit'] = profit;
@@ -84,23 +87,20 @@ class Product {
 }
 
 class Expenses {
-  int? transport;
-  int? hotel;
-  int? food;
+  String? expenseName;
+  int? expenseAmount;
 
-  Expenses({transport, hotel, food});
+  Expenses({expenseName, expenseAmount});
 
   Expenses.fromJson(Map<String, dynamic> json) {
-    transport = json['transport'];
-    hotel = json['hotel'];
-    food = json['food'];
+    expenseName = json['expense_name'];
+    expenseAmount = json['expense_amount'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data =  <String, dynamic>{};
-    data['transport'] = transport;
-    data['hotel'] = hotel;
-    data['food'] = food;
+    data['expense_name'] = expenseName;
+    data['expense_amount'] = expenseAmount;
     return data;
   }
 }
