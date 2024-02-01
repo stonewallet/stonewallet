@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
@@ -6,8 +7,10 @@ import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_expense.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_purchase.dart';
 import 'package:stone_wallet_main/UI/Trips/add_user_trip.dart';
-
+import 'package:collection/collection.dart';
+import '../../Responses/travel2_response.dart';
 import '../Constants/colors.dart';
+import 'delete_expense.dart';
 import 'edit_trip.dart';
 
 
@@ -23,6 +26,8 @@ class _NewTripPageState extends State<NewTripPage> {
 
   List<Product> events = [] ;
   List<Map<String, dynamic>> newData = [];
+  int totalQuantity = 0;
+  List numbers = [];
 
   @override
   void initState() {
@@ -32,9 +37,14 @@ class _NewTripPageState extends State<NewTripPage> {
 
   fetch() async{
     events.clear();
+    setState(() {
+
+    });
     travel2response = await ApiProvider().processTravel2(widget.travelId);
     await ApiProvider().processTravel2(widget.travelId).then((value) {
-      events.addAll(value.product! as List<Product>);
+      events.clear();
+
+      events.addAll(value.product! as Iterable<Product>);
       for(int i=0; i<=events.length -1; i++ ){
         newData.add({
           "Item Name" : events[i].productName,
@@ -42,19 +52,29 @@ class _NewTripPageState extends State<NewTripPage> {
           "Bought" : events[i].pricePaid,
           "Sold" : events[i].priceSold
         });
+        // totalQuantity = events[i].quantity! ;
+        numbers.add(events[i].quantity!);
       }
+      totalQuantity = numbers.reduce((value, element) => value + element);
+      setState(() {
+
+      });
 
     });
-    setState(() {
 
-    });
   }
 
   trip.Travel2Response travel2response = trip.Travel2Response();
 
   @override
   Widget build(BuildContext context) {
-    print("travel2response ${travel2response.id}");
+    if(kDebugMode){
+      print("travel2response ${travel2response.id}");
+      print(numbers);
+    }
+
+
+
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -70,6 +90,9 @@ class _NewTripPageState extends State<NewTripPage> {
           : [];
     }
 
+
+
+    print("totalQuantity $totalQuantity");
     List<DataRow> getRows() {
       return newData.map((Map<String, dynamic> rowData) {
         return DataRow(
@@ -143,14 +166,14 @@ class _NewTripPageState extends State<NewTripPage> {
                             children: [
                               InkWell(
                                   onTap:(){
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(builder: (context)
-                                    //   =>  EditTripPage(travel2response.id!, travel2response.tripName!, travel2response.product!,
-                                    //       travel2response.expenses!, travel2response.createdAt!)),
-                                    // ).then((value) {
-                                    //   return fetch();
-                                    // });
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context)
+                                      =>  EditTripPage(travel2response.id!, travel2response.tripName!, travel2response.product!,
+                                          travel2response.expenses!, travel2response.createdAt!)),
+                                    ).then((value) {
+                                      return fetch();
+                                    });
                                   },
                                   child: Icon(Icons.edit, color: whiteColor,)),
                               SizedBox(width: 10,),
@@ -179,6 +202,15 @@ class _NewTripPageState extends State<NewTripPage> {
                                   Text("Date",
                                       style: RegularTextStyle.regular16600(whiteColor)),
                                   Text(travel2response.createdAt!,
+                                    style: RegularTextStyle.regular16600(whiteColor),)
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Total Quantity",
+                                      style: RegularTextStyle.regular16600(whiteColor)),
+                                  Text(totalQuantity.toString(),
                                     style: RegularTextStyle.regular16600(whiteColor),)
                                 ],
                               ),
@@ -219,7 +251,11 @@ class _NewTripPageState extends State<NewTripPage> {
                                                 MaterialPageRoute(builder: (context)
                                                 =>  AddNewPurchasePage( travel2response)),
                                               ).then((value) {
+                                                setState(() {
+
+                                                });
                                                 return fetch();
+
                                               });
 
                                             },
@@ -236,104 +272,141 @@ class _NewTripPageState extends State<NewTripPage> {
                                 ],
                               ),
                               const SizedBox(height: 10,),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: lineColor2)
-                                ),
-                                child: ListView.builder(
-                                  itemBuilder: (BuildContext context, int index){
-                                  return   Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              Stack(
+                                children: [
+                                  Container(
+                                    height: 150,
+                                    padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(color: lineColor2)
+                                    ),
+                                    child: ListView.builder(
+                                      itemCount: travel2response.expenses!.length,
+                                      itemBuilder: (BuildContext context, int index){
+                                      return   Column(
                                         children: [
-                                          Text(travel2response.expenses![index].expenseName!, style:  RegularTextStyle.regular16600(whiteColor)),
-                                          Text("\$ ${travel2response.expenses![index].expenseAmount!.toString()}",style:  RegularTextStyle.regular16600(whiteColor))
-                                        ],
-                                      ),
-                                      const SizedBox(height: 5,),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(travel2response.expenses![index].expenseName!, style:  RegularTextStyle.regular16600(whiteColor)),
+                                              Text("\$ ${travel2response.expenses![index].expenseAmount!.toString()}",style:  RegularTextStyle.regular16600(whiteColor))
+                                            ],
+                                          ),
+                                          const SizedBox(height: 5,),
 
-                                    ],
-                                  );
-                                },
-                                ),
-                                // Column(
-                                //   children: [
-                                //     Row(
-                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text("Transport", style:  RegularTextStyle.regular16600(whiteColor)),
-                                //         Text("\$ ${travel2response.expenses!.transport.toString()}",style:  RegularTextStyle.regular16600(whiteColor))
-                                //       ],
-                                //     ),
-                                //     const SizedBox(height: 5,),
-                                //     Row(
-                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text("Hotel", style: RegularTextStyle.regular16600(whiteColor)),
-                                //         Text("\$ ${travel2response.expenses!.hotel.toString()}",style:  RegularTextStyle.regular16600(whiteColor),)
-                                //       ],
-                                //     ),
-                                //     const SizedBox(height: 5,),
-                                //     Row(
-                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text("Food", style:  RegularTextStyle.regular16600(whiteColor)),
-                                //         Text("\$ ${travel2response.expenses!.food.toString()}",style: RegularTextStyle.regular16600(whiteColor))
-                                //       ],
-                                //     ),
-                                //     const SizedBox(height: 5,),
-                                //     Row(
-                                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                //       children: [
-                                //         Text("Food", style:  RegularTextStyle.regular16600(whiteColor)),
-                                //         Text("\$ ${travel2response.expenses!.food.toString()}",style: RegularTextStyle.regular16600(whiteColor))
-                                //       ],
-                                //     ),
-                                //
-                                //     const SizedBox(height: 5,),
-                                //      Row(
-                                //       children: [
-                                //         InkWell(
-                                //             onTap: (){
-                                //               Navigator.push(
-                                //                 context,
-                                //                 MaterialPageRoute(builder: (context)
-                                //                 =>  AddNewExpensePage( travel2response)),
-                                //               ).then((value) {
-                                //                 return fetch();
-                                //               });
-                                //             },
-                                //             child: const Icon(Icons.add, color: whiteColor,)),
-                                //         Icon(Icons.remove, color: whiteColor,)
-                                //       ],
-                                //     )
-                                //
-                                //   ],
-                                // ),
-                              ),
-                              SizedBox(height: 20,),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: lineColor2)
-                                ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        ],
+                                      );
+                                    },
+                                    ),
+
+                                    // Column(
+                                    //   children: [
+                                    //     Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //       children: [
+                                    //         Text("Transport", style:  RegularTextStyle.regular16600(whiteColor)),
+                                    //         Text("\$ ${travel2response.expenses!.transport.toString()}",style:  RegularTextStyle.regular16600(whiteColor))
+                                    //       ],
+                                    //     ),
+                                    //     const SizedBox(height: 5,),
+                                    //     Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //       children: [
+                                    //         Text("Hotel", style: RegularTextStyle.regular16600(whiteColor)),
+                                    //         Text("\$ ${travel2response.expenses!.hotel.toString()}",style:  RegularTextStyle.regular16600(whiteColor),)
+                                    //       ],
+                                    //     ),
+                                    //     const SizedBox(height: 5,),
+                                    //     Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //       children: [
+                                    //         Text("Food", style:  RegularTextStyle.regular16600(whiteColor)),
+                                    //         Text("\$ ${travel2response.expenses!.food.toString()}",style: RegularTextStyle.regular16600(whiteColor))
+                                    //       ],
+                                    //     ),
+                                    //     const SizedBox(height: 5,),
+                                    //     Row(
+                                    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    //       children: [
+                                    //         Text("Food", style:  RegularTextStyle.regular16600(whiteColor)),
+                                    //         Text("\$ ${travel2response.expenses!.food.toString()}",style: RegularTextStyle.regular16600(whiteColor))
+                                    //       ],
+                                    //     ),
+                                    //
+                                    //     const SizedBox(height: 5,),
+                                    //      Row(
+                                    //       children: [
+                                    //         InkWell(
+                                    //             onTap: (){
+                                    //               Navigator.push(
+                                    //                 context,
+                                    //                 MaterialPageRoute(builder: (context)
+                                    //                 =>  AddNewExpensePage( travel2response)),
+                                    //               ).then((value) {
+                                    //                 return fetch();
+                                    //               });
+                                    //             },
+                                    //             child: const Icon(Icons.add, color: whiteColor,)),
+                                    //         Icon(Icons.remove, color: whiteColor,)
+                                    //       ],
+                                    //     )
+                                    //
+                                    //   ],
+                                    // ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    left: MediaQuery.of(context).size.width * 0.45,
+                                    child: Row(
                                       children: [
-                                        Text("Total Profit", style: RegularTextStyle.regular16600(whiteColor),),
-                                        Text("\$ ${travel2response.profit!.toString()}",style: RegularTextStyle.regular16600(whiteColor),)
+                                        InkWell(
+                                            onTap: (){
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context)
+                                                =>  AddNewExpensePage( travel2response)),
+                                              ).then((value) {
+                                                setState(() {
+
+                                                });
+                                                return fetch();
+                                              });
+                                            },
+                                            child: const Icon(Icons.add, color: whiteColor,)),
+                                        SizedBox(width: 10,),
+                                        InkWell(
+                                            onTap: (){
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(builder: (context)
+                                                =>  DeleteExpensePage( travel2response)),
+                                              ).then((value) {
+                                                setState(() {
+
+                                                });
+                                                return fetch();
+                                              });
+                                            },
+                                            child: const Icon(Icons.remove, color: whiteColor,)),
                                       ],
                                     ),
-                                    // const SizedBox(height: 20,),
+                                  ),
+                                ],
+                              ),
 
-                                    const SizedBox(height: 10,)
-
+                              SizedBox(height: 20,),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: lineColor2)
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Total Profit", style: RegularTextStyle.regular16600(whiteColor),),
+                                    Text("\$ ${travel2response.profit!.toString()}",style: RegularTextStyle.regular16600(whiteColor),)
                                   ],
                                 ),
                               ),

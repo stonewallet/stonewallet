@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:stone_wallet_main/Responses/travel2_response.dart';
+
 List<TravelList> travelListFromJson(String str) => List<TravelList>.from(json.decode(str).map((x) => TravelList.fromJson(x)));
 
 String travelListToJson(List<TravelList> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -12,7 +14,7 @@ class TravelList {
   int id;
   String tripName;
   List<Product> product;
-  List<Expense> expenses;
+  List<Expenses> expenses;
   DateTime createdAt;
 
   TravelList({
@@ -27,7 +29,7 @@ class TravelList {
     id: json["id"],
     tripName: json["trip_name"],
     product: List<Product>.from(json["product"].map((x) => Product.fromJson(x))),
-    expenses: List<Expense>.from(json["expenses"].map((x) => Expense.fromJson(x))),
+    expenses: List<Expenses>.from(json["expenses"].map((x) => Expenses.fromJson(x))),
     createdAt: DateTime.parse(json["created_at"]),
   );
 
@@ -40,58 +42,24 @@ class TravelList {
   };
 }
 
-class Expense {
-  String expenseName;
-  int expenseAmount;
+// class Expense {
+//   String expenseName;
+//   int expenseAmount;
+//
+//   Expense({
+//     required this.expenseName,
+//     required this.expenseAmount,
+//   });
+//
+//   factory Expense.fromJson(Map<String, dynamic> json) => Expense(
+//     expenseName: json["expense_name"],
+//     expenseAmount: json["expense_amount"],
+//   );
+//
+//   Map<String, dynamic> toJson() => {
+//     "expense_name": expenseName,
+//     "expense_amount": expenseAmount,
+//   };
+// }
 
-  Expense({
-    required this.expenseName,
-    required this.expenseAmount,
-  });
 
-  factory Expense.fromJson(Map<String, dynamic> json) => Expense(
-    expenseName: json["expense_name"],
-    expenseAmount: json["expense_amount"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "expense_name": expenseName,
-    "expense_amount": expenseAmount,
-  };
-}
-
-class Product {
-  String productName;
-  int quantity;
-  int pricePaid;
-  int priceSold;
-  int totalPricePaid;
-  int totalPriceSold;
-
-  Product({
-    required this.productName,
-    required this.quantity,
-    required this.pricePaid,
-    required this.priceSold,
-    required this.totalPricePaid,
-    required this.totalPriceSold,
-  });
-
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-    productName: json["product_name"],
-    quantity: json["quantity"],
-    pricePaid: json["price_paid"],
-    priceSold: json["price_sold"],
-    totalPricePaid: json["total_price_paid"],
-    totalPriceSold: json["total_price_sold"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "product_name": productName,
-    "quantity": quantity,
-    "price_paid": pricePaid,
-    "price_sold": priceSold,
-    "total_price_paid": totalPricePaid,
-    "total_price_sold": totalPriceSold,
-  };
-}

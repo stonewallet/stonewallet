@@ -54,10 +54,7 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
             },
             child: const Icon(Icons.arrow_back_ios, color: whiteColor,),
           ),
-          // title: const Text("Trips",  style: TextStyle(
-          //     color: whiteColor, fontSize: 20, fontWeight: FontWeight.w500
-          // )
-          // ),
+
         ),        body: SingleChildScrollView(
       child:  Container(
           width: width,
@@ -200,11 +197,12 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                     elevation: 4
                                 ),
                                 onPressed: () async{
-                                  List <Map<String, dynamic>> list = [];
+                                  List <Map<String, dynamic>> productList = [];
+                                  List <Map<String, dynamic>> expensesList = [];
 
                                   print("nnn ${widget.travel2response.product!.length}" );
                                   for(int i = 0; i<= widget.travel2response.product!.length -1; i++){
-                                    list.add(
+                                    productList.add(
                                         {
                                           "product_name" :  widget.travel2response.product![i].productName,
                                           "quantity" : widget.travel2response.product![i].quantity,
@@ -212,52 +210,52 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                           "price_sold" : widget.travel2response.product![i].priceSold
                                         });
                                   }
-                                  // list.add(
-                                  //     {
-                                  //       "product_name" : nameController.text,
-                                  //       "quantity" : int.parse(quantityController.text),
-                                  //       "price_paid" : int.parse(pricePaidController.text),
-                                  //       "price_sold" : int.parse(priceSoldController.text)
-                                  //     }
-                                  // );
+                                  for(int i = 0; i<= widget.travel2response.expenses!.length -1; i++){
+                                    expensesList.add(
+                                        {
+                                          "expense_name" :  widget.travel2response.expenses![i].expenseName,
+                                          "expense_amount" : widget.travel2response.expenses![i].expenseAmount,
+                                        });
+                                  }
+
+                                  expensesList.add({
+                                    "expense_name" :  expenseNameController.text,
+                                    "expense_amount" : int.parse(expenseAmountController.text),
+                                  });
 
 
-                                  // Map<String, dynamic> addEvents = {
-                                  //   "trip_name": widget.travel2response.tripName,
-                                  //   "product": list,
-                                  //   "expenses": {
-                                  //     "transport": widget.travel2response.expenses!.transport,
-                                  //     "hotel": widget.travel2response.expenses!.hotel,
-                                  //     "food": widget.travel2response.expenses!.food
-                                  //   }
-                                  // };
 
-                                  // print(addEvents);
 
-                                  // setState(() {
-                                  //
-                                  //   isLoading = true;
-                                  // });
-                                  // var response = await ApiProvider().processAddEvent(addEvents, widget.travel2response.id!);
-                                  //
-                                  // if(response.message != null){
-                                  //   setState(() {
-                                  //     isLoading = false;
-                                  //   });
-                                  //   Navigator.pop(context);
-                                  //   var snackBar = SnackBar(content: Text("Event created successfully"));
-                                  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  //
-                                  // }else{
-                                  //   setState(() {
-                                  //     isLoading = false;
-                                  //   });
-                                  //   var snackBar = SnackBar(content: Text("Something gone wrong"));
-                                  //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  //
-                                  // }
-                                  //
-                                  //
+                                  Map<String, dynamic> addExpense = {
+                                    "trip_name": widget.travel2response.tripName,
+                                    "product": productList,
+                                    "expenses": expensesList
+                                  };
+
+                                  print(addExpense);
+
+                                  setState(() {
+
+                                    isLoading = true;
+                                  });
+                                  var response = await ApiProvider().processAddEvent(addExpense, widget.travel2response.id!);
+
+                                  if(response.message != null){
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.pop(context);
+                                    var snackBar = SnackBar(content: Text("Expense created successfully"));
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                  }else{
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    var snackBar = SnackBar(content: Text("Something gone wrong"));
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                  }
 
 
                                 },

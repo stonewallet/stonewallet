@@ -37,7 +37,7 @@ Future<List<TravelList>> processTravel() async {
         travelListUrl,
       options: Options(
           headers: {
-            "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+            "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
             "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
       }
       ),
@@ -96,16 +96,27 @@ Future<List<TravelList>> processTravel() async {
             "price_sold": priceSold,
           }
           ],
-          "expenses": {
-            "transport": transport,
-            "hotel": hotel,
-            "food": food
-          }
+          "expenses":[
+            {
+              "expense_name" : "Transport",
+              "expense_amount" : transport
+            },
+            {
+              "expense_name" : "Hotel",
+              "expense_amount" : hotel
+            },
+            {
+              "expense_name" : "Food",
+              "expense_amount" : food
+            }
+
+          ]
+
           },
 
         options: Options(headers: {
           'Content-Type': 'application/json',
-          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
           "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"}),
       );
       if (kDebugMode) {
@@ -129,17 +140,16 @@ Future<List<TravelList>> processTravel() async {
     try {
 
       if (kDebugMode) {
-        print("Post travel api hit");
+        print("put travel api hit");
         print(addEvents);
       }
       Response response = await _dio.put(
-        // "https://3.94.82.56/travel/list/",
         "$travelList2Url/$id/",
         data: addEvents,
 
         options: Options(headers: {
           'Content-Type': 'application/json',
-          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
           "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"}),
       );
       if (kDebugMode) {
@@ -224,7 +234,7 @@ Future<List<TravelList>> processTravel() async {
       Response response = await _dio.get(
         "$travelList2Url/$id/",
         options: Options(headers: {
-          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2"
+          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r"
         }),
 
         // options: Options(headers: {"Authorization": token}),
@@ -277,7 +287,7 @@ Future<List<TravelList>> processTravel() async {
         options: Options(
             headers: {
           'Content-Type': 'application/json',
-          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
           "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
             }
         ),
@@ -312,7 +322,7 @@ Future<List<TravelList>> processTravel() async {
         options: Options(
             headers: {
               'Content-Type': 'application/json',
-              "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+              "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
               "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
             }
         ),      );
@@ -343,7 +353,7 @@ Future<List<TravelList>> processTravel() async {
         data: { "trip_id" : id},
         options: Options(
             headers: {
-          "Cookie": "csrftoken=MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS; sessionid=pdeq1i0ped8ble8mvk8qyeyvrokid4z2",
+          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
           "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
         }),
       );

@@ -23,7 +23,7 @@ class Data {
   int? id;
   String? tripName;
   List<Product>? product;
-  Expenses? expenses;
+  List<Expenses>? expenses;
   String? createdAt;
 
   Data({this.id, this.tripName, this.product, this.expenses, this.createdAt});
@@ -37,9 +37,12 @@ class Data {
         product!.add(new Product.fromJson(v));
       });
     }
-    expenses = json['expenses'] != null
-        ? new Expenses.fromJson(json['expenses'])
-        : null;
+    if (json['expenses'] != null) {
+      expenses = <Expenses>[];
+      json['expenses'].forEach((v) {
+        expenses!.add(new Expenses.fromJson(v));
+      });
+    }
     createdAt = json['created_at'];
   }
 
@@ -51,7 +54,7 @@ class Data {
       data['product'] = this.product!.map((v) => v.toJson()).toList();
     }
     if (this.expenses != null) {
-      data['expenses'] = this.expenses!.toJson();
+      data['expenses'] = this.expenses!.map((v) => v.toJson()).toList();
     }
     data['created_at'] = this.createdAt;
     return data;
@@ -96,23 +99,20 @@ class Product {
 }
 
 class Expenses {
-  int? transport;
-  int? hotel;
-  int? food;
+  String? expenseName;
+  int? expenseAmount;
 
-  Expenses({this.transport, this.hotel, this.food});
+  Expenses({this.expenseName, this.expenseAmount});
 
   Expenses.fromJson(Map<String, dynamic> json) {
-    transport = json['transport'];
-    hotel = json['hotel'];
-    food = json['food'];
+    expenseName = json['expense_name'];
+    expenseAmount = json['expense_amount'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['transport'] = this.transport;
-    data['hotel'] = this.hotel;
-    data['food'] = this.food;
+    data['expense_name'] = this.expenseName;
+    data['expense_amount'] = this.expenseAmount;
     return data;
   }
 }

@@ -287,6 +287,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                 ),
                                 onPressed: () async{
                                   List <Map<String, dynamic>> list = [];
+                                  List <Map<String, dynamic>> expensesList = [];
+
 
                                   print("nnn ${widget.travel2response.product!.length}" );
                                   for(int i = 0; i<= widget.travel2response.product!.length -1; i++){
@@ -307,15 +309,19 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                       }
                                       );
 
+                                  for(int i = 0; i<= widget.travel2response.expenses!.length -1; i++){
+                                    expensesList.add(
+                                        {
+                                          "expense_name" :  widget.travel2response.expenses![i].expenseName,
+                                          "expense_amount" : widget.travel2response.expenses![i].expenseAmount,
+                                        });
+                                  }
+
 
                                   Map<String, dynamic> addEvents = {
                                     "trip_name": widget.travel2response.tripName,
                                     "product": list,
-                                    // "expenses": {
-                                    //   "transport": widget.travel2response.expenses!.transport,
-                                    //   "hotel": widget.travel2response.expenses!.hotel,
-                                    //   "food": widget.travel2response.expenses!.food
-                                    // }
+                                    "expenses": expensesList
                                   };
 
                                   print(addEvents);

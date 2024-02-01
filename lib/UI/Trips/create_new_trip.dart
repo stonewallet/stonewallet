@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 
@@ -447,6 +448,7 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                     elevation: 4
                                 ),
                                 onPressed: () async{
+                                  if(kDebugMode){
                                   print(nameController.text);
                                   print(itemController.text);
                                   print(quantityController.text);
@@ -455,6 +457,7 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                   print(transportController.text);
                                   print(hotelController.text);
                                   print(foodController.text);
+                                  }
                                   setState(() {
 
                                   isLoading = true;
@@ -465,7 +468,7 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                     int.parse(foodController.text)
                                   );
 
-                                  if(response.message == "Trip created successfully"){
+                                  if(response.message != null){
                                     setState(() {
                                       isLoading = false;
                                     });
@@ -486,7 +489,8 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
 
 
                                 },
-                                child: isLoading == true ? CircularProgressIndicator(color: Colors.white,) :
+                                child:
+                                isLoading == true ? CircularProgressIndicator(color: Colors.white,) :
                                 Text("Add Trip",
                                     textAlign: TextAlign.center,
                                     style: RegularTextStyle.regular14600(whiteColor) )

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/Responses/travel_list_response.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
@@ -37,13 +38,11 @@ class _TripsPageState extends State<TripsPage> {
     setState(() {
 
     });
+    if(kDebugMode){
     print("travelList $travelList");
+    }
 
-    // if(travelList.isNotEmpty){
-    //   isSwitch = false;
-    // }else{
-    //   isSwitch = true;
-    // }
+
   }
 
 
@@ -124,11 +123,11 @@ class _TripsPageState extends State<TripsPage> {
                                                       elevation: 4
                                                   ),
                                                   onPressed: (){
-                                                    // fetch();
-                                                    // ApiProvider().processRegister();
-                                                    // print(travelList[i].id);
+
                                                     int id = travelList[i].id;
-                                                    print(id);
+                                                    if(kDebugMode){
+                                                      print(id);
+                                                    }
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(builder: (context)
@@ -147,13 +146,13 @@ class _TripsPageState extends State<TripsPage> {
                                               children: [
                                                 InkWell(
                                                   onTap:(){
-                                                    // Navigator.push(
-                                                    //   context,
-                                                    //   MaterialPageRoute(builder: (context)
-                                                    //   =>  EditTripPage(travelList[i].id, travelList[i].tripName, travelList[i].product, travelList[i].expenses, travelList[i].createdAt.toString())),
-                                                    // ).then((value) {
-                                                    //   return fetch();
-                                                    // });
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(builder: (context)
+                                                      =>  EditTripPage(travelList[i].id, travelList[i].tripName, travelList[i].product, travelList[i].expenses, travelList[i].createdAt.toString())),
+                                                    ).then((value) {
+                                                      return fetch();
+                                                    });
                                                   },
                                                     child: Icon(Icons.edit,color: whiteColor,)),
                                                 SizedBox(height: 10,),
