@@ -1,16 +1,28 @@
-
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stone_wallet_main/API/shared_preferences.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import '../Responses/travel2_response.dart';
 import '../Responses/travel_list_response.dart';
 import '../Responses/trip_edit_response.dart';
 import '../UI/Constants/urls.dart';
 
+
+
 class ApiProvider {
   late Dio _dio;
+  String? csrfToken ;
+  String? sessionId ;
+
+
+  // SharedPreferences prefs = await SharedPreferences.getInstance()
+  SharedPreferences? sharedPreferences;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  void getSharePrefs() async {
+    sharedPreferences = await _prefs;
+  }
 
   ApiProvider() {
     BaseOptions options =
@@ -21,29 +33,39 @@ class ApiProvider {
       },
     );
     _dio = Dio(options);
+
   }
 
 
+
+
+
 Future<List<TravelList>> processTravel() async {
+
+
 
   try {
 
     if (kDebugMode) {
       print("api hit travel list");
       print(travelListUrl);
+      print(MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance()));
+      print(MySharedPreferences().getSessionId(await SharedPreferences.getInstance()));
+
     }
 
     Response response = await _dio.get(
         travelListUrl,
       options: Options(
           headers: {
-            "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
-            "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
+            "Cookie": "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())
       }
       ),
 
     );
     if (kDebugMode) {
+
       print("travel list ${response.data}");
     }
 
@@ -114,10 +136,10 @@ Future<List<TravelList>> processTravel() async {
 
           },
 
-        options: Options(headers: {
-          'Content-Type': 'application/json',
-          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
-          "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"}),
+        options: Options(headers:  {
+        "Cookie": "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+        "X-CSRFToken": MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())
+        }),
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
@@ -148,9 +170,9 @@ Future<List<TravelList>> processTravel() async {
         data: addEvents,
 
         options: Options(headers: {
-          'Content-Type': 'application/json',
-          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
-          "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"}),
+          "Cookie": "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+          "X-CSRFToken": MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())
+        }),
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
@@ -167,8 +189,9 @@ Future<List<TravelList>> processTravel() async {
     }
   }
 
-  Future<TravelPostResponse> processLogin() async {
+  Future<TravelPostResponse> processLogin(String userName, String password) async {
 
+    getSharePrefs();
     try {
 
       if (kDebugMode) {
@@ -176,12 +199,37 @@ Future<List<TravelList>> processTravel() async {
       }
       Response response = await _dio.post(
         travelLoginUrl,
-        data: { "username" : "nitin",  "password" : "1234" },
-        // options: Options(headers: {"Authorization": token}),
+        data: { "username" : userName,  "password" : password },
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
       }
+
+      if (response.statusCode == 200) {
+
+       List<String> cookies = response.headers.map['set-cookie']!;
+
+       if (cookies.isNotEmpty && cookies.length == 2) {
+         String csToken = cookies[0].split(';')[0].replaceAll("csrftoken=", "");
+         String sessionToken = cookies[1].split(';')[0].replaceAll("sessionid=", "");
+
+         // csrfToken = csToken;
+         // sessionId = sessionToken;
+         MySharedPreferences().setCsrfToken(sharedPreferences!, csToken);
+         MySharedPreferences().setSessionId(sharedPreferences!, sessionToken);
+
+
+         // print("csrfToken $csrfToken");
+         // print("sessionId $sessionId");
+
+
+       }
+
+
+
+       print("cookies $cookies");
+      }
+
 
       TravelPostResponse travelPostResponse =
       TravelPostResponse.fromJson(json.decode(response.toString()));
@@ -205,7 +253,6 @@ Future<List<TravelList>> processTravel() async {
       Response response = await _dio.post(
         travelRegisterUrl,
         data: { "username" : "nitin",  "password" : "1234" },
-        // options: Options(headers: {"Authorization": token}),
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
@@ -234,10 +281,10 @@ Future<List<TravelList>> processTravel() async {
       Response response = await _dio.get(
         "$travelList2Url/$id/",
         options: Options(headers: {
-          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r"
+          "Cookie": "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+          "X-CSRFToken": MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())
         }),
 
-        // options: Options(headers: {"Authorization": token}),
       );
       if (kDebugMode) {
         print("travel next ${response.data}");
@@ -286,9 +333,8 @@ Future<List<TravelList>> processTravel() async {
 
         options: Options(
             headers: {
-          'Content-Type': 'application/json',
-          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
-          "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
+              "Cookie": "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+              "X-CSRFToken": MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())
             }
         ),
       );
@@ -321,11 +367,11 @@ Future<List<TravelList>> processTravel() async {
 
         options: Options(
             headers: {
-              'Content-Type': 'application/json',
-              "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
-              "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
+              "Cookie": "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+              "X-CSRFToken": MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())
             }
-        ),      );
+        ),
+      );
       if (kDebugMode) {
         print("travelDelete ${response.data}");
       }
@@ -353,9 +399,9 @@ Future<List<TravelList>> processTravel() async {
         data: { "trip_id" : id},
         options: Options(
             headers: {
-          "Cookie": "csrftoken=UiFrttrtCiov7a81v69mwCVkiBsyFCbl; sessionid=dxrgba9bwzfne3ut0lan88n58liqql5r",
-          "X-CSRFToken": "MtILB4n01d0tJxqwpTlbM5R9lIZqk2VS"
-        }),
+              "Cookie": "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+              "X-CSRFToken": MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())
+            }),
       );
       if (kDebugMode) {
         print("addUser ${response.data}");

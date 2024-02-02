@@ -136,7 +136,7 @@ class _TripsPageState extends State<TripsPage> {
                                                       return fetch();
                                                     });
                                                   },
-                                                  child:  Text("Trip ${travelList[i].tripName}",
+                                                  child:  Text(travelList[i].tripName,
                                                       textAlign: TextAlign.center,
                                                       style: LargeTextStyle.large20700(whiteColor))
                                               ),

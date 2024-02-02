@@ -4,6 +4,7 @@ import 'package:stone_wallet_main/UI/Home/home_page.dart';
 import 'Constants/colors.dart';
 import 'Constants/text_styles.dart';
 import 'Create New Wallet/create_new_wallet.dart';
+import 'login_page.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -89,10 +90,16 @@ class _WelcomePageState extends State<WelcomePage> {
                           elevation: 4
                         ),
                         onPressed: (){
+
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context)
+                          //   => const BottomNavigationPage()),
+                          // );
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context)
-                            => const BottomNavigationPage()),
+                            => const LoginPage()),
                           );
                         },
                         child:  Text("Login to Existing Wallet",

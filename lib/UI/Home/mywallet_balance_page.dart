@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Send/receive.dart';
 
+import '../../API/api_provider.dart';
+import '../../API/shared_preferences.dart';
 import '../Constants/colors.dart';
 import '../Model/coin_model.dart';
 import '../Send/send_page.dart';
@@ -70,12 +73,15 @@ class _MyWalletBalancePageState extends State<MyWalletBalancePage> {
                           shape: const CircleBorder(),
                             padding: const EdgeInsets.all(20)
                         ),
-                          onPressed: (){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context)
-                              => const ReceivePage()),
-                            );
+                          onPressed: () async {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context)
+                            //   => const ReceivePage()),
+                            // );
+                            print(MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance()));
+                            print(MySharedPreferences().getSessionId(await SharedPreferences.getInstance()));
+
                           },
                           child: Image.asset("assets/Icons/download.png",width: 25,height: 25,color: whiteColor)
                       ),

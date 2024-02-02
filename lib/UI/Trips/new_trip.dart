@@ -264,7 +264,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                     ),
 
 
-                              const SizedBox(height: 15,),
+                              const SizedBox(height: 10,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -395,7 +395,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                 ],
                               ),
 
-                              SizedBox(height: 20,),
+                              SizedBox(height: 15,),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 5),
                                 decoration: BoxDecoration(
