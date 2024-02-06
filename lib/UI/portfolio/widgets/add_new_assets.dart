@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
+    as port;
 
 class AddAssetsDetail extends StatefulWidget {
-  const AddAssetsDetail({Key? key}) : super(key: key);
+  final RxList<port.Portfolio> portfolio;
+  const AddAssetsDetail(this.portfolio, {super.key});
 
   @override
   State<AddAssetsDetail> createState() => AddAssetsDetailState();
@@ -14,8 +19,8 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
   bool isSwitch = true;
   bool isLoading = false;
 
-  TextEditingController expenseNameController = TextEditingController();
-  TextEditingController expenseAmountController = TextEditingController();
+  TextEditingController assestNameController = TextEditingController();
+  TextEditingController assestAmountController = TextEditingController();
 
   @override
   void initState() {
@@ -118,7 +123,7 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                     child: TextField(
                                       // autofocus: true,
                                       cursorColor: Colors.blue,
-                                      controller: expenseNameController,
+                                      controller: assestNameController,
                                       textAlign: TextAlign.start,
                                       textAlignVertical:
                                           TextAlignVertical.center,
@@ -169,7 +174,7 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                     child: TextField(
                                       // autofocus: true,
                                       cursorColor: Colors.blue,
-                                      controller: expenseAmountController,
+                                      controller: assestAmountController,
                                       textAlign: TextAlign.start,
                                       textAlignVertical:
                                           TextAlignVertical.center,
@@ -218,7 +223,7 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                         elevation: 4),
                                     onPressed: () async {
                                       // List <Map<String, dynamic>> productList = [];
-                                      // List <Map<String, dynamic>> expensesList = [];
+                                      List<Map<String, dynamic>> expensesList =[];
 
                                       // print("nnn ${widget.travel2response.product!.length}" );
                                       // for(int i = 0; i<= widget.travel2response.product!.length -1; i++){
@@ -230,31 +235,38 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                       //         "price_sold" : widget.travel2response.product![i].priceSold
                                       //       });
                                       // }
-                                      // for(int i = 0; i<= widget.travel2response.expenses!.length -1; i++){
-                                      //   expensesList.add(
-                                      //       {
-                                      //         "expense_name" :  widget.travel2response.expenses![i].expenseName,
-                                      //         "expense_amount" : widget.travel2response.expenses![i].expenseAmount,
-                                      //       });
-                                      // }
 
-                                      // expensesList.add({
-                                      //   "expense_name" :  expenseNameController.text,
-                                      //   "expense_amount" : int.parse(expenseAmountController.text),
-                                      // });
+                                      // Add existing assets from portfolio to expensesList
+                                      // Add existing assets from portfolio to expensesList
+                                      for (int i = 0;
+                                          i <= widget.portfolio.length - 1;
+                                          i++) {
+                                        expensesList.add({
+                                          "coin_name":
+                                              widget.portfolio[i].coinName,
+                                          "quantity":
+                                              widget.portfolio[i].quantity,
+                                        });
+                                      }
 
-                                      // Map<String, dynamic> addExpense = {
-                                      //   "trip_name": widget.travel2response.tripName,
-                                      //   "product": productList,
-                                      //   "expenses": expensesList
-                                      // };
-
-                                      // print(addExpense);
+                                      // Add new asset to expensesList
+                                      expensesList.add({
+                                        "coin_name": assestNameController.text,
+                                        "quantity": int.parse(
+                                            assestAmountController.text),
+                                      });
 
                                       setState(() {
                                         isLoading = true;
                                       });
-                                      // var response = await ApiProvider().processAddEvent(addExpense, widget.travel2response.id!);
+
+                                      // Call the API service to add the asset
+                                      await ApiServiceForADDAssets().addAsset(
+                                        assestNameController.text,
+                                        double.parse(
+                                            assestAmountController.text),
+                                      );
+                                      // var response = await ApiServiceForADDAssets().addAsset(addExpense, widget.travel2response.id!);
 
                                       // if(response.message != null){
                                       //   setState(() {

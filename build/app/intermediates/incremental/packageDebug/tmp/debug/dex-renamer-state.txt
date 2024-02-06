@@ -1,4 +1,4 @@
-#Tue Feb 06 10:58:21 IST 2024
+#Tue Feb 06 13:49:19 IST 2024
 base.0=D\:\\digiblock\\stonewallet\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\classes.dex
 base.1=D\:\\digiblock\\stonewallet\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\0\\classes.dex
 base.2=D\:\\digiblock\\stonewallet\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex

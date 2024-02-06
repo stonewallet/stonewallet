@@ -1,10 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pie_chart/pie_chart.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/add_new_assets.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../Model/portfolio_model.dart';
 
@@ -100,37 +103,63 @@ class PortfolioPage extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
-                  PieChart(
-                    dataMap: controller.dataMap,
-                    animationDuration: const Duration(milliseconds: 800),
-                    chartLegendSpacing: 35,
-                    chartRadius: MediaQuery.of(context).size.width / 3.2,
-                    colorList: colorList,
-                    initialAngleInDegree: 0,
-                    chartType: ChartType.ring,
-                    ringStrokeWidth: 32,
-                    legendOptions: LegendOptions(
-                      showLegendsInRow: false,
-                      legendPosition: LegendPosition.right,
-                      showLegends: true,
-                      legendShape: BoxShape.circle,
-                      legendTextStyle:
-                          RegularTextStyle.regular16bold(whiteColor),
-                    ),
-                    chartValuesOptions: const ChartValuesOptions(
-                      showChartValues: false,
-                      showChartValuesInPercentage: false,
-                      showChartValuesOutside: false,
-                      decimalPlaces: 0,
+                  // SizedBox(
+                  //   height: height * 0.04,
+                  // ),
+                  // PieChart(
+                  //   dataMap: controller.dataMap,
+                  //   animationDuration: const Duration(milliseconds: 800),
+                  //   chartLegendSpacing: 35,
+                  //   chartRadius: MediaQuery.of(context).size.width / 3.2,
+                  //   colorList: colorList,
+                  //   initialAngleInDegree: 0,
+                  //   chartType: ChartType.ring,
+                  //   ringStrokeWidth: 32,
+                  //   legendOptions: LegendOptions(
+                  //     showLegendsInRow: false,
+                  //     legendPosition: LegendPosition.right,
+                  //     showLegends: true,
+                  //     legendShape: BoxShape.circle,
+                  //     legendTextStyle:
+                  //         RegularTextStyle.regular16bold(whiteColor),
+                  //   ),
+                  //   chartValuesOptions: const ChartValuesOptions(
+                  //     showChartValues: false,
+                  //     showChartValuesInPercentage: false,
+                  //     showChartValuesOutside: false,
+                  //     decimalPlaces: 0,
+                  //   ),
+                  // ),
+                  Obx(
+                    () => SfCircularChart(
+                      legend: Legend(
+                        isVisible: true,
+                        overflowMode: LegendItemOverflowMode.none,
+                        position: LegendPosition.right,
+                        textStyle: RegularTextStyle.regular16bold(whiteColor),
+                      ),
+                      tooltipBehavior: controller.tooltipBehavior,
+                      series: <CircularSeries>[
+                        DoughnutSeries<GDPData, String>(
+                          dataSource: controller.getChartData(),
+                          xValueMapper: (GDPData data, _) => data.continent,
+                          yValueMapper: (GDPData data, _) => data.gdp,
+                          dataLabelSettings: DataLabelSettings(
+                              isVisible: true,
+                              textStyle:
+                                  RegularTextStyle.regular16bold(whiteColor),
+                              labelPosition: ChartDataLabelPosition.outside),
+                          enableTooltip: true,
+                          radius: '80',
+                          // maximumValue: 40000, // Adjust as needed
+                        ),
+                      ],
                     ),
                   ),
 
                   // Image.asset("assets/Icons/Group81.png"),
                   SizedBox(
-                    height: height * 0.03,
+                    height: height * 0.00001,
                   ),
                   Container(
                     width: width,
@@ -225,7 +254,7 @@ class PortfolioPage extends StatelessWidget {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const AddAssetsDetail()),
+                                                     AddAssetsDetail(controller.portfolios)),
                                           );
                                         },
                                         child: const Icon(
@@ -259,12 +288,101 @@ class PortfolioPage extends StatelessWidget {
                                             SizedBox(
                                               width: width * 0.05,
                                             ),
-                                            Image.asset(
-                                              portfolios[index].image,
-                                              width: 30,
-                                              height: 25,
-                                              color: buttonColor,
-                                            ),
+                                            CachedNetworkImage(
+                                                color: transparent,
+                                                imageUrl:
+                                                    'https://www.${controller.portfolios[index].imageUrl}',
+                                                imageBuilder:
+                                                    (context, imageProvider) =>
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 0),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20.0),
+                                                            child: Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  19,
+                                                              height: 30,
+                                                              decoration: BoxDecoration(
+                                                                  color:
+                                                                      transparent,
+                                                                  image: DecorationImage(
+                                                                      image:
+                                                                          imageProvider,
+                                                                      fit: BoxFit
+                                                                          .cover)),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                progressIndicatorBuilder:
+                                                    (context, url,
+                                                            downloadProgress) =>
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 14),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20.0),
+                                                            child: Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  13,
+                                                              height: 30,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                color:
+                                                                    whiteColor,
+                                                              ),
+                                                              child:
+                                                                  const CupertinoActivityIndicator(),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                errorWidget: (context, url,
+                                                        error) =>
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        left: 0,
+                                                        right: 0,
+                                                        bottom: 0,
+                                                        top: 0,
+                                                      ),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20.0),
+                                                        child: Container(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                20,
+                                                            height: 30,
+                                                            decoration: const BoxDecoration(
+                                                                color:
+                                                                    transparent,
+                                                                image: DecorationImage(
+                                                                    image: AssetImage(
+                                                                        'assets/Dollar.png'))),
+                                                            child: Image.asset(
+                                                                'assets/Dollar.png')),
+                                                      ),
+                                                    )),
                                             SizedBox(
                                               width: width * 0.05,
                                             ),
