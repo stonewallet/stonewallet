@@ -8,3 +8,4 @@ const travelLoginUrl ="$baseUrl/travel/login/";
 const travelRegisterUrl ="$baseUrl/travel/register/";
 const getWalletUrl = "$baseUrl/travel/get/wallet/";
 const addUserUrl = "$baseUrl/travel/add/user/trip/";
+const portfolio = "$baseUrl/travel/add/coins/";

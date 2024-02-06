@@ -1,0 +1,1 @@
+ D:\\digiblock\\stonewallet\\.dart_tool\\flutter_build\\291131873e1c92c7d02edb7c379757d5\\native_assets.yaml: 

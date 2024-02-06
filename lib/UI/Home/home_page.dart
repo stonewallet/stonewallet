@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stone_wallet_main/UI/Home/portfolio_page.dart';
+import 'package:stone_wallet_main/UI/portfolio/portfolio_page.dart';
 import 'package:stone_wallet_main/UI/Home/setting_page.dart';
 import 'package:stone_wallet_main/UI/Home/stocks_page.dart';
 import '../AddressBook/address_book.dart';
@@ -41,7 +41,7 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
     const MyWalletBalancePage(),
     const TripsPage(),
     const StocksPage(),
-    const PortfolioPage(),
+     PortfolioPage(),
     const SettingPage()
   ];
   bool _isClickedDrawer = false;

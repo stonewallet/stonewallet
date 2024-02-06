@@ -219,8 +219,8 @@ Future<List<TravelList>> processTravel() async {
          MySharedPreferences().setSessionId(sharedPreferences!, sessionToken);
 
 
-         // print("csrfToken $csrfToken");
-         // print("sessionId $sessionId");
+         print("csrfToken $csrfToken");
+         print("sessionId $sessionId");
 
 
        }
