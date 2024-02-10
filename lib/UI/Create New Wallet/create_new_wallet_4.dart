@@ -196,11 +196,11 @@ class _CreateNewWalletPage4State extends State<CreateNewWalletPage4> {
                             //   alert("please select your $random th seed word");
                             // } else {
                             //   if(mixed_seeds![tapedIndex!] == seed!.split("  ")[random!]){
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context)
-                            //   => const BottomNavigationPage()),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context)
+                              => const BottomNavigationPage()),
+                            );
                             //   } else {
                             //     setState(() {
                             //       mixed_seeds!.shuffle(Random());
