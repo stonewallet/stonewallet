@@ -9,5 +9,5 @@ const travelRegisterUrl ="$baseUrl/travel/register/";
 const getWalletUrl = "$baseUrl/travel/get/wallet/";
 const addUserUrl = "$baseUrl/travel/add/user/trip/";
 const portfolio = "$baseUrl/travel/add/coins/";
-const addAssets = "$baseUrl/travel/add/coins/";
+const addPostAssets = "$baseUrl/travel/add/coins/";
 const postAssets = "$baseUrl/travel/update/coins/";
