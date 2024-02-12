@@ -20,6 +20,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "autocomplete_textfield",
+      "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/autocomplete_textfield-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "bip39",
       "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/bip39-1.0.6",
       "packageUri": "lib/",
@@ -704,7 +710,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-02-06T08:08:14.295313Z",
+  "generated": "2024-02-12T06:42:22.617101Z",
   "generator": "pub",
   "generatorVersion": "3.2.5"
 }

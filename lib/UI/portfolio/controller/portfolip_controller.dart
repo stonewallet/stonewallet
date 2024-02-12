@@ -29,6 +29,19 @@ class PortfolioController extends GetxController {
     }
   }
 
+  fetchDataForCart() async {
+    try {
+      final apiService = ApiService();
+      final data = await apiService.getDataForChart();
+      portfolios.assignAll(data);
+      totalValue.value = calculateTotalValue();
+      portfolios.refresh();
+      dataMap.value = getDataMap();
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
+
   double calculateTotalValue() {
     return portfolios.fold(0.0, (sum, portfolio) => sum + portfolio.value);
   }
@@ -42,10 +55,10 @@ class PortfolioController extends GetxController {
 
   Stream<List<GDPData>> getChartData() async* {
     try {
-      // Wait for the portfolios data to be fetched
-      await fetchData();
+     
+      await fetchDataForCart();
 
-      // Map the portfolio data to GDPData objects
+     
       final List<GDPData> chartData = portfolios.map((portfolio) {
         return GDPData(portfolio.coinName, portfolio.value);
       }).toList();
@@ -53,7 +66,7 @@ class PortfolioController extends GetxController {
       yield chartData;
     } catch (e) {
       print('Error fetching chart data: $e');
-      yield []; // Return an empty list if there's an error
+      yield []; 
     }
   }
 }

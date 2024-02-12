@@ -84,4 +84,36 @@ class ApiService {
       throw Exception('Error: $e');
     }
   }
+
+  Future<List<Portfolio>> getDataForChart() async {
+    try {
+      final response = await _dio.get(
+        portfolio,
+        options: Options(headers: {
+          "Cookie":
+              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+          "X-CSRFToken": MySharedPreferences()
+              .getCsrfToken(await SharedPreferences.getInstance())
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data;
+
+        final filteredData = data
+            .where(
+              (item) =>
+                  item['sub_cat'] == 0 ||
+                  item['sub_cat'] == 1 ||
+                  item['sub_cat'] == 2,
+            )
+            .toList();
+        return filteredData.map((item) => Portfolio.fromJson(item)).toList();
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      throw Exception('Error: $e');
+    }
+  }
 }

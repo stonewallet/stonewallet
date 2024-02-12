@@ -25,8 +25,8 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
   late ApiService apiService;
   late int _portfolio;
 
-  final controller = Get.put(PortfolioController());
-  final assetsController = Get.put(PortfolioController2());
+  // final controller = Get.put(PortfolioController());
+  // final assetsController = Get.put(PortfolioController2());
   @override
   void initState() {
     apiService = ApiService();
@@ -155,9 +155,6 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
                                                   ADDTabThreeCash(
                                                     cashController
                                                         .cashPortfolios,
-                                                    controller.portfolios,
-                                                    assetsController
-                                                        .assetsPortfolios,
                                                     _portfolio,
                                                     centerTitle: 'Add New Cash',
                                                   )),
@@ -218,12 +215,7 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   UpdateAssetsScreen(
-                                                      cashController
-                                                              .cashPortfolios[
-                                                          index],
-                                                      controller.portfolios,
-                                                      assetsController
-                                                          .assetsPortfolios,
+                                                     
                                                       index,
                                                       cashController
                                                           .cashPortfolios),

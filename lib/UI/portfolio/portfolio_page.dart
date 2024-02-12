@@ -138,7 +138,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Center(
                                   child: Text("Error: ${snapshot.error}"));
@@ -178,6 +179,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                           whiteColor),
                                       labelPosition:
                                           ChartDataLabelPosition.outside,
+                                      labelIntersectAction:
+                                          LabelIntersectAction.shift,
                                     ),
                                     enableTooltip: true,
                                     radius: '80',

@@ -1,6 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
+import 'package:stone_wallet_main/API/portfolio_api/search_api.dart';
+import 'package:stone_wallet_main/API/shared_preferences.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
@@ -11,12 +15,9 @@ import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.d
 
 class AddAssetsDetail extends StatefulWidget {
   final RxList<port.Portfolio> portfolio;
-  final RxList<port.Portfolio> assetsPortfolio;
-  final RxList<port.Portfolio> cashPortfolio;
   final int _portfolio;
   final String centerTitle;
-  const AddAssetsDetail(
-      this.portfolio, this.assetsPortfolio, this.cashPortfolio, this._portfolio,
+  const AddAssetsDetail(this.portfolio, this._portfolio,
       {super.key, required this.centerTitle});
 
   @override
@@ -36,9 +37,59 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
   final assetscontroller = Get.put(PortfolioController2());
 
   final cashcontroller = Get.put(PortfolioController3());
+
+  List<String> searchList = [];
+
+  bool isSearchidle = true;
+  TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
+    _getSearch();
+    searchController.addListener(onSearchTextControlled);
+  }
+
+  _getSearch() async {
+    try {
+      final response = await Dio().get(
+        'https://3.94.82.56/travel/get/prices/',
+        queryParameters: {'search': searchController.text.trim()},
+        options: Options(headers: {
+          "Cookie":
+              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+          "X-CSRFToken": MySharedPreferences()
+              .getCsrfToken(await SharedPreferences.getInstance())
+        }),
+      );
+
+      Map<String, dynamic> data = response.data as Map<String, dynamic>;
+      searchList = data.keys.toList();
+
+      if (searchController.text.isEmpty) {
+        setState(() {
+          searchList = data.keys.toList();
+        });
+      } else {
+        setState(() {
+          searchList = searchList
+              .where((currency) => currency
+                  .toLowerCase()
+                  .contains(searchController.text.toLowerCase()))
+              .toList();
+        });
+      }
+    } catch (error) {
+      print('Error fetching suggestions: $error');
+      // Handle error
+    }
+  }
+
+  void onSearchTextControlled() {
+    _getSearch();
+    setState(() {
+      isSearchidle = searchController.text.isEmpty;
+      print(isSearchidle);
+    });
   }
 
   @override
@@ -238,51 +289,51 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                     onPressed: () async {
                                       // List <Map<String, dynamic>> productList = [];
 
-                                      List<Map<String, dynamic>> expensesList =
-                                          [];
-                                      for (int i = 0;
-                                          i <=
-                                              widget.assetsPortfolio.length - 1;
-                                          i++) {
-                                        expensesList.add({
-                                          "coin_name": widget
-                                              .assetsPortfolio[i].coinName,
-                                          "quantity": widget
-                                              .assetsPortfolio[i].quantity,
-                                          "sub_cat":
-                                              widget.assetsPortfolio[i].subCat,
-                                        });
-                                      }
-                                      for (int i = 0;
-                                          i <= widget.cashPortfolio.length - 1;
-                                          i++) {
-                                        expensesList.add({
-                                          "coin_name":
-                                              widget.cashPortfolio[i].coinName,
-                                          "quantity":
-                                              widget.cashPortfolio[i].quantity,
-                                          "sub_cat":
-                                              widget.cashPortfolio[i].subCat,
-                                        });
-                                      }
-                                      for (int i = 0;
-                                          i <= widget.portfolio.length - 1;
-                                          i++) {
-                                        expensesList.add({
-                                          "coin_name":
-                                              widget.portfolio[i].coinName,
-                                          "quantity":
-                                              widget.portfolio[i].quantity,
-                                          "sub_cat": widget.portfolio[i].subCat,
-                                        });
-                                      }
+                                      // List<Map<String, dynamic>> expensesList =
+                                      // [];
+                                      // for (int i = 0;
+                                      //     i <=
+                                      //         widget.assetsPortfolio.length - 1;
+                                      //     i++) {
+                                      //   expensesList.add({
+                                      //     "coin_name": widget
+                                      //         .assetsPortfolio[i].coinName,
+                                      //     "quantity": widget
+                                      //         .assetsPortfolio[i].quantity,
+                                      //     "sub_cat":
+                                      //         widget.assetsPortfolio[i].subCat,
+                                      //   });
+                                      // }
+                                      // for (int i = 0;
+                                      //     i <= widget.cashPortfolio.length - 1;
+                                      //     i++) {
+                                      //   expensesList.add({
+                                      //     "coin_name":
+                                      //         widget.cashPortfolio[i].coinName,
+                                      //     "quantity":
+                                      //         widget.cashPortfolio[i].quantity,
+                                      //     "sub_cat":
+                                      //         widget.cashPortfolio[i].subCat,
+                                      //   });
+                                      // }
+                                      // for (int i = 0;
+                                      //     i <= widget.portfolio.length - 1;
+                                      //     i++) {
+                                      //   expensesList.add({
+                                      //     "coin_name":
+                                      //         widget.portfolio[i].coinName,
+                                      //     "quantity":
+                                      //         widget.portfolio[i].quantity,
+                                      //     "sub_cat": widget.portfolio[i].subCat,
+                                      //   });
+                                      // }
 
-                                      expensesList.add({
-                                        "coin_name": assestNameController.text,
-                                        "quantity": double.parse(
-                                            assestAmountController.text),
-                                        "sub_cat": widget._portfolio,
-                                      });
+                                      // expensesList.add({
+                                      //   "coin_name": assestNameController.text,
+                                      //   "quantity": double.parse(
+                                      //       assestAmountController.text),
+                                      //   "sub_cat": widget._portfolio,
+                                      // });
 
                                       setState(() {
                                         isLoading = true;
@@ -295,9 +346,13 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                       print(widget._portfolio);
                                       var response =
                                           await ApiServiceForADDAssets()
-                                              .deleteAssetORupdate(
-                                                  expensesList);
-                                      print(expensesList);
+                                              .addAsset(
+                                        assestNameController.text,
+                                        double.parse(
+                                            assestAmountController.text),
+                                        widget._portfolio,
+                                      );
+
                                       controller.update();
                                       assetscontroller.update();
                                       cashcontroller.update();

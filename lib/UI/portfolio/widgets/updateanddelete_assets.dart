@@ -8,18 +8,17 @@ import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
     as port;
+import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
+import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
 
 class UpdateAssetsScreen extends StatefulWidget {
-  final port.Portfolio portfolio;
   final int index;
   final List<port.Portfolio> portfolios;
 
-  final List<port.Portfolio> cashportfolios;
-  final List<port.Portfolio> assetsportfolios;
-  const UpdateAssetsScreen(this.portfolio, this.assetsportfolios,
-      this.cashportfolios, this.index, this.portfolios,
-      {super.key});
+  // final List<port.Portfolio> cashportfolios;
+  // final List<port.Portfolio> assetsportfolios;
+  const UpdateAssetsScreen(this.index, this.portfolios, {super.key});
 
   @override
   State<UpdateAssetsScreen> createState() => UpdateAssetsScreenState();
@@ -35,23 +34,32 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
   List<TextEditingController> expenseController = [];
 
   final controller = Get.put(PortfolioController());
+  final cashcontroller = Get.put(PortfolioController3());
+  final assetscontroller = Get.put(PortfolioController2());
   @override
   void initState() {
     super.initState();
-    assestNameController.text = widget.portfolio.coinName;
-    assestAmountController.text = widget.portfolio.quantity.toString();
-    // controller;
 
-    if (widget.index >= expenseController.length ||
-        20 >= expenseController.length) {
-      expenseController.add(TextEditingController(
-          text: widget.portfolios[widget.index].coinName.toString()));
+    // Initialize expenseController with enough elements
+    for (int i = 0; i < 3; i++) {
+      expenseController.add(TextEditingController());
     }
-    if (widget.index >= expenseController.length) {
-      expenseController.add(TextEditingController(
-          text: widget.portfolios[widget.index].quantity.toString()));
+
+    if (widget.index < widget.portfolios.length) {
+      print(widget.portfolios[widget.index].quantity);
     }
-    print(widget.portfolio.quantity);
+
+    // Set initial values for text controllers
+    assestNameController.text = widget.portfolios[widget.index].coinName;
+    assestAmountController.text =
+        widget.portfolios[widget.index].quantity.toString();
+    expenseController[0].text = widget.portfolios[widget.index].coinName;
+    expenseController[1].text =
+        widget.portfolios[widget.index].quantity.toString();
+    expenseController[2].text =
+        widget.portfolios[widget.index].subCat.toString();
+
+    print(widget.portfolios[widget.index].quantity);
   }
 
   @override
@@ -116,48 +124,52 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                 style: LargeTextStyle.large20700(whiteColor)),
                             IconButton(
                               onPressed: () async {
-                                List<Map<String, dynamic>> expensesList = [];
+                                // widget.portfolios.removeAt(widget.index);
+                                // print(widget.portfolios);
 
-                                widget.portfolios.removeAt(widget.index);
-                                print(widget.portfolios);
+                                // for (int i = 0;
+                                //     i <= widget.assetsportfolios.length - 1;
+                                //     i++) {
+                                //   expensesList.add({
+                                //     "coin_name":
+                                //         widget.assetsportfolios[i].coinName,
+                                //     "quantity":
+                                //         widget.assetsportfolios[i].quantity,
+                                //     "sub_cat":
+                                //         widget.assetsportfolios[i].subCat,
+                                //   });
+                                // }
+                                // for (int i = 0;
+                                //     i <= widget.cashportfolios.length - 1;
+                                //     i++) {
+                                //   expensesList.add({
+                                //     "coin_name":
+                                //         widget.cashportfolios[i].coinName,
+                                //     "quantity":
+                                //         widget.cashportfolios[i].quantity,
+                                //     "sub_cat": widget.cashportfolios[i].subCat,
+                                //   });
+                                // }
 
-                                for (int i = 0;
-                                    i <= widget.assetsportfolios.length - 1;
-                                    i++) {
-                                  expensesList.add({
-                                    "coin_name":
-                                        widget.assetsportfolios[i].coinName,
-                                    "quantity":
-                                        widget.assetsportfolios[i].quantity,
-                                    "sub_cat":
-                                        widget.assetsportfolios[i].subCat,
-                                  });
-                                }
-                                for (int i = 0;
-                                    i <= widget.cashportfolios.length - 1;
-                                    i++) {
-                                  expensesList.add({
-                                    "coin_name":
-                                        widget.cashportfolios[i].coinName,
-                                    "quantity":
-                                        widget.cashportfolios[i].quantity,
-                                    "sub_cat": widget.cashportfolios[i].subCat,
-                                  });
-                                }
+                                // for (int i = 0;
+                                //     i <= widget.portfolios.length - 1;
+                                //     i++) {
+                                //   expensesList.add({
+                                //     "coin_name": widget.portfolios[i].coinName,
+                                //     "quantity": widget.portfolios[i].quantity,
+                                //     "sub_cat": widget.portfolios[i].subCat,
+                                //   });
+                                // }
 
-                                for (int i = 0;
-                                    i <= widget.portfolios.length - 1;
-                                    i++) {
-                                  expensesList.add({
-                                    "coin_name": widget.portfolios[i].coinName,
-                                    "quantity": widget.portfolios[i].quantity,
-                                    "sub_cat": widget.portfolios[i].subCat,
-                                  });
-                                }
-
-                                var response = await ApiServiceForADDAssets()
-                                    .deleteAssetORupdate(expensesList);
+                                var response =
+                                    await ApiServiceForADDAssets().delete(
+                                  expenseController[0].text,
+                                  double.parse(expenseController[1].text),
+                                  int.parse(expenseController[2].text),
+                                );
                                 controller.update();
+                                cashcontroller.update();
+                                assetscontroller.update();
                                 if (response.message != null) {
                                   setState(() {
                                     isLoading = false;
@@ -342,53 +354,56 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                         elevation: 4),
                                     onPressed: () async {
                                       // // List <Map<String, dynamic>> productList = [];
-                                      List<Map<String, dynamic>> expensesList =
-                                          [];
+                                      // List<Map<String, dynamic>> expensesList =
+                                      //     [];
 
-                                      for (int i = 0;
-                                          i <= widget.portfolios.length - 1;
-                                          i++) {
-                                        expensesList.add({
-                                          "coin_name":
-                                              widget.portfolios[i].coinName,
-                                          "quantity":
-                                              widget.portfolios[i].quantity,
-                                        });
-                                      }
+                                      // for (int i = 0;
+                                      //     i <= widget.portfolios.length - 1;
+                                      //     i++) {
+                                      //   expensesList.add({
+                                      //     "coin_name":
+                                      //         widget.portfolios[i].coinName,
+                                      //     "quantity":
+                                      //         widget.portfolios[i].quantity,
+                                      //   });
+                                      // }
 
-                                      // // Add new asset to expensesList
-                                      // expensesList.add({
-                                      //   "coin_name": expenseController[0].text,
-                                      //   "quantity": double.parse(
-                                      //       expenseController[1].text),
+                                      // // // Add new asset to expensesList
+                                      // // expensesList.add({
+                                      // //   "coin_name": expenseController[0].text,
+                                      // //   "quantity": double.parse(
+                                      // //       expenseController[1].text),
+                                      // // });
+
+                                      // setState(() {
+                                      //   isLoading = true;
                                       // });
 
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-
-                                      if (widget.index != -1) {
-                                        expensesList[widget.index]
-                                                ['coin_name'] =
-                                            expenseController[0].text;
-                                        expensesList[widget.index]['quantity'] =
-                                            double.parse(
-                                                expenseController[1].text);
-                                      } else {
-                                        expensesList.add({
-                                          "coin_name":
-                                              expenseController[0].text,
-                                          "quantity": double.parse(
-                                              expenseController[1].text),
-                                        });
-                                      }
+                                      // if (widget.index != -1) {
+                                      //   expensesList[widget.index]
+                                      //           ['coin_name'] =
+                                      //       expenseController[0].text;
+                                      //   expensesList[widget.index]['quantity'] =
+                                      //       double.parse(
+                                      //           expenseController[1].text);
+                                      // } else {
+                                      //   expensesList.add({
+                                      //     "coin_name":
+                                      //         expenseController[0].text,
+                                      //     "quantity": double.parse(
+                                      //         expenseController[1].text),
+                                      //   });
+                                      // }
 
                                       var response =
-                                          await ApiServiceForADDAssets()
-                                              .deleteAssetORupdate(
-                                                  expensesList);
-
+                                          await ApiServiceForADDAssets().update(
+                                        expenseController[0].text,
+                                        double.parse(expenseController[1].text),
+                                        int.parse(expenseController[2].text),
+                                      );
                                       controller.update();
+                                      assetscontroller.update();
+                                      cashcontroller.update();
                                       if (response.message != null) {
                                         setState(() {
                                           isLoading = false;

@@ -6,8 +6,6 @@ import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart';
-import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
-import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/add_new_assets.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/updateanddelete_assets.dart';
@@ -25,8 +23,8 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
   late ApiService apiService;
   late int _portfolio;
 
-  final assetsController = Get.put(PortfolioController2());
-  final cashController = Get.put(PortfolioController3());
+  // final assetsController = Get.put(PortfolioController2());
+  // final cashController = Get.put(PortfolioController3());
 
   @override
   void initState() {
@@ -153,10 +151,6 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
                                               builder: (context) =>
                                                   AddAssetsDetail(
                                                     controller.portfolios,
-                                                    assetsController
-                                                        .assetsPortfolios,
-                                                    cashController
-                                                        .cashPortfolios,
                                                     _portfolio,
                                                     centerTitle:
                                                         'Add New Crypto',
@@ -218,10 +212,11 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   UpdateAssetsScreen(
-                                                      controller
-                                                          .portfolios[index],
-                                                          assetsController.assetsPortfolios,
-                                                          cashController.cashPortfolios,
+
+                                                      // assetsController
+                                                      //     .assetsPortfolios,
+                                                      // cashController
+                                                      //     .cashPortfolios,
                                                       index,
                                                       controller.portfolios),
                                             ),
@@ -363,18 +358,20 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
                                                                 .fromLTRB(
                                                                 30, 0, 0, 0),
                                                         child: Text(
-                                                            portfolios[index]
-                                                                .quantity
-                                                                .toString(),
+                                                            '${portfolios[index].quantity}  ${portfolios[index].coinShort}',
                                                             style: RegularTextStyle
                                                                 .regular14400(
                                                                     whiteColor)),
                                                       ),
-                                                      Text(
-                                                          "\$ ${portfolios[index].value.toStringAsFixed(3)}",
-                                                          style: RegularTextStyle
-                                                              .regular14400(
-                                                                  whiteColor)),
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: Text(
+                                                            "\$ ${portfolios[index].value.toStringAsFixed(3)}",
+                                                            style: RegularTextStyle
+                                                                .regular14400(
+                                                                    whiteColor)),
+                                                      ),
                                                     ],
                                                   ),
                                                   SizedBox(
