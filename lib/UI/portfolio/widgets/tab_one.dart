@@ -217,8 +217,8 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
                                                       //     .assetsPortfolios,
                                                       // cashController
                                                       //     .cashPortfolios,
-                                                      index,
-                                                      controller.portfolios),
+                                                     index: index,
+                                                     portfolios: controller.portfolios),
                                             ),
                                           );
                                         },

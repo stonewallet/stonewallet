@@ -91,18 +91,13 @@ class _PortfolioPageState extends State<PortfolioPage> {
                             ),
                             Obx(
                               () => Text(
-                                '\$${controller.totalValue.toStringAsFixed(2)}', // Display total value with 2 decimal places
+                                '\$${controller.totalValue.toStringAsFixed(3)}', // Display total value with 2 decimal places
                                 style: LargeTextStyle.large30400(whiteColor),
                               ),
                             ),
                             const SizedBox(
                               width: 10,
                             ),
-                            Image.asset(
-                              "assets/Icons/Group82.png",
-                              height: 20,
-                              width: 40,
-                            )
                           ],
                         ),
                         // SizedBox(

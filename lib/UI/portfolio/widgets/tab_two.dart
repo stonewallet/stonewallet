@@ -221,8 +221,8 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
 
                                                       // cashController.cashPortfolios,
                                                       // controller.portfolios,
-                                                      index,
-                                                      assetscontroller
+                                                     index: index,
+                                                     portfolios: assetscontroller
                                                           .assetsPortfolios),
                                             ),
                                           );

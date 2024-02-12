@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
-import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
     as port;
 import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
@@ -18,7 +16,11 @@ class UpdateAssetsScreen extends StatefulWidget {
 
   // final List<port.Portfolio> cashportfolios;
   // final List<port.Portfolio> assetsportfolios;
-  const UpdateAssetsScreen(this.index, this.portfolios, {super.key});
+  const UpdateAssetsScreen({
+    super.key,
+    required this.index,
+    required this.portfolios,
+  });
 
   @override
   State<UpdateAssetsScreen> createState() => UpdateAssetsScreenState();
@@ -41,12 +43,14 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
     super.initState();
 
     // Initialize expenseController with enough elements
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 500; i++) {
       expenseController.add(TextEditingController());
     }
 
     if (widget.index < widget.portfolios.length) {
       print(widget.portfolios[widget.index].quantity);
+      print(widget.portfolios[widget.index].coinName);
+      print(widget.index);
     }
 
     // Set initial values for text controllers

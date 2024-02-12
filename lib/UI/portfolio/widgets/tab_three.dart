@@ -215,9 +215,8 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   UpdateAssetsScreen(
-                                                     
-                                                      index,
-                                                      cashController
+                                                      index: index,
+                                                      portfolios: cashController
                                                           .cashPortfolios),
                                             ),
                                           );
