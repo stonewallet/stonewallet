@@ -91,18 +91,13 @@ class _PortfolioPageState extends State<PortfolioPage> {
                             ),
                             Obx(
                               () => Text(
-                                '\$${controller.totalValue.toStringAsFixed(2)}', // Display total value with 2 decimal places
+                                '\$${controller.totalValue.toStringAsFixed(3)}', // Display total value with 2 decimal places
                                 style: LargeTextStyle.large30400(whiteColor),
                               ),
                             ),
                             const SizedBox(
                               width: 10,
                             ),
-                            Image.asset(
-                              "assets/Icons/Group82.png",
-                              height: 20,
-                              width: 40,
-                            )
                           ],
                         ),
                         // SizedBox(
@@ -138,7 +133,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
                               return Center(
                                   child: Text("Error: ${snapshot.error}"));
@@ -178,6 +174,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                           whiteColor),
                                       labelPosition:
                                           ChartDataLabelPosition.outside,
+                                      labelIntersectAction:
+                                          LabelIntersectAction.shift,
                                     ),
                                     enableTooltip: true,
                                     radius: '80',

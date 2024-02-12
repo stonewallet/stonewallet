@@ -25,8 +25,8 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
   late ApiService apiService;
   late int _portfolio;
 
-  final controller = Get.put(PortfolioController());
-  final cashController = Get.put(PortfolioController3());
+  // final controller = Get.put(PortfolioController());
+  // final cashController = Get.put(PortfolioController3());
   @override
   void initState() {
     apiService = ApiService();
@@ -155,8 +155,8 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
                                                   TabTwoAssets(
                                                     assetscontroller
                                                         .assetsPortfolios,
-                                                    controller.portfolios,
-                                                    cashController.cashPortfolios,
+                                                    // controller.portfolios,
+                                                    // cashController.cashPortfolios,
                                                     _portfolio,
                                                     centerTitle:
                                                         'Add New Assets',
@@ -218,13 +218,11 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   UpdateAssetsScreen(
-                                                      assetscontroller
-                                                              .assetsPortfolios[
-                                                          index],
-                                                          cashController.cashPortfolios,
-                                                          controller.portfolios,
-                                                      index,
-                                                      assetscontroller
+
+                                                      // cashController.cashPortfolios,
+                                                      // controller.portfolios,
+                                                     index: index,
+                                                     portfolios: assetscontroller
                                                           .assetsPortfolios),
                                             ),
                                           );

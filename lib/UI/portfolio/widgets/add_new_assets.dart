@@ -1,8 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:searchfield/searchfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
+import 'package:stone_wallet_main/API/shared_preferences.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
     as port;
 import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
@@ -11,12 +16,9 @@ import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.d
 
 class AddAssetsDetail extends StatefulWidget {
   final RxList<port.Portfolio> portfolio;
-  final RxList<port.Portfolio> assetsPortfolio;
-  final RxList<port.Portfolio> cashPortfolio;
   final int _portfolio;
   final String centerTitle;
-  const AddAssetsDetail(
-      this.portfolio, this.assetsPortfolio, this.cashPortfolio, this._portfolio,
+  const AddAssetsDetail(this.portfolio, this._portfolio,
       {super.key, required this.centerTitle});
 
   @override
@@ -36,9 +38,68 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
   final assetscontroller = Get.put(PortfolioController2());
 
   final cashcontroller = Get.put(PortfolioController3());
+  List<dynamic> searchList = [];
+
+  final focus = FocusNode();
+
+  bool isSearchidle = true;
+  TextEditingController searchController = TextEditingController();
   @override
   void initState() {
     super.initState();
+    _getSearch();
+    searchController.addListener(onSearchTextControlled);
+  }
+
+  _getSearch() async {
+    try {
+      final response = await Dio().get(
+        searchPortfolio,
+        queryParameters: {'search': searchController.text.trim()},
+        options: Options(headers: {
+          "Cookie":
+              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+          "X-CSRFToken": MySharedPreferences()
+              .getCsrfToken(await SharedPreferences.getInstance())
+        }),
+      );
+
+      Map<String, dynamic> data = response.data as Map<String, dynamic>;
+
+      if (searchController.text.isEmpty) {
+        setState(() {
+          searchList = data.entries
+              .map((entry) => '${entry.key} - ${entry.value}')
+              .toList();
+        });
+      } else {
+        setState(() {
+          searchList = data.entries
+              .where((entry) =>
+                  entry.key
+                      .toString()
+                      .toLowerCase()
+                      .contains(searchController.text.toLowerCase()) ||
+                  entry.value
+                      .toString()
+                      .toLowerCase()
+                      .contains(searchController.text.toLowerCase()))
+              .map((entry) => '${entry.key}: ${entry.value}')
+              .toList();
+        });
+      }
+    } catch (error) {
+      print('Error fetching suggestions: $error');
+      // Handle error
+    }
+  }
+
+  void onSearchTextControlled() {
+    _getSearch();
+    setState(() {
+      isSearchidle = searchController.text.isEmpty;
+      print(isSearchidle);
+    });
   }
 
   @override
@@ -46,6 +107,11 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     print(widget._portfolio);
+
+    Widget searchChild(x) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12),
+          child: Text(x, style: RegularTextStyle.regular16600(whiteColor)),
+        );
     return Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -129,40 +195,125 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                   const SizedBox(
                                     height: 6,
                                   ),
-                                  SizedBox(
-                                    height: 45,
-                                    width: width,
-                                    // padding: EdgeInsets.only(left: 15, right: 15),
-                                    // alignment: Alignment.center,
-                                    child: TextField(
-                                      // autofocus: true,
-                                      cursorColor: Colors.blue,
-                                      controller: assestNameController,
-                                      textAlign: TextAlign.start,
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
-                                      style: RegularTextStyle.regular16600(
+                                  // SizedBox(
+                                  //   height: 45,
+                                  //   width: width,
+                                  //   // padding: EdgeInsets.only(left: 15, right: 15),
+                                  //   // alignment: Alignment.center,
+                                  //   child: TextField(
+                                  //     // autofocus: true,
+                                  //     cursorColor: Colors.blue,
+                                  //     controller: assestNameController,
+                                  //     textAlign: TextAlign.start,
+                                  //     textAlignVertical:
+                                  //         TextAlignVertical.center,
+                                  //     style: RegularTextStyle.regular16600(
+                                  //         whiteColor),
+                                  //     decoration: const InputDecoration(
+                                  //       focusedBorder: OutlineInputBorder(
+                                  //         borderRadius: BorderRadius.all(
+                                  //             Radius.circular(30)),
+                                  //         borderSide: BorderSide(
+                                  //             color: borderColor, width: 1.0),
+                                  //       ),
+                                  //       fillColor: fillColor,
+                                  //       filled: true,
+                                  //       enabledBorder: OutlineInputBorder(
+                                  //         borderRadius: BorderRadius.all(
+                                  //             Radius.circular(30)),
+                                  //         borderSide: BorderSide(
+                                  //             color: borderColor, width: 1.0),
+                                  //       ),
+                                  //       contentPadding:
+                                  //           EdgeInsets.only(left: 20),
+                                  //     ),
+                                  //     textInputAction: TextInputAction.next,
+                                  //   ),
+                                  // ),
+                                  SearchField(
+                                    controller: assestNameController,
+                                    suggestionDirection:
+                                        SuggestionDirection.flex,
+                                    onSearchTextChanged: (query) {
+                                      final filter = searchList
+                                          .where((element) => element
+                                              .toLowerCase()
+                                              .contains(query.toLowerCase()))
+                                          .toList();
+                                      return filter
+                                          .map((e) =>
+                                              SearchFieldListItem<String>(e,
+                                                  child: searchChild(e)))
+                                          .toList();
+                                    },
+                                    onTap: () {},
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    // validator: (value) {
+                                    //   if (value == null ||
+                                    //       !searchList.contains(value.trim())) {
+                                    //     return 'Enter a valid name';
+                                    //   }
+                                    //   return null;
+                                    // },
+                                    key: const Key('searchfield'),
+                                    itemHeight: 50,
+                                    scrollbarDecoration: ScrollbarDecoration(),
+                                    onTapOutside: (x) {
+                                      focus.unfocus();
+                                    },
+                                    suggestionStyle:
+                                        RegularTextStyle.regular16600(
+                                            whiteColor),
+                                    searchStyle: RegularTextStyle.regular16600(
+                                        whiteColor),
+                                    searchInputDecoration: InputDecoration(
+                                      hintStyle: RegularTextStyle.regular16600(
                                           whiteColor),
-                                      decoration: const InputDecoration(
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30)),
-                                          borderSide: BorderSide(
-                                              color: borderColor, width: 1.0),
-                                        ),
-                                        fillColor: fillColor,
-                                        filled: true,
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(30)),
-                                          borderSide: BorderSide(
-                                              color: borderColor, width: 1.0),
-                                        ),
-                                        contentPadding:
-                                            EdgeInsets.only(left: 20),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24),
                                       ),
-                                      textInputAction: TextInputAction.next,
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(24),
+                                        borderSide: const BorderSide(
+                                          width: 1,
+                                          color: Colors.black,
+                                          style: BorderStyle.solid,
+                                        ),
+                                      ),
+                                      fillColor: fillColor,
+                                      filled: true,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                      ),
                                     ),
+                                    suggestionsDecoration: SuggestionDecoration(
+                                      color: blackColor,
+                                      borderRadius: BorderRadius.circular(24),
+                                    ),
+                                    suggestions: searchList
+                                        .map((e) => SearchFieldListItem<String>(
+                                              e,
+                                              child: searchChild(e),
+                                            ))
+                                        .toList(),
+                                    focusNode: focus,
+                                    suggestionState: Suggestion.expand,
+                                    onSuggestionTap:
+                                        (SearchFieldListItem<String>? x) {
+                                      if (x != null) {
+                                        final suggestionText = x.searchKey;
+
+                                        final parts = suggestionText.split('-');
+
+                                        final key = parts[0].trim();
+                                        final value = parts[1].trim();
+                                        assestNameController.text = key;
+                                        assestAmountController.text = value;
+                                      }
+                                      focus.unfocus();
+                                    },
                                   ),
                                 ],
                               ),
@@ -238,51 +389,51 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                     onPressed: () async {
                                       // List <Map<String, dynamic>> productList = [];
 
-                                      List<Map<String, dynamic>> expensesList =
-                                          [];
-                                      for (int i = 0;
-                                          i <=
-                                              widget.assetsPortfolio.length - 1;
-                                          i++) {
-                                        expensesList.add({
-                                          "coin_name": widget
-                                              .assetsPortfolio[i].coinName,
-                                          "quantity": widget
-                                              .assetsPortfolio[i].quantity,
-                                          "sub_cat":
-                                              widget.assetsPortfolio[i].subCat,
-                                        });
-                                      }
-                                      for (int i = 0;
-                                          i <= widget.cashPortfolio.length - 1;
-                                          i++) {
-                                        expensesList.add({
-                                          "coin_name":
-                                              widget.cashPortfolio[i].coinName,
-                                          "quantity":
-                                              widget.cashPortfolio[i].quantity,
-                                          "sub_cat":
-                                              widget.cashPortfolio[i].subCat,
-                                        });
-                                      }
-                                      for (int i = 0;
-                                          i <= widget.portfolio.length - 1;
-                                          i++) {
-                                        expensesList.add({
-                                          "coin_name":
-                                              widget.portfolio[i].coinName,
-                                          "quantity":
-                                              widget.portfolio[i].quantity,
-                                          "sub_cat": widget.portfolio[i].subCat,
-                                        });
-                                      }
+                                      // List<Map<String, dynamic>> expensesList =
+                                      // [];
+                                      // for (int i = 0;
+                                      //     i <=
+                                      //         widget.assetsPortfolio.length - 1;
+                                      //     i++) {
+                                      //   expensesList.add({
+                                      //     "coin_name": widget
+                                      //         .assetsPortfolio[i].coinName,
+                                      //     "quantity": widget
+                                      //         .assetsPortfolio[i].quantity,
+                                      //     "sub_cat":
+                                      //         widget.assetsPortfolio[i].subCat,
+                                      //   });
+                                      // }
+                                      // for (int i = 0;
+                                      //     i <= widget.cashPortfolio.length - 1;
+                                      //     i++) {
+                                      //   expensesList.add({
+                                      //     "coin_name":
+                                      //         widget.cashPortfolio[i].coinName,
+                                      //     "quantity":
+                                      //         widget.cashPortfolio[i].quantity,
+                                      //     "sub_cat":
+                                      //         widget.cashPortfolio[i].subCat,
+                                      //   });
+                                      // }
+                                      // for (int i = 0;
+                                      //     i <= widget.portfolio.length - 1;
+                                      //     i++) {
+                                      //   expensesList.add({
+                                      //     "coin_name":
+                                      //         widget.portfolio[i].coinName,
+                                      //     "quantity":
+                                      //         widget.portfolio[i].quantity,
+                                      //     "sub_cat": widget.portfolio[i].subCat,
+                                      //   });
+                                      // }
 
-                                      expensesList.add({
-                                        "coin_name": assestNameController.text,
-                                        "quantity": double.parse(
-                                            assestAmountController.text),
-                                        "sub_cat": widget._portfolio,
-                                      });
+                                      // expensesList.add({
+                                      //   "coin_name": assestNameController.text,
+                                      //   "quantity": double.parse(
+                                      //       assestAmountController.text),
+                                      //   "sub_cat": widget._portfolio,
+                                      // });
 
                                       setState(() {
                                         isLoading = true;
@@ -293,11 +444,18 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
                                       //   expensesList
                                       // );
                                       print(widget._portfolio);
+                                      final amount = double.parse(
+                                          assestAmountController.text);
+                                      final lastamount =
+                                          amount.toStringAsFixed(3);
                                       var response =
                                           await ApiServiceForADDAssets()
-                                              .deleteAssetORupdate(
-                                                  expensesList);
-                                      print(expensesList);
+                                              .addAsset(
+                                        assestNameController.text,
+                                        double.parse(lastamount),
+                                        widget._portfolio,
+                                      );
+
                                       controller.update();
                                       assetscontroller.update();
                                       cashcontroller.update();
