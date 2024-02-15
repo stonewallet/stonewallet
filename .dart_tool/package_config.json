@@ -128,6 +128,12 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "downloads_path_provider_28",
+      "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/downloads_path_provider_28-0.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "ed25519_hd_key",
       "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/ed25519_hd_key-2.2.1",
       "packageUri": "lib/",
@@ -716,7 +722,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-02-12T10:19:17.318478Z",
+  "generated": "2024-02-13T12:27:22.488684Z",
   "generator": "pub",
   "generatorVersion": "3.2.5"
 }

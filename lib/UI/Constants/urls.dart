@@ -12,4 +12,5 @@ const addPostAssets = "$baseUrl/travel/add/coins/";
 const updatePortfolio = "$baseUrl/travel/update/portfolio/";
 const createPortfolio = "$baseUrl/travel/add/portfolio/";
 const deletePortfolio = "$baseUrl/travel/delete/portfolio/";
-const searchPortfolio = "$baseUrl/travel/get/prices/";
+const searchPortfolio = "$baseUrl/travel/portfolio/dropdown/";
+const getPdf = "$baseUrl/travel/export/trip/pdf/";

@@ -201,7 +201,7 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
                                     ),
                                   );
                                 } else {
-                                  final portfolios = snapshot.data!;
+                                  final List<Portfolio> portfolios = snapshot.data!;
 
                                   return ListView.builder(
                                     key: UniqueKey(),
@@ -222,8 +222,7 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
                                                       // cashController.cashPortfolios,
                                                       // controller.portfolios,
                                                      index: index,
-                                                     portfolios: assetscontroller
-                                                          .assetsPortfolios),
+                                                     portfolios: portfolios[index]),
                                             ),
                                           );
                                         },

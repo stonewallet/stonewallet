@@ -2,10 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:searchfield/searchfield.dart';
 import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
+import 'package:stone_wallet_main/API/portfolio_api/search_api.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart';
+import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/add_new_assets.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/updateanddelete_assets.dart';
@@ -22,7 +25,7 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
 
   late ApiService apiService;
   late int _portfolio;
-
+  List<SearchData> searchList = [];
   // final assetsController = Get.put(PortfolioController2());
   // final cashController = Get.put(PortfolioController3());
 
@@ -30,10 +33,37 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
   void initState() {
     apiService = ApiService();
     super.initState();
+    _getSearch();
+    searchController.addListener(onSearchTextControlled);
   }
 
+  _getSearch() async {
+    try {
+      final List<SearchData> searchData = await SearchApi()
+          .getSearchData(searchController.text.trim(), _portfolio);
+      if (mounted) {
+        setState(() {
+          searchList = searchData;
+        });
+      }
+    } catch (error) {
+      // Handle error
+      print('Error in _getSearch: $error');
+    }
+  }
+
+  void onSearchTextControlled() {
+    _getSearch();
+  }
+
+  final focus = FocusNode();
   @override
   Widget build(BuildContext context) {
+    Widget searchChild(SearchData x) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 12),
+          child: Text("${x.coinName} - ${x.value.toStringAsFixed(4)}",
+              style: RegularTextStyle.regular16600(whiteColor)),
+        );
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(child: GetBuilder<PortfolioController>(
@@ -97,34 +127,92 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
                         padding: EdgeInsets.only(
                             left: width * 0.05, right: width * 0.05),
                         alignment: Alignment.center,
-                        child: TextField(
+                        child: SearchField<SearchData>(
                           controller: searchController,
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.center,
-                          style: RegularTextStyle.regular14400(whiteColor),
-                          decoration: InputDecoration(
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: textfieldColor, width: 1.0),
+                          suggestionDirection: SuggestionDirection.flex,
+                          onSearchTextChanged: (query) {
+                            final filter = searchList
+                                .where(
+                                  (element) =>
+                                      element.coinName.toLowerCase().contains(
+                                            query.toLowerCase(),
+                                          ),
+                                )
+                                .toList();
+                            return filter
+                                .map((e) =>
+                                    SearchFieldListItem<SearchData>(e.coinName,
+                                        child: searchChild(
+                                          e,
+                                        )))
+                                .toList();
+                          },
+
+                          onTap: () {},
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          // validator: (value) {
+                          //   if (value == null ||
+                          //       !searchList.contains(value.trim())) {
+                          //     return 'Enter a valid name';
+                          //   }
+                          //   return null;
+                          // },
+                          key: const Key('searchfield'),
+                          itemHeight: 50,
+                          hint: 'Browse',
+                          scrollbarDecoration: ScrollbarDecoration(),
+                          onTapOutside: (x) {
+                            focus.unfocus();
+                          },
+                          suggestionStyle:
+                              RegularTextStyle.regular16600(whiteColor),
+                          searchStyle:
+                              RegularTextStyle.regular16600(whiteColor),
+                          searchInputDecoration: InputDecoration(
+                            prefixIcon: const Icon(CupertinoIcons.search),
+                            prefixIconColor: greyColor,
+                            hintStyle: RegularTextStyle.regular16600(greyColor),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24),
                             ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: textfieldColor, width: 1.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(24),
+                              borderSide: const BorderSide(
+                                width: 1,
+                                color: Colors.black,
+                                style: BorderStyle.solid,
+                              ),
                             ),
-                            hintText: "Browse",
-                            hintStyle: RegularTextStyle.regular14400(hintColor),
+                            fillColor: gradientColor2,
                             filled: true,
-                            fillColor: textfieldColor,
-                            prefixIcon: const Icon(
-                              Icons.search_rounded,
-                              color: hintColor,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20,
                             ),
                           ),
-                          textInputAction: TextInputAction.next,
+                          suggestionsDecoration: SuggestionDecoration(
+                            color: blackColor,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          suggestions: searchList
+                              .map((e) => SearchFieldListItem<SearchData>(
+                                    e.coinName,
+                                    child: searchChild(
+                                      e,
+                                    ),
+                                  ))
+                              .toList(),
+                          focusNode: focus,
+                          suggestionState: Suggestion.expand,
+                          onSuggestionTap:
+                              (SearchFieldListItem<SearchData>? x) {
+                            if (x != null) {
+                              final selectedData = x.searchKey;
+                              print(selectedData);
+                              // Send selected data
+                              sendSelectedCoin(selectedData);
+                            }
+                            focus.unfocus();
+                          },
                         ),
                       ),
                       SizedBox(
@@ -195,7 +283,8 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
                                     ),
                                   );
                                 } else {
-                                  final portfolios = snapshot.data!;
+                                  final List<Portfolio> portfolios =
+                                      snapshot.data!;
 
                                   return ListView.builder(
                                     key: UniqueKey(),
@@ -217,8 +306,9 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
                                                       //     .assetsPortfolios,
                                                       // cashController
                                                       //     .cashPortfolios,
-                                                     index: index,
-                                                     portfolios: controller.portfolios),
+                                                      index: index,
+                                                      portfolios:
+                                                          portfolios[index]),
                                             ),
                                           );
                                         },
@@ -397,5 +487,17 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
             );
           },
         )));
+  }
+
+  void sendSelectedCoin(String? data) {
+    // Send coin name, subcategory etc
+
+    if (data != null) {
+      String coinName = data[0];
+      // int subCategory = data.subCat;
+      print('hsayd${coinName}');
+    }
+
+    // Send data to next screen, API etc
   }
 }

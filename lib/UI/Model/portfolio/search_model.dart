@@ -1,66 +1,23 @@
 class SearchData {
-  double? bitcoin;
-  double? ethereum;
-  double? tether;
-  double? solana;
-  double? xRP;
-  double? uSDCoin;
-  double? cardano;
-  double? stakedEther;
-  double? chainlink;
-  double? celestia;
+  String coinName;
+  double value;
+  int subCat;
 
-  SearchData(
-      {this.bitcoin,
-      this.ethereum,
-      this.tether,
-      this.solana,
-      this.xRP,
-      this.uSDCoin,
-      this.cardano,
-      this.stakedEther,
-      this.chainlink,
-      this.celestia});
+  SearchData({
+    required this.coinName,
+    required this.value,
+    required this.subCat,
+  });
 
-  SearchData.fromJson(Map<String, dynamic> json) {
-    bitcoin = json['Bitcoin'];
-    ethereum = json['Ethereum'];
-    tether = json['Tether'];
-    solana = json['Solana'];
-    xRP = json['XRP'];
-    uSDCoin = json['USD Coin'];
-    cardano = json['Cardano'];
-    stakedEther = json['Staked Ether'];
-    chainlink = json['Chainlink'];
-    celestia = json['Celestia'];
-  }
+  factory SearchData.fromJson(Map<String, dynamic> json) => SearchData(
+        coinName: json["coin_name"],
+        value: json["value"],
+        subCat: json["sub_cat"],
+      );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['Bitcoin'] = bitcoin;
-    data['Ethereum'] = ethereum;
-    data['Tether'] = tether;
-    data['Solana'] = solana;
-    data['XRP'] = xRP;
-    data['USD Coin'] = uSDCoin;
-    data['Cardano'] = cardano;
-    data['Staked Ether'] = stakedEther;
-    data['Chainlink'] = chainlink;
-    data['Celestia'] = celestia;
-    return data;
-  }
-   bool matchesQuery(String query) {
-    // Convert all values to lowercase for case-insensitive matching
-    String queryLower = query.toLowerCase();
-    return bitcoin.toString().toLowerCase().contains(queryLower) ||
-        ethereum.toString().toLowerCase().contains(queryLower) ||
-        tether.toString().toLowerCase().contains(queryLower) ||
-        solana.toString().toLowerCase().contains(queryLower) ||
-        xRP.toString().toLowerCase().contains(queryLower) ||
-        uSDCoin.toString().toLowerCase().contains(queryLower) ||
-        cardano.toString().toLowerCase().contains(queryLower) ||
-        stakedEther.toString().toLowerCase().contains(queryLower) ||
-        chainlink.toString().toLowerCase().contains(queryLower) ||
-        celestia.toString().toLowerCase().contains(queryLower);
-  }
+  Map<String, dynamic> toJson() => { 
+        "coin_name": coinName,
+        "value": value,
+        "sub_cat": subCat,
+      };
 }

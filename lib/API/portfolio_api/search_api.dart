@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/shared_preferences.dart';
+import 'package:stone_wallet_main/UI/Constants/urls.dart';
+import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 
 class SearchApi {
   final Dio _dio = Dio();
-  Future<List<String>> getSuggestions(String query) async {
+  Future<List<SearchData>> getSearchData(String query, int portfolio) async {
     try {
       final response = await _dio.get(
-        'https://3.94.82.56/travel/get/prices/',
+        "$searchPortfolio/$portfolio",
         queryParameters: {'search': query},
         options: Options(headers: {
           "Cookie":
@@ -17,19 +19,20 @@ class SearchApi {
         }),
       );
 
-      List<String> currencies =
-          (response.data as Map<String, dynamic>).keys.toList();
-
-      if (query.isEmpty) {
-        return currencies;
+      List<SearchData> searchDataList = [];
+      if (response.statusCode == 200) {
+        final List<dynamic> data = response.data;
+        if (data.isNotEmpty) {
+          searchDataList =
+              data.map((entry) => SearchData.fromJson(entry)).toList();
+        }
       } else {
-        return currencies
-            .where((currency) =>
-                currency.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+        print('error');
       }
+
+      return searchDataList;
     } catch (error) {
-      throw Exception('Failed to load suggestions');
+      throw Exception('Failed to load suggestions$error');
     }
   }
 }
