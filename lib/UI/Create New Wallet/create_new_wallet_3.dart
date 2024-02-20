@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hex/hex.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Constants/urls.dart';
+import 'package:stone_wallet_main/UI/Home/home_page.dart';
 import 'package:web3dart/web3dart.dart';
 import '../Constants/colors.dart';
 import '../Model/key_model.dart';
@@ -226,19 +229,23 @@ class _CreateNewWalletPage3State extends State<CreateNewWalletPage3> {
                     Text('Your Secret Phrase is this, keep it protected!',
                         textAlign: TextAlign.center,
                         style: RegularTextStyle.regular15700(termsColor)),
-                    Text(
-                      responseData ?? "no data",
-                      style: RegularTextStyle.regular14600(whiteColor),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 8, 0, 0),
+                      child: Text(
+                        walletResponse.mnemonicSeed,
+                        style: RegularTextStyle.regular14600(whiteColor),
+                      ),
                     ),
                     SizedBox(
-                      height: height * 0.07,
+                      height: height * 0.01,
                     ),
-                    Container(
-                      width: width * 0.8,
-                      child: Text(mnemonic == null ? "" : mnemonic!,
-                          textAlign: TextAlign.center,
-                          style: RegularTextStyle.regular15700(whiteColor)),
-                    ),
+
+                    // Container(
+                    //   width: width * 0.8,
+                    //   child: Text(mnemonic == null ? "data" : mnemonic!,
+                    //       textAlign: TextAlign.center,
+                    //       style: RegularTextStyle.regular15700(whiteColor)),
+                    // ),
                     SizedBox(
                       height: height * 0.05,
                     ),
@@ -307,7 +314,31 @@ class _CreateNewWalletPage3State extends State<CreateNewWalletPage3> {
                       ],
                     ),
                     SizedBox(
-                      height: height * 0.14,
+                      height: height * 0.04,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.red
+                            .withOpacity(0.1), // Set warning color with opacity
+                        borderRadius:
+                            BorderRadius.circular(10), // Rounded corners
+                        border: Border.all(color: Colors.red), // Red border
+                      ),
+                      child: const Text(
+                        "Warning: Please keep your mnemonic seed secure, this can be used for wallet recovery!",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(
+                      height: height * 0.10,
                     ),
                     SizedBox(
                       width: width * 0.8,
@@ -335,13 +366,13 @@ class _CreateNewWalletPage3State extends State<CreateNewWalletPage3> {
                           child: Text('Next',
                               textAlign: TextAlign.center,
                               style: LargeTextStyle.large20700(whiteColor))),
-                      onTap: () {
+                      onTap: () async {
+                        // ApiServiceForADDAssets().createPortfolio1();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const CreateNewWalletPage4(
-                                  // seed: mnemonic!.split("  "),
-                                  )),
+                              builder: (context) =>
+                                  const BottomNavigationPage()),
                         );
                       },
                     )

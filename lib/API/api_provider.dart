@@ -199,6 +199,8 @@ class ApiProvider {
 
           print("csrfToken $csrfToken");
           print("sessionId $sessionId");
+          print(MySharedPreferences()
+              .getCsrfToken(await SharedPreferences.getInstance()));
         }
 
         print("cookies $cookies");

@@ -25,10 +25,10 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
   late TextEditingController searchController = TextEditingController();
 
   late ApiService apiService;
-  late int _portfolio;
+  int _portfolio = 2;
   List<SearchData> searchList = [];
   bool isSearchidle = true;
-
+  final cashcontroller = Get.put(PortfolioController3());
   // final assetsController = Get.put(PortfolioController2());
   // final cashController = Get.put(PortfolioController3());
 
@@ -61,12 +61,12 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
   final focus = FocusNode();
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(child: GetBuilder<PortfolioController3>(
           builder: (controller) {
-            double width = MediaQuery.of(context).size.width;
-            double height = MediaQuery.of(context).size.height;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -245,7 +245,7 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.data!.isEmpty) {
+          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
             return Center(
               child: Text(
                 "No data",

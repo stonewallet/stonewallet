@@ -8,7 +8,7 @@ import 'package:stone_wallet_main/UI/Constants/urls.dart';
 
 class ApiServiceForCreateWallet {
   final Dio _dio = Dio();
-  Future<Travel2Response> createWallet(String name, String pass) async {
+  Future<WalletResponse> createWallet(String name, String pass) async {
     try {
       if (kDebugMode) {
         print("Create wallet api hit");
@@ -26,13 +26,13 @@ class ApiServiceForCreateWallet {
       if (kDebugMode) {
         print("travel next ${response.data}");
       }
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('seed', response.data.toString());
-
-      Travel2Response travel2response =
-          Travel2Response.fromJson(json.decode(response.toString()));
-      return travel2response;
+    
+      
+      // Travel2Response travel2response =
+      //     Travel2Response.fromJson(json.decode(response.toString()));
+      // return travel2response;
+      WalletResponse walletResponse = WalletResponse.fromJson(response.data);
+    return walletResponse;
     } catch (error) {
       if (kDebugMode) {
         print("Error travel list $error");
@@ -41,3 +41,15 @@ class ApiServiceForCreateWallet {
     }
   }
 }
+class WalletResponse {
+  final String mnemonicSeed;
+
+  WalletResponse({required this.mnemonicSeed});
+
+  factory WalletResponse.fromJson(Map<String, dynamic> json) {
+    return WalletResponse(
+      mnemonicSeed: json['mnemonic_seed'] ?? '',
+    );
+  }
+}
+

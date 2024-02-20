@@ -25,9 +25,11 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
   late TextEditingController searchController = TextEditingController();
 
   late ApiService apiService;
-  late int _portfolio;
+   int _portfolio = 1;
   List<SearchData> searchList = [];
   bool isSearchidle = true;
+
+  final assetscontroller = Get.put(PortfolioController2());
 
   // final assetsController = Get.put(PortfolioController2());
   // final cashController = Get.put(PortfolioController3());
@@ -246,7 +248,7 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.data!.isEmpty) {
+          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
             return Center(
               child: Text(
                 "No data",

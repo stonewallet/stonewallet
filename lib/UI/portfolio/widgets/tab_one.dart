@@ -23,7 +23,7 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
   late TextEditingController searchController = TextEditingController();
 
   late ApiService apiService;
-  late int _portfolio;
+  int _portfolio = 0;
   List<SearchData> searchList = [];
   bool isSearchidle = true;
 
@@ -61,154 +61,158 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.transparent,
-        body: SingleChildScrollView(child: GetBuilder<PortfolioController>(
-          builder: (controller) {
-            double width = MediaQuery.of(context).size.width;
-            double height = MediaQuery.of(context).size.height;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: height * 0.02,
-                ),
-
-                // SizedBox(
-                //   height: height * 0.04,
-                // ),
-                // PieChart(
-                //   dataMap: controller.dataMap,
-                //   animationDuration: const Duration(milliseconds: 800),
-                //   chartLegendSpacing: 35,
-                //   chartRadius: MediaQuery.of(context).size.width / 3.2,
-                //   colorList: colorList,
-                //   initialAngleInDegree: 0,
-                //   chartType: ChartType.ring,
-                //   ringStrokeWidth: 32,
-                //   legendOptions: LegendOptions(
-                //     showLegendsInRow: false,
-                //     legendPosition: LegendPosition.right,
-                //     showLegends: true,
-                //     legendShape: BoxShape.circle,
-                //     legendTextStyle:
-                //         RegularTextStyle.regular16bold(whiteColor),
-                //   ),
-                //   chartValuesOptions: const ChartValuesOptions(
-                //     showChartValues: false,
-                //     showChartValuesInPercentage: false,
-                //     showChartValuesOutside: false,
-                //     decimalPlaces: 0,
-                //   ),
-                // ),
-
-                // Image.asset("assets/Icons/Group81.png"),
-                SizedBox(
-                  height: height * 0.00001,
-                ),
-                Container(
-                  width: width,
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment(0.00, -1.00),
-                        end: Alignment(0, 1),
-                        colors: [newGradient5, newGradient6],
-                      ),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(
-                            left: width * 0.05, right: width * 0.05),
-                        alignment: Alignment.center,
-                        child: TextField(
-                          controller: searchController,
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.center,
-                          style: RegularTextStyle.regular14400(whiteColor),
-                          decoration: InputDecoration(
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: textfieldColor, width: 1.0),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: textfieldColor, width: 1.0),
-                            ),
-                            hintText: "Browse",
-                            hintStyle: RegularTextStyle.regular14400(hintColor),
-                            filled: true,
-                            fillColor: textfieldColor,
-                            prefixIcon: const Icon(
-                              Icons.search_rounded,
-                              color: hintColor,
-                            ),
-                          ),
-                          textInputAction: TextInputAction.next,
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: width * 0.06),
-                                child: Text('Crypto',
-                                    style: RegularTextStyle.regular15600(
-                                        whiteColor)),
-                              ),
-                              Container(
-                                  margin: EdgeInsets.only(right: width * 0.02),
-                                  child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddAssetsDetail(
-                                                    controller.portfolios,
-                                                    _portfolio,
-                                                    centerTitle:
-                                                        'Add New Crypto',
-                                                  )),
-                                        );
-                                      },
-                                      child: const Icon(
-                                        Icons.add,
-                                        color: whiteColor,
-                                      ))),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 0.2,
-                            indent: 15,
-                            endIndent: 15,
-                          ),
-                          SizedBox(
-                            height: height * 0.03,
-                          ),
-                          if (!isSearchidle && searchList.isNotEmpty)
-                            buildSearchResults(width)
-                          else
-                            buildContentWidget(width),
-                        ],
-                      ),
-                    ],
+        body: SingleChildScrollView(
+          child: GetBuilder<PortfolioController>(
+            builder: (controller) {
+              double width = MediaQuery.of(context).size.width;
+              double height = MediaQuery.of(context).size.height;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: height * 0.02,
                   ),
-                ),
-              ],
-            );
-          },
-        )));
+
+                  // SizedBox(
+                  //   height: height * 0.04,
+                  // ),
+                  // PieChart(
+                  //   dataMap: controller.dataMap,
+                  //   animationDuration: const Duration(milliseconds: 800),
+                  //   chartLegendSpacing: 35,
+                  //   chartRadius: MediaQuery.of(context).size.width / 3.2,
+                  //   colorList: colorList,
+                  //   initialAngleInDegree: 0,
+                  //   chartType: ChartType.ring,
+                  //   ringStrokeWidth: 32,
+                  //   legendOptions: LegendOptions(
+                  //     showLegendsInRow: false,
+                  //     legendPosition: LegendPosition.right,
+                  //     showLegends: true,
+                  //     legendShape: BoxShape.circle,
+                  //     legendTextStyle:
+                  //         RegularTextStyle.regular16bold(whiteColor),
+                  //   ),
+                  //   chartValuesOptions: const ChartValuesOptions(
+                  //     showChartValues: false,
+                  //     showChartValuesInPercentage: false,
+                  //     showChartValuesOutside: false,
+                  //     decimalPlaces: 0,
+                  //   ),
+                  // ),
+
+                  // Image.asset("assets/Icons/Group81.png"),
+                  SizedBox(
+                    height: height * 0.00001,
+                  ),
+                  Container(
+                    width: width,
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment(0.00, -1.00),
+                          end: Alignment(0, 1),
+                          colors: [newGradient5, newGradient6],
+                        ),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20))),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 50,
+                          padding: EdgeInsets.only(
+                              left: width * 0.05, right: width * 0.05),
+                          alignment: Alignment.center,
+                          child: TextField(
+                            controller: searchController,
+                            textAlign: TextAlign.start,
+                            textAlignVertical: TextAlignVertical.center,
+                            style: RegularTextStyle.regular14400(whiteColor),
+                            decoration: InputDecoration(
+                              focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                borderSide: BorderSide(
+                                    color: textfieldColor, width: 1.0),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                borderSide: BorderSide(
+                                    color: textfieldColor, width: 1.0),
+                              ),
+                              hintText: "Browse",
+                              hintStyle:
+                                  RegularTextStyle.regular14400(hintColor),
+                              filled: true,
+                              fillColor: textfieldColor,
+                              prefixIcon: const Icon(
+                                Icons.search_rounded,
+                                color: hintColor,
+                              ),
+                            ),
+                            textInputAction: TextInputAction.next,
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.02,
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(left: width * 0.06),
+                                  child: Text('Crypto',
+                                      style: RegularTextStyle.regular15600(
+                                          whiteColor)),
+                                ),
+                                Container(
+                                    margin:
+                                        EdgeInsets.only(right: width * 0.02),
+                                    child: TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    AddAssetsDetail(
+                                                      controller.portfolios,
+                                                      _portfolio,
+                                                      centerTitle:
+                                                          'Add New Crypto',
+                                                    )),
+                                          );
+                                        },
+                                        child: const Icon(
+                                          Icons.add,
+                                          color: whiteColor,
+                                        ))),
+                              ],
+                            ),
+                            const Divider(
+                              thickness: 0.2,
+                              indent: 15,
+                              endIndent: 15,
+                            ),
+                            SizedBox(
+                              height: height * 0.03,
+                            ),
+                            if (!isSearchidle && searchList.isNotEmpty)
+                              buildSearchResults(width)
+                            else
+                              buildContentWidget(width),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ));
   }
 
   Widget buildSearchResults(width) {

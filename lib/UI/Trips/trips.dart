@@ -292,8 +292,8 @@ class _TripsPageState extends State<TripsPage> {
                                                               },
                                                               child: const Icon(
                                                                 Icons.delete,
-                                                                color:
-                                                                    whiteColor,
+                                                                size: 30,
+                                                                color: redColor,
                                                               ))
                                                         ],
                                                       ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/API/createWallet/createnewwallet.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'create_new_wallet_3.dart';
 
 class CreateNewWalletPage2 extends StatefulWidget {
@@ -218,9 +220,10 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                               style:
                                   RegularTextStyle.regular18600(whiteColor))),
                       onTap: () async {
-                        var response = await ApiServiceForCreateWallet()
+                        walletResponse = await ApiServiceForCreateWallet()
                             .createWallet(
                                 userController.text, passwordController.text);
+                        ApiServiceForADDAssets().createPortfolio1();
                         Navigator.push(
                           context,
                           MaterialPageRoute(

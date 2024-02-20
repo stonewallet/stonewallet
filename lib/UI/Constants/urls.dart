@@ -1,3 +1,5 @@
+import 'package:stone_wallet_main/API/createWallet/createnewwallet.dart';
+
 const baseUrl = "https://3.94.82.56";
 
 const travelListUrl = "$baseUrl/travel/list/";
@@ -15,3 +17,6 @@ const deletePortfolio = "$baseUrl/travel/delete/portfolio/";
 const searchPortfolio = "$baseUrl/travel/portfolio/dropdown/";
 const getPdf = "$baseUrl/travel/export/trip/pdf/";
 const createwallet = "$baseUrl/travel/add/wallet/";
+const dropdownasset = "$baseUrl/travel/get/prices/";
+
+late WalletResponse walletResponse;

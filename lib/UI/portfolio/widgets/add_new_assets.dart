@@ -54,7 +54,7 @@ class AddAssetsDetailState extends State<AddAssetsDetail> {
   _getSearch() async {
     try {
       final response = await Dio().get(
-        searchPortfolio,
+        dropdownasset,
         queryParameters: {'search': searchController.text.trim()},
         options: Options(headers: {
           "Cookie":
