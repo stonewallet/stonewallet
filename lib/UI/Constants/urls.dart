@@ -14,3 +14,4 @@ const createPortfolio = "$baseUrl/travel/add/portfolio/";
 const deletePortfolio = "$baseUrl/travel/delete/portfolio/";
 const searchPortfolio = "$baseUrl/travel/portfolio/dropdown/";
 const getPdf = "$baseUrl/travel/export/trip/pdf/";
+const createwallet = "$baseUrl/travel/add/wallet/";

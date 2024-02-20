@@ -6,23 +6,24 @@ import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
     as port;
+import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
 
 
 class UpdateAssetsScreen extends StatefulWidget {
-  final int? index;
-  final port.Portfolio? portfolios;
-  final String? text;
+  final int index;
+  final port.Portfolio portfolios;
+ final SearchData? searchData;
 
   // final List<port.Portfolio> cashportfolios;
   // final List<port.Portfolio> assetsportfolios;
   const UpdateAssetsScreen({
     super.key,
-     this.index,
-     this.portfolios,
-     this.text,
+     required this.index,
+     required this.portfolios,
+     this.searchData,
   });
 
   @override
@@ -56,10 +57,8 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
     //   print(widget.index);
     // }
 
-    // // Set initial values for text controllers
-    // assestNameController.text = widget.portfolios[widget.index].coinName;
-    // assestAmountController.text =
-    //     widget.portfolios[widget.index].quantity.toString();
+    
+    
     final selectedPortfolio = widget.portfolios!;
     assestNameController.text = selectedPortfolio.coinName;
     assestAmountController.text = selectedPortfolio.quantity.toString();
