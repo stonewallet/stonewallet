@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/shared_preferences.dart';
-import 'package:stone_wallet_main/Responses/travel2_response.dart';
 import 'package:stone_wallet_main/UI/Constants/urls.dart';
 
 class ApiServiceForCreateWallet {
