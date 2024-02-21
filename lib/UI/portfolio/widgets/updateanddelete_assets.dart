@@ -6,20 +6,24 @@ import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
     as port;
+import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
 
+
 class UpdateAssetsScreen extends StatefulWidget {
   final int index;
-  final List<port.Portfolio> portfolios;
+  final port.Portfolio portfolios;
+ final SearchData? searchData;
 
   // final List<port.Portfolio> cashportfolios;
   // final List<port.Portfolio> assetsportfolios;
   const UpdateAssetsScreen({
     super.key,
-    required this.index,
-    required this.portfolios,
+     required this.index,
+     required this.portfolios,
+     this.searchData,
   });
 
   @override
@@ -47,23 +51,23 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
       expenseController.add(TextEditingController());
     }
 
-    if (widget.index < widget.portfolios.length) {
-      print(widget.portfolios[widget.index].quantity);
-      print(widget.portfolios[widget.index].coinName);
-      print(widget.index);
-    }
+    // if (widget.index < widget.portfolios.length) {
+    //   print(widget.portfolios[widget.index].quantity);
+    //   print(widget.portfolios[widget.index].coinName);
+    //   print(widget.index);
+    // }
 
-    // Set initial values for text controllers
-    assestNameController.text = widget.portfolios[widget.index].coinName;
-    assestAmountController.text =
-        widget.portfolios[widget.index].quantity.toString();
-    expenseController[0].text = widget.portfolios[widget.index].coinName;
-    expenseController[1].text =
-        widget.portfolios[widget.index].quantity.toString();
-    expenseController[2].text =
-        widget.portfolios[widget.index].subCat.toString();
+    
+    
+    final selectedPortfolio = widget.portfolios!;
+    assestNameController.text = selectedPortfolio.coinName;
+    assestAmountController.text = selectedPortfolio.quantity.toString();
+    expenseController[0].text = selectedPortfolio.coinName;
+    expenseController[1].text = selectedPortfolio.quantity.toString();
+    expenseController[2].text = selectedPortfolio.subCat.toString();
 
-    print(widget.portfolios[widget.index].quantity);
+    print(selectedPortfolio.quantity);
+    // print(widget.portfolios[widget.index].quantity);
   }
 
   @override
@@ -164,46 +168,7 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                 //     "sub_cat": widget.portfolios[i].subCat,
                                 //   });
                                 // }
-
-                                var response =
-                                    await ApiServiceForADDAssets().delete(
-                                  expenseController[0].text,
-                                  double.parse(expenseController[1].text),
-                                  int.parse(expenseController[2].text),
-                                );
-                                controller.update();
-                                cashcontroller.update();
-                                assetscontroller.update();
-                                if (response.message != null) {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  Get.back();
-                                  Get.snackbar(
-                                    "Assets deleted successfully",
-                                    '',
-                                    backgroundColor: newGradient6,
-                                    colorText: whiteColor,
-                                    padding:
-                                        const EdgeInsets.fromLTRB(20, 5, 0, 0),
-                                    duration:
-                                        const Duration(milliseconds: 4000),
-                                    snackPosition: SnackPosition.BOTTOM,
-                                  );
-                                  // var snackBar = SnackBar(
-                                  //     content: Text(
-                                  //         "Assets created successfully"));
-                                  // ScaffoldMessenger.of(context)
-                                  //     .showSnackBar(snackBar);
-                                } else {
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  var snackBar = const SnackBar(
-                                      content: Text("Something gone wrong"));
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                }
+                                _showDeleteConfirmationDialog(context);
                               },
                               icon: const Icon(
                                 CupertinoIcons.delete,
@@ -454,5 +419,84 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                 ],
               )),
         ));
+  }
+
+  void _showDeleteConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Delete',
+            style: RegularTextStyle.regular14600(blackColor),
+          ),
+          content: Text(
+            'Are you sure you want to Delete?',
+            style: RegularTextStyle.regular14600(blackColor),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Cancel',
+                style: RegularTextStyle.regular14600(blackColor),
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                var response = await ApiServiceForADDAssets().delete(
+                  expenseController[0].text,
+                  double.parse(expenseController[1].text),
+                  int.parse(expenseController[2].text),
+                );
+                controller.update();
+                cashcontroller.update();
+                assetscontroller.update();
+                if (response.message != null) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                  Get.back();
+                  Get.snackbar(
+                    "Assets deleted successfully",
+                    '',
+                    backgroundColor: newGradient6,
+                    colorText: whiteColor,
+                    padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                    duration: const Duration(milliseconds: 4000),
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                  // var snackBar = SnackBar(
+                  //     content: Text(
+                  //         "Assets created successfully"));
+                  // ScaffoldMessenger.of(context)
+                  //     .showSnackBar(snackBar);
+                } else {
+                  setState(() {
+                    isLoading = false;
+                  });
+                  Get.snackbar(
+                    "Something gone wrong",
+                    '',
+                    backgroundColor: newGradient6,
+                    colorText: whiteColor,
+                    padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                    duration: const Duration(milliseconds: 4000),
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                }
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Delete',
+                style: RegularTextStyle.regular14600(dotColor),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

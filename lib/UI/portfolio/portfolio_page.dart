@@ -154,8 +154,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                               return SfCircularChart(
                                 legend: Legend(
                                   isVisible: true,
-                                  overflowMode: LegendItemOverflowMode.none,
-                                  position: LegendPosition.right,
+                                  overflowMode: LegendItemOverflowMode.scroll,
+                                  position: LegendPosition.bottom,
                                   textStyle: RegularTextStyle.regular16bold(
                                       whiteColor),
                                 ),
@@ -163,6 +163,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                 series: <CircularSeries>[
                                   DoughnutSeries<GDPData, String>(
                                     dataSource: chartData,
+                                    explode: true,
+                                    legendIconType: LegendIconType.diamond,
                                     xValueMapper: (GDPData data, _) =>
                                         data.continent,
                                     yValueMapper: (GDPData data, _) => data.gdp,
@@ -170,6 +172,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                         '${((data.gdp / totalSum) * 100).toStringAsFixed(3)}%',
                                     dataLabelSettings: DataLabelSettings(
                                       isVisible: true,
+                                      alignment: ChartAlignment.center,
                                       textStyle: RegularTextStyle.regular16bold(
                                           whiteColor),
                                       labelPosition:
@@ -192,7 +195,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
 
                         // Image.asset("assets/Icons/Group81.png"),
                         SizedBox(
-                          height: height * 0.00001,
+                          height: height * 0.02,
                         ),
                         Container(
                           width: width,

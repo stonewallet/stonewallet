@@ -10,6 +10,7 @@ class MySharedPreferences{
 
   String getCsrfToken(SharedPreferences prefs){
     return prefs.getString(csrfToken) ?? "";
+    
   }
 
   void setSessionId(SharedPreferences prefs, String sessionToken){

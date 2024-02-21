@@ -55,10 +55,8 @@ class PortfolioController extends GetxController {
 
   Stream<List<GDPData>> getChartData() async* {
     try {
-     
       await fetchDataForCart();
 
-     
       final List<GDPData> chartData = portfolios.map((portfolio) {
         return GDPData(portfolio.coinName, portfolio.value);
       }).toList();
@@ -66,7 +64,7 @@ class PortfolioController extends GetxController {
       yield chartData;
     } catch (e) {
       print('Error fetching chart data: $e');
-      yield []; 
+      yield [];
     }
   }
 }
