@@ -1,0 +1,1 @@
+ /Users/apple/stonewallet/.dart_tool/flutter_build/6049efe5dc083add252a1c477b2a8847/native_assets.yaml: 

@@ -47,3 +47,4 @@ const textfieldColor = Color(0xff25395B);
 const dotColor = Color(0xffff0000);
 const stockGreenColor = Color(0xff00ff00);
 const textColor2 = Color(0xffc9c1c1);
+const transparent = Colors.transparent;
