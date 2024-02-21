@@ -76,7 +76,7 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                     SizedBox(
                       height: height * 0.08,
                     ),
-                    Text("Username",
+                    Text("Wallet Name",
                         style: RegularTextStyle.regular15700(termsColor)),
                     SizedBox(
                       height: height * 0.01,
