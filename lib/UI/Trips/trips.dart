@@ -107,8 +107,10 @@ class _TripsPageState extends State<TripsPage> {
                                   height: 20,
                                 ),
                                 travelList.isEmpty
-                                    ? const CircularProgressIndicator(
-                                        color: whiteColor,
+                                    ? Text(
+                                        "No trip for current User",
+                                        style: RegularTextStyle.regular16700(
+                                            whiteColor),
                                       )
                                     : SizedBox(
                                         height: 400,
@@ -177,18 +179,15 @@ class _TripsPageState extends State<TripsPage> {
                                                                 Navigator.push(
                                                                   context,
                                                                   MaterialPageRoute(
-                                                                      builder: (context) => EditTripPage(
-                                                                          travelList[i]
-                                                                              .id,
-                                                                          travelList[i]
-                                                                              .tripName,
-                                                                          travelList[i]
-                                                                              .product,
-                                                                          travelList[i]
-                                                                              .expenses,
-                                                                          travelList[i]
-                                                                              .createdAt
-                                                                              .toString())),
+                                                                      builder: (context) =>
+                                                                          EditTripPage(
+                                                                            travelList[i].id,
+                                                                            travelList[i].tripName,
+                                                                            travelList[i].product,
+                                                                            travelList[i].expenses,
+                                                                            travelList[i].createdAt.toString(),
+                                                                            travelList[i].user,
+                                                                          )),
                                                                 ).then((value) {
                                                                   return fetch();
                                                                 });
@@ -197,6 +196,7 @@ class _TripsPageState extends State<TripsPage> {
                                                                 Icons.edit,
                                                                 color:
                                                                     whiteColor,
+                                                                size: 30,
                                                               )),
                                                           const SizedBox(
                                                             height: 10,

@@ -2,12 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:searchfield/searchfield.dart';
 import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/API/portfolio_api/search_api.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
@@ -274,13 +272,13 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => UpdateAssetsScreen(
-
-                            // assetsController
-                            //     .assetsPortfolios,
-                            // cashController
-                            //     .cashPortfolios,
-                            index: index,
-                            portfolios: portfolios[index]),
+                          // assetsController
+                          //     .assetsPortfolios,
+                          // cashController
+                          //     .cashPortfolios,
+                          index: index,
+                          portfolios: portfolios[index],
+                        ),
                       ),
                     );
                   },
@@ -294,76 +292,79 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
                             SizedBox(
                               width: width * 0.05,
                             ),
-                            CachedNetworkImage(
-                                color: transparent,
-                                imageUrl:
-                                    'https://www.${portfolios[index].imageUrl}',
-                                imageBuilder: (context, imageProvider) =>
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 0),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              19,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                              color: transparent,
-                                              image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover)),
-                                        ),
-                                      ),
-                                    ),
-                                progressIndicatorBuilder: (context, url,
-                                        downloadProgress) =>
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 14),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              13,
-                                          height: 30,
-                                          decoration: const BoxDecoration(
-                                            color: whiteColor,
-                                          ),
-                                          child:
-                                              const CupertinoActivityIndicator(),
-                                        ),
-                                      ),
-                                    ),
-                                errorWidget: (context, url, error) => Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        top: 0,
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                20,
-                                            height: 30,
-                                            decoration: const BoxDecoration(
-                                                color: transparent,
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/Dollar.png'))),
-                                            child: Image.asset(
-                                                'assets/Dollar.png')),
-                                      ),
-                                    )),
+                            // CachedNetworkImage(
+                            //     color: transparent,
+                            //     imageUrl: 'assets/Dollar.png',
+                            //     imageBuilder: (context, imageProvider) =>
+                            //         Padding(
+                            //           padding: const EdgeInsets.only(left: 0),
+                            //           child: ClipRRect(
+                            //             borderRadius:
+                            //                 BorderRadius.circular(20.0),
+                            //             child: Container(
+                            //               width: MediaQuery.of(context)
+                            //                       .size
+                            //                       .width /
+                            //                   19,
+                            //               height: 30,
+                            //               decoration: BoxDecoration(
+                            //                   color: transparent,
+                            //                   image: DecorationImage(
+                            //                       image: imageProvider,
+                            //                       fit: BoxFit.cover)),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //     progressIndicatorBuilder: (context, url,
+                            //             downloadProgress) =>
+                            //         Padding(
+                            //           padding: const EdgeInsets.only(left: 14),
+                            //           child: ClipRRect(
+                            //             borderRadius:
+                            //                 BorderRadius.circular(20.0),
+                            //             child: Container(
+                            //               width: MediaQuery.of(context)
+                            //                       .size
+                            //                       .width /
+                            //                   13,
+                            //               height: 30,
+                            //               decoration: const BoxDecoration(
+                            //                 color: whiteColor,
+                            //               ),
+                            //               child:
+                            //                   const CupertinoActivityIndicator(),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //     errorWidget: (context, url, error) => Padding(
+                            //           padding: const EdgeInsets.only(
+                            //             left: 0,
+                            //             right: 0,
+                            //             bottom: 0,
+                            //             top: 0,
+                            //           ),
+                            //           child: ClipRRect(
+                            //             borderRadius:
+                            //                 BorderRadius.circular(20.0),
+                            //             child: Container(
+                            //               width: MediaQuery.of(context)
+                            //                       .size
+                            //                       .width /
+                            //                   20,
+                            //               height: 30,
+                            //               decoration: const BoxDecoration(
+                            //                   color: transparent,
+                            //                   image: DecorationImage(
+                            //                       image: AssetImage(
+                            //                           'assets/Dollar.png'))),
+                            //             ),
+                            //           ),
+                            //         )),
+                            Image.asset(
+                              "assets/Dollar.png",
+                              width: 20,
+                              height: 20,
+                            ),
                             SizedBox(
                               width: width * 0.05,
                             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Trips/trips.dart';
 
 import '../../API/api_provider.dart';
 import '../../Responses/travel2_response.dart' as trip;
@@ -13,11 +14,18 @@ class EditTripPage extends StatefulWidget {
   final String name;
   final List<Product> product;
   final List<Expenses> expenses;
+  final List<int> userid;
   final String createdAt;
   // final int profit;
   const EditTripPage(
-      this.id, this.name, this.product, this.expenses, this.createdAt,
-      {super.key});
+    this.id,
+    this.name,
+    this.product,
+    this.expenses,
+    this.createdAt,
+    this.userid, {
+    super.key,
+  });
 
   @override
   State<EditTripPage> createState() => _EditTripPageState();
@@ -244,7 +252,8 @@ class _EditTripPageState extends State<EditTripPage> {
                                                     TextAlignVertical.center,
                                                 style: RegularTextStyle
                                                     .regular16600(whiteColor),
-                                                decoration: const InputDecoration(
+                                                decoration:
+                                                    const InputDecoration(
                                                   focusedBorder:
                                                       OutlineInputBorder(
                                                     borderRadius:
@@ -268,8 +277,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                         width: 1.0),
                                                   ),
                                                   contentPadding:
-                                                      EdgeInsets.only(
-                                                          left: 20),
+                                                      EdgeInsets.only(left: 20),
                                                 ),
                                                 textInputAction:
                                                     TextInputAction.next,
@@ -309,7 +317,8 @@ class _EditTripPageState extends State<EditTripPage> {
                                                     TextAlignVertical.center,
                                                 style: RegularTextStyle
                                                     .regular16600(whiteColor),
-                                                decoration: const InputDecoration(
+                                                decoration:
+                                                    const InputDecoration(
                                                   focusedBorder:
                                                       OutlineInputBorder(
                                                     borderRadius:
@@ -333,8 +342,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                         width: 1.0),
                                                   ),
                                                   contentPadding:
-                                                      EdgeInsets.only(
-                                                          left: 20),
+                                                      EdgeInsets.only(left: 20),
                                                 ),
                                                 textInputAction:
                                                     TextInputAction.next,
@@ -374,7 +382,8 @@ class _EditTripPageState extends State<EditTripPage> {
                                                     TextAlignVertical.center,
                                                 style: RegularTextStyle
                                                     .regular16600(whiteColor),
-                                                decoration: const InputDecoration(
+                                                decoration:
+                                                    const InputDecoration(
                                                   focusedBorder:
                                                       OutlineInputBorder(
                                                     borderRadius:
@@ -398,8 +407,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                         width: 1.0),
                                                   ),
                                                   contentPadding:
-                                                      EdgeInsets.only(
-                                                          left: 20),
+                                                      EdgeInsets.only(left: 20),
                                                 ),
                                                 textInputAction:
                                                     TextInputAction.next,
@@ -439,7 +447,8 @@ class _EditTripPageState extends State<EditTripPage> {
                                                     TextAlignVertical.center,
                                                 style: RegularTextStyle
                                                     .regular16600(whiteColor),
-                                                decoration: const InputDecoration(
+                                                decoration:
+                                                    const InputDecoration(
                                                   focusedBorder:
                                                       OutlineInputBorder(
                                                     borderRadius:
@@ -463,8 +472,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                         width: 1.0),
                                                   ),
                                                   contentPadding:
-                                                      EdgeInsets.only(
-                                                          left: 20),
+                                                      EdgeInsets.only(left: 20),
                                                 ),
                                                 textInputAction:
                                                     TextInputAction.next,
@@ -608,7 +616,8 @@ class _EditTripPageState extends State<EditTripPage> {
                                       Map<String, dynamic> edit = {
                                         "trip_name": nameController.text,
                                         "product": productList,
-                                        "expenses": expensesList
+                                        "expenses": expensesList,
+                                        "user": widget.userid
                                       };
 
                                       print(edit);

@@ -65,6 +65,7 @@ class ApiProvider {
           var travel = TravelList.fromJson(json.decode(str));
           travelList.add(travel);
         });
+        print("data $travelList");
         return travelList;
       } else {
         var jsonData = jsonDecode(response.data);
@@ -107,6 +108,7 @@ class ApiProvider {
               "price_sold": priceSold,
             }
           ],
+          "user": [],
           "expenses": [
             {"expense_name": "Transport", "expense_amount": transport},
             {"expense_name": "Hotel", "expense_amount": hotel},
@@ -173,7 +175,7 @@ class ApiProvider {
     getSharePrefs();
     try {
       if (kDebugMode) {
-        print("Post travel api hit");
+        print("login travel api hit");
       }
       Response response = await _dio.post(
         travelLoginUrl,

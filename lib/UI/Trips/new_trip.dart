@@ -50,12 +50,12 @@ class _NewTripPageState extends State<NewTripPage> {
 
   fetch() async {
     events.clear();
-    setState(() {});
+
     travel2response = await ApiProvider().processTravel2(widget.travelId);
     await ApiProvider().processTravel2(widget.travelId).then((value) {
       events.clear();
 
-      events.addAll(value.product! as Iterable<Product>);
+      events.addAll(value.product!);
       for (int i = 0; i <= events.length - 1; i++) {
         newData.add({
           "Item Name": events[i].productName,
@@ -202,22 +202,20 @@ class _NewTripPageState extends State<NewTripPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     EditTripPage(
-                                                        travel2response.id!,
-                                                        travel2response
-                                                            .tripName!,
-                                                        travel2response
-                                                            .product!,
-                                                        travel2response
-                                                            .expenses!,
-                                                        travel2response
-                                                            .createdAt!)),
-                                          ).then((value) {
-                                            return fetch();
-                                          });
+                                                      travel2response.id!,
+                                                      travel2response.tripName!,
+                                                      travel2response.product!,
+                                                      travel2response.expenses!,
+                                                      travel2response
+                                                          .createdAt!,
+                                                      travel2response.user!,
+                                                    )),
+                                          );
                                         },
                                         child: const Icon(
                                           Icons.edit,
                                           color: whiteColor,
+                                          size: 30,
                                         )),
                                     const SizedBox(
                                       width: 10,
@@ -228,8 +226,11 @@ class _NewTripPageState extends State<NewTripPage> {
                                               context);
                                           print(travel2response.id!);
                                         },
-                                        child: const Icon(Icons.delete,
-                                            color: whiteColor))
+                                        child: const Icon(
+                                          Icons.delete,
+                                          color: redColor,
+                                          size: 30,
+                                        ))
                                   ],
                                 ),
                               ),
@@ -310,10 +311,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                     builder: (context) =>
                                                         AddNewPurchasePage(
                                                             travel2response)),
-                                              ).then((value) {
-                                                setState(() {});
-                                                return fetch();
-                                              });
+                                              );
                                             },
                                             child: const Icon(
                                               Icons.add,
@@ -438,7 +436,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                           // ),
                                         ),
                                         Positioned(
-                                          bottom: 0,
+                                          bottom: 5,
                                           left: MediaQuery.of(context)
                                                   .size
                                                   .width *
@@ -453,10 +451,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                           builder: (context) =>
                                                               AddNewExpensePage(
                                                                   travel2response)),
-                                                    ).then((value) {
-                                                      setState(() {});
-                                                      return fetch();
-                                                    });
+                                                    );
                                                   },
                                                   child: const Icon(
                                                     Icons.add,
@@ -465,23 +460,22 @@ class _NewTripPageState extends State<NewTripPage> {
                                               const SizedBox(
                                                 width: 10,
                                               ),
-                                              InkWell(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DeleteExpensePage(
-                                                                  travel2response)),
-                                                    ).then((value) {
-                                                      setState(() {});
-                                                      return fetch();
-                                                    });
-                                                  },
-                                                  child: const Icon(
-                                                    Icons.remove,
-                                                    color: whiteColor,
-                                                  )),
+                                              // InkWell(
+                                              //     onTap: () {
+                                              //       Navigator.push(
+                                              //         context,
+                                              //         MaterialPageRoute(
+                                              //             builder: (context) =>
+                                              //                 DeleteExpensePage(
+                                              //                     travel2response)),
+                                              //       ).then((value) {
+                                              //         return fetch();
+                                              //       });
+                                              //     },
+                                              //     child: const Icon(
+                                              //       Icons.remove,
+                                              //       color: whiteColor,
+                                              //     )),
                                             ],
                                           ),
                                         ),
@@ -606,7 +600,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                     //output:  /storage/emulated/0/Download/banner.png
 
                                                     try {
-                                                   await Dio().download(
+                                                      await Dio().download(
                                                           "https://3.94.82.56/${pdfUrl.url}",
                                                           savePath,
                                                           onReceiveProgress:
