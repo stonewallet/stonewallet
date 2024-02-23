@@ -14,23 +14,26 @@ class ApiServiceForCreateWallet {
       Response response = await _dio.post(
         createwallet,
         data: {"mnemonic": name, "password": pass},
-        options: Options(headers: {
-          "Cookie":
-              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-          "X-CSRFToken": MySharedPreferences()
-              .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        options: Options(
+          headers: {
+            "Cookie":
+                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences()
+                .getCsrfToken(await SharedPreferences.getInstance())
+          },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
       if (kDebugMode) {
         print("travel next ${response.data}");
       }
-    
-      
+
       // Travel2Response travel2response =
       //     Travel2Response.fromJson(json.decode(response.toString()));
       // return travel2response;
       WalletResponse walletResponse = WalletResponse.fromJson(response.data);
-    return walletResponse;
+      return walletResponse;
     } catch (error) {
       if (kDebugMode) {
         print("Error travel list $error");
@@ -39,6 +42,7 @@ class ApiServiceForCreateWallet {
     }
   }
 }
+
 class WalletResponse {
   final String mnemonicSeed;
 
@@ -50,4 +54,3 @@ class WalletResponse {
     );
   }
 }
-

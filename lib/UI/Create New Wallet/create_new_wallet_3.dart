@@ -5,6 +5,7 @@ import 'package:ed25519_hd_key/ed25519_hd_key.dart';
 import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
@@ -368,12 +369,14 @@ class _CreateNewWalletPage3State extends State<CreateNewWalletPage3> {
                               style: LargeTextStyle.large20700(whiteColor))),
                       onTap: () async {
                         // ApiServiceForADDAssets().createPortfolio1();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const BottomNavigationPage()),
-                        );
+
+                        Get.to(() => const BottomNavigationPage());
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           const BottomNavigationPage()),
+                        // );
                       },
                     )
                   ],

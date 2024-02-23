@@ -23,7 +23,7 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
   late TextEditingController searchController = TextEditingController();
 
   late ApiService apiService;
-   int _portfolio = 1;
+  int _portfolio = 1;
   List<SearchData> searchList = [];
   bool isSearchidle = true;
 
@@ -295,76 +295,81 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
                             SizedBox(
                               width: width * 0.05,
                             ),
-                            CachedNetworkImage(
-                                color: transparent,
-                                imageUrl:
-                                    'https://www.${portfolios[index].imageUrl}',
-                                imageBuilder: (context, imageProvider) =>
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 0),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              19,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                              color: transparent,
-                                              image: DecorationImage(
-                                                  image: imageProvider,
-                                                  fit: BoxFit.cover)),
-                                        ),
-                                      ),
-                                    ),
-                                progressIndicatorBuilder: (context, url,
-                                        downloadProgress) =>
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 14),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              13,
-                                          height: 30,
-                                          decoration: const BoxDecoration(
-                                            color: whiteColor,
-                                          ),
-                                          child:
-                                              const CupertinoActivityIndicator(),
-                                        ),
-                                      ),
-                                    ),
-                                errorWidget: (context, url, error) => Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        top: 0,
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                        child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                20,
-                                            height: 30,
-                                            decoration: const BoxDecoration(
-                                                color: transparent,
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/Dollar.png'))),
-                                            child: Image.asset(
-                                                'assets/Dollar.png')),
-                                      ),
-                                    )),
+                            // CachedNetworkImage(
+                            //     color: transparent,
+                            //     imageUrl:
+                            //         'https://www.${portfolios[index].imageUrl}',
+                            //     imageBuilder: (context, imageProvider) =>
+                            //         Padding(
+                            //           padding: const EdgeInsets.only(left: 0),
+                            //           child: ClipRRect(
+                            //             borderRadius:
+                            //                 BorderRadius.circular(20.0),
+                            //             child: Container(
+                            //               width: MediaQuery.of(context)
+                            //                       .size
+                            //                       .width /
+                            //                   19,
+                            //               height: 30,
+                            //               decoration: BoxDecoration(
+                            //                   color: transparent,
+                            //                   image: DecorationImage(
+                            //                       image: imageProvider,
+                            //                       fit: BoxFit.cover)),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //     progressIndicatorBuilder: (context, url,
+                            //             downloadProgress) =>
+                            //         Padding(
+                            //           padding: const EdgeInsets.only(left: 14),
+                            //           child: ClipRRect(
+                            //             borderRadius:
+                            //                 BorderRadius.circular(20.0),
+                            //             child: Container(
+                            //               width: MediaQuery.of(context)
+                            //                       .size
+                            //                       .width /
+                            //                   13,
+                            //               height: 30,
+                            //               decoration: const BoxDecoration(
+                            //                 color: whiteColor,
+                            //               ),
+                            //               child:
+                            //                   const CupertinoActivityIndicator(),
+                            //             ),
+                            //           ),
+                            //         ),
+                            //     errorWidget: (context, url, error) => Padding(
+                            //           padding: const EdgeInsets.only(
+                            //             left: 0,
+                            //             right: 0,
+                            //             bottom: 0,
+                            //             top: 0,
+                            //           ),
+                            //           child: ClipRRect(
+                            //             borderRadius:
+                            //                 BorderRadius.circular(20.0),
+                            //             child: Container(
+                            //                 width: MediaQuery.of(context)
+                            //                         .size
+                            //                         .width /
+                            //                     20,
+                            //                 height: 30,
+                            //                 decoration: const BoxDecoration(
+                            //                     color: transparent,
+                            //                     image: DecorationImage(
+                            //                         image: AssetImage(
+                            //                             'assets/Dollar.png'))),
+                            //                 child: Image.asset(
+                            //                     'assets/Dollar.png')),
+                            //           ),
+                            //         )),
+                            Image.asset(
+                              "assets/Dollar.png",
+                              width: 20,
+                              height: 20,
+                            ),
                             SizedBox(
                               width: width * 0.05,
                             ),

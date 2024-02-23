@@ -54,13 +54,24 @@ class ApiServiceForADDAssets {
         print("addUser ${response.body}");
       }
       TravelPostResponse travelPostResponse =
-          TravelPostResponse.fromJson(json.decode(response.toString()));
+          TravelPostResponse.fromJson(json.decode(response.body.toString()));
       return travelPostResponse;
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error Add User $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 

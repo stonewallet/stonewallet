@@ -20,16 +20,29 @@ class SearchApi {
 
       List<SearchData> searchDataList = [];
       if (response.statusCode == 200) {
-        final List<dynamic> data =
-            response.data; // Decode response directly to List<dynamic>
-        for (var searchData in data) {
+        final List<dynamic> dataList = response.data;
+        for (var searchData in dataList) {
           SearchData searchItem = SearchData.fromJson(searchData);
           searchDataList.add(searchItem);
         }
       }
       return searchDataList;
-    } catch (error) {
-      throw Exception('Failed to load suggestions$error');
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
+      }
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 }

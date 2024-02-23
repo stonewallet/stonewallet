@@ -14,6 +14,12 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
+// Set up HttpOverrides before making HTTP requests
+void setupHttpOverrides() {
+  HttpOverrides.global = MyHttpOverrides();
+}
+
+
 void main() {
   HttpOverrides.global = MyHttpOverrides();
   Paint.enableDithering = true;
