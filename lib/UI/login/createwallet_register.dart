@@ -5,7 +5,6 @@ import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Home/home_page.dart';
 
 class CreateNewWalletRegisterPage extends StatefulWidget {
   const CreateNewWalletRegisterPage({super.key});
@@ -20,6 +19,7 @@ class _CreateNewWalletRegisterPageState
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+      bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -171,6 +171,10 @@ class _CreateNewWalletRegisterPageState
                               shadowColor: whiteColor,
                               elevation: 4),
                           onPressed: () async {
+                            
+                                      setState(() {
+                                        isLoading = true;
+                                      });
                             if (kDebugMode) {
                               print(userNameController.text);
                               print(passwordController.text);
@@ -182,6 +186,10 @@ class _CreateNewWalletRegisterPageState
 
                             if (response.message ==
                                 "User registered successfully") {
+                                   
+                                        setState(() {
+                                          isLoading = false;
+                                        });
                               var snackBar =
                                   SnackBar(content: Text(response.message!));
                               if (context.mounted) {
@@ -209,7 +217,11 @@ class _CreateNewWalletRegisterPageState
                             //   => const BottomNavigationPage()),
                             // );
                           },
-                          child: Text("Register ",
+                          child: isLoading == true
+                                        ? const CircularProgressIndicator(
+                                            color: Colors.white,
+                                          )
+                                        :  Text("Register ",
                               textAlign: TextAlign.center,
                               style: LargeTextStyle.large20700(textColor))),
                     ),

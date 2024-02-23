@@ -5,7 +5,6 @@ import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Create%20New%20Wallet/create_new_wallet.dart';
-import 'package:stone_wallet_main/UI/Home/home_page.dart';
 import 'package:stone_wallet_main/UI/login/createwallet_register.dart';
 
 class NewWalletLoginPage extends StatefulWidget {
@@ -19,6 +18,7 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -170,6 +170,9 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                               shadowColor: whiteColor,
                               elevation: 4),
                           onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
                             if (kDebugMode) {
                               print(userNameController.text);
                               print(passwordController.text);
@@ -179,6 +182,9 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                                 passwordController.text);
 
                             if (response.message == "Login successful") {
+                              setState(() {
+                                isLoading = false;
+                              });
                               var snackBar =
                                   SnackBar(content: Text(response.message!));
                               if (context.mounted) {
@@ -211,9 +217,13 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                             //   => const BottomNavigationPage()),
                             // );
                           },
-                          child: Text("Login",
-                              textAlign: TextAlign.center,
-                              style: LargeTextStyle.large20700(textColor))),
+                          child: isLoading == true
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text("Login",
+                                  textAlign: TextAlign.center,
+                                  style: LargeTextStyle.large20700(textColor))),
                     ),
                     const SizedBox(
                       height: 10,

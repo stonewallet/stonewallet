@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
-import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/API/createWallet/createnewwallet.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
@@ -23,6 +23,8 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
   void initState() {
     super.initState();
   }
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -215,21 +217,34 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                             ),
                           ),
                           alignment: Alignment.center,
-                          child: Text('I Understand. Show me my seed',
-                              textAlign: TextAlign.center,
-                              style:
-                                  RegularTextStyle.regular18600(whiteColor))),
+                          child: isLoading == true
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text('I Understand. Show me my seed',
+                                  textAlign: TextAlign.center,
+                                  style: RegularTextStyle.regular18600(
+                                      whiteColor))),
                       onTap: () async {
-                        walletResponse = await ApiServiceForCreateWallet()
-                            .createWallet(
-                                userController.text, passwordController.text);
-                        ApiServiceForADDAssets().createPortfolio1();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const CreateNewWalletPage3()),
-                        );
+                        setState(() {
+                          isLoading = true;
+                        });
+                          walletResponse = await ApiServiceForCreateWallet()
+                              .createWallet(
+                                  userController.text, passwordController.text);
+                        if (walletResponse.mnemonicSeed.isNotEmpty) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          ApiServiceForADDAssets().createPortfolio1();
+                          Get.to(() => const CreateNewWalletPage3());
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) =>
+                          //           const CreateNewWalletPage3()),
+                          // );
+                        }
                       },
                     )
                   ],
