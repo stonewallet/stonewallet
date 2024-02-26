@@ -5,6 +5,7 @@ import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Create%20New%20Wallet/create_new_wallet.dart';
+import 'package:stone_wallet_main/UI/Create%20New%20Wallet/create_new_wallet_2.dart';
 import 'package:stone_wallet_main/UI/login/createwallet_register.dart';
 
 class NewWalletLoginPage extends StatefulWidget {
@@ -194,7 +195,7 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const CreateNewWalletPage()),
+                                          const CreateNewWalletPage2()),
                                 );
                               }
                             } else if (response.message ==

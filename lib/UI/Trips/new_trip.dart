@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io' show Platform;
 
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
@@ -8,21 +8,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/API/pdf/getpdf.dart';
-import 'package:stone_wallet_main/API/shared_preferences.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
-import 'package:stone_wallet_main/Responses/travel_list_response.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Model/Getpdf/getpdf_model.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_expense.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_purchase.dart';
 import 'package:stone_wallet_main/UI/Trips/add_user_trip.dart';
-import 'package:collection/collection.dart';
 import '../../Responses/travel2_response.dart';
 import '../Constants/colors.dart';
-import 'delete_expense.dart';
 import 'edit_trip.dart';
 
 class NewTripPage extends StatefulWidget {
@@ -574,16 +570,18 @@ class _NewTripPageState extends State<NewTripPage> {
                                                   shadowColor: whiteColor,
                                                   elevation: 4),
                                               onPressed: () async {
+
                                                 GetPdf? pdfUrl =
                                                     await apiForGetPdf
                                                         .fetchPdfData(
                                                             widget.travelId);
-                                                Map<Permission,
-                                                        PermissionStatus>
-                                                    statuses = await [
-                                                  Permission.storage,
-                                                  //add more permission to request here.
-                                                ].request();
+                                                // Map<Permission,
+                                                //         PermissionStatus>
+                                                //     statuses = await [
+                                                //   Permission.storage,
+                                             
+                                                // ].request();
+                                                Map<Permission, PermissionStatus> statuses = await requestStoragePermission();
 
                                                 if (statuses[
                                                         Permission.storage]!
@@ -601,7 +599,7 @@ class _NewTripPageState extends State<NewTripPage> {
 
                                                     try {
                                                       await Dio().download(
-                                                          "https://3.94.82.56/${pdfUrl.url}",
+                                                          "$baseUrl/${pdfUrl.url}",
                                                           savePath,
                                                           onReceiveProgress:
                                                               (received,
@@ -610,7 +608,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                           print(
                                                               "${(received / total * 100).toStringAsFixed(0)}%");
 
-                                                          //you can build progressbar feature too
+                                           
                                                         }
                                                       });
                                                       print(
@@ -667,6 +665,22 @@ class _NewTripPageState extends State<NewTripPage> {
                 ],
               )),
         ));
+  }
+
+  Future<String?> getDownloadDirectory() async {
+    if (Platform.isAndroid) {
+      return (await DownloadsPathProvider.downloadsDirectory)?.path;
+    } else if(Platform.isIOS) {
+      return (await getApplicationDocumentsDirectory()).path;
+    }else {
+      return null;
+    }
+  }
+
+  Future<Map<Permission,PermissionStatus>> requestStoragePermission() async {
+    return await [
+      Permission.storage,
+    ].request();
   }
 
   void _showDeleteConfirmationDialog(BuildContext context) {

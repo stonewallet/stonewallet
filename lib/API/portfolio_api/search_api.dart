@@ -15,7 +15,10 @@ class SearchApi {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
 
       List<SearchData> searchDataList = [];

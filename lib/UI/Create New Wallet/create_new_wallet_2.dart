@@ -134,7 +134,7 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    Text("Password",
+                    Text("Wallet Password",
                         style: RegularTextStyle.regular15700(termsColor)),
                     SizedBox(
                       height: height * 0.01,
@@ -229,9 +229,9 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                         setState(() {
                           isLoading = true;
                         });
-                          walletResponse = await ApiServiceForCreateWallet()
-                              .createWallet(
-                                  userController.text, passwordController.text);
+                        walletResponse = await ApiServiceForCreateWallet()
+                            .createWallet(
+                                userController.text, passwordController.text);
                         if (walletResponse.mnemonicSeed.isNotEmpty) {
                           setState(() {
                             isLoading = false;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stone_wallet_main/UI/splash/splash_view.dart/splash_view.dart';
 
 import 'UI/Constants/colors.dart';
 import 'UI/terms_page.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: purpleColor),
         useMaterial3: true,
       ),
-      home: const TermsOfPage(),
+      home:  SplashView(),
     );
   }
 }

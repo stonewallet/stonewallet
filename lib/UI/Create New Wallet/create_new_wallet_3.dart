@@ -8,18 +8,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Home/home_page.dart';
 import 'package:web3dart/web3dart.dart';
 import '../Constants/colors.dart';
 import '../Model/key_model.dart';
-import '../global.dart';
+import '../../widgets/global.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:http/http.dart' as http;
 
-import 'create_new_wallet_4.dart';
 
 class CreateNewWalletPage3 extends StatefulWidget {
   const CreateNewWalletPage3({super.key});

@@ -16,7 +16,10 @@ class ApiForGetPdf {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -25,8 +28,22 @@ class ApiForGetPdf {
       } else {
         throw Exception('Failed to load PDF data');
       }
-    } catch (error) {
-      throw Exception('Failed to load PDF data: $error');
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
+      }
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 }

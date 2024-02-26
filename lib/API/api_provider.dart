@@ -50,7 +50,10 @@ class ApiProvider {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
       if (kDebugMode) {
         print("travel list ${response.data}");
@@ -74,11 +77,22 @@ class ApiProvider {
         }
         return [];
       }
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error travel list $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 
@@ -121,7 +135,10 @@ class ApiProvider {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
@@ -153,7 +170,10 @@ class ApiProvider {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
       if (kDebugMode) {
         print("travelPost ${response.data}");
@@ -162,11 +182,22 @@ class ApiProvider {
       TravelPostResponse travelPostResponse =
           TravelPostResponse.fromJson(json.decode(response.toString()));
       return travelPostResponse;
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error travel list $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 
@@ -211,11 +242,22 @@ class ApiProvider {
       TravelPostResponse travelPostResponse =
           TravelPostResponse.fromJson(json.decode(response.toString()));
       return travelPostResponse;
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error travel list $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 
@@ -235,11 +277,22 @@ class ApiProvider {
       TravelPostResponse travelPostResponse =
           TravelPostResponse.fromJson(json.decode(response.toString()));
       return travelPostResponse;
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error travel list $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 
@@ -256,7 +309,10 @@ class ApiProvider {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
       if (kDebugMode) {
         print("travel next ${response.data}");
@@ -265,11 +321,22 @@ class ApiProvider {
       Travel2Response travel2response =
           Travel2Response.fromJson(json.decode(response.toString()));
       return travel2response;
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error travel list $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 
@@ -307,7 +374,10 @@ class ApiProvider {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
 
       if (kDebugMode) {
@@ -317,11 +387,22 @@ class ApiProvider {
       TripEditResponse tripEditResponse =
           TripEditResponse.fromJson(json.decode(response.toString()));
       return tripEditResponse;
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error travel list $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 
@@ -337,7 +418,10 @@ class ApiProvider {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
       if (kDebugMode) {
         print("travelDelete ${response.data}");
@@ -346,11 +430,22 @@ class ApiProvider {
       TravelPostResponse travelPostResponse =
           TravelPostResponse.fromJson(json.decode(response.toString()));
       return travelPostResponse;
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error travel list $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 
@@ -367,7 +462,9 @@ class ApiProvider {
               "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
           "X-CSRFToken": MySharedPreferences()
               .getCsrfToken(await SharedPreferences.getInstance())
-        }),
+        },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),),
       );
       if (kDebugMode) {
         print("addUser ${response.data}");
@@ -376,11 +473,22 @@ class ApiProvider {
       TravelPostResponse travelPostResponse =
           TravelPostResponse.fromJson(json.decode(response.toString()));
       return travelPostResponse;
-    } catch (error) {
-      if (kDebugMode) {
-        print("Error Add User $error");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.badResponse && e.response != null) {
+        // Handle DioError related to bad response
+        throw Exception(
+            "Error: ${e.response!.statusCode} - ${e.response!.statusMessage}");
+      } else if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        // Handle DioError related to timeout
+        throw Exception("Error: Timeout occurred while fetching data");
+      } else {
+        // Handle other DioErrors
+        throw Exception('Error: $e');
       }
-      rethrow;
+    } catch (e) {
+      // Handle generic exceptions
+      throw Exception('Error: $e');
     }
   }
 }
