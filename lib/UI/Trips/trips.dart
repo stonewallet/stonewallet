@@ -1,11 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:stone_wallet_main/Responses/travel_list_response.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Trips/trips_next.dart';
 
 import '../../API/api_provider.dart';
 import '../Constants/colors.dart';
@@ -49,7 +46,7 @@ class _TripsPageState extends State<TripsPage> {
         backgroundColor: Colors.transparent,
         body: ListView(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               Container(
                   width: width,
@@ -107,10 +104,18 @@ class _TripsPageState extends State<TripsPage> {
                                   height: 20,
                                 ),
                                 travelList.isEmpty
-                                    ? Text(
-                                        "No trip for current User",
-                                        style: RegularTextStyle.regular16700(
-                                            whiteColor),
+                                    ? Column(
+                                        children: [
+                                          Text(
+                                            "No trip for current User",
+                                            style:
+                                                RegularTextStyle.regular16700(
+                                                    whiteColor),
+                                          ),
+                                          const SizedBox(
+                                            height: 25,
+                                          )
+                                        ],
                                       )
                                     : SizedBox(
                                         height: 400,

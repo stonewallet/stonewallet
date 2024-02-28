@@ -531,9 +531,9 @@ class _EditTripPageState extends State<EditTripPage> {
                                             style:
                                                 RegularTextStyle.regular16600(
                                                     whiteColor),
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                               focusedBorder:
-                                                  const OutlineInputBorder(
+                                                  OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30)),
                                                 borderSide: BorderSide(
@@ -543,7 +543,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                               fillColor: fillColor,
                                               filled: true,
                                               enabledBorder:
-                                                  const OutlineInputBorder(
+                                                  OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30)),
                                                 borderSide: BorderSide(
@@ -551,7 +551,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                     width: 1.0),
                                               ),
                                               contentPadding:
-                                                  const EdgeInsets.only(
+                                                  EdgeInsets.only(
                                                       left: 20),
                                             ),
                                             textInputAction:

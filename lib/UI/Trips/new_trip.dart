@@ -1,5 +1,4 @@
-import 'dart:convert';
-import 'dart:io' show Platform;
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
@@ -40,6 +39,7 @@ class _NewTripPageState extends State<NewTripPage> {
   @override
   void initState() {
     fetch();
+    getDownloadsDirectory();
     super.initState();
     apiForGetPdf = ApiForGetPdf();
   }
@@ -570,36 +570,33 @@ class _NewTripPageState extends State<NewTripPage> {
                                                   shadowColor: whiteColor,
                                                   elevation: 4),
                                               onPressed: () async {
-
                                                 GetPdf? pdfUrl =
                                                     await apiForGetPdf
                                                         .fetchPdfData(
                                                             widget.travelId);
-                                                // Map<Permission,
-                                                //         PermissionStatus>
-                                                //     statuses = await [
-                                                //   Permission.storage,
-                                             
-                                                // ].request();
-                                                Map<Permission, PermissionStatus> statuses = await requestStoragePermission();
+                                                Map<Permission,
+                                                        PermissionStatus>
+                                                    statuses = await [
+                                                  Permission.storage,
+                                                  //add more permission to request here.
+                                                ].request();
 
+                                                final dir =
+                                                    await getDownloadDirectorypath();
                                                 if (statuses[
                                                         Permission.storage]!
                                                     .isGranted) {
-                                                  var dir =
-                                                      await DownloadsPathProvider
-                                                          .downloadsDirectory;
                                                   if (dir != null) {
                                                     String savename =
                                                         "${travel2response.tripName}.pdf";
                                                     String savePath =
-                                                        "${dir.path}/$savename";
+                                                        "${dir}/$savename";
                                                     print(savePath);
                                                     //output:  /storage/emulated/0/Download/banner.png
 
                                                     try {
                                                       await Dio().download(
-                                                          "$baseUrl/${pdfUrl.url}",
+                                                          "$baseUrl${pdfUrl.url}",
                                                           savePath,
                                                           onReceiveProgress:
                                                               (received,
@@ -608,7 +605,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                           print(
                                                               "${(received / total * 100).toStringAsFixed(0)}%");
 
-                                           
+                                                          //you can build progressbar feature too
                                                         }
                                                       });
                                                       print(
@@ -667,17 +664,17 @@ class _NewTripPageState extends State<NewTripPage> {
         ));
   }
 
-  Future<String?> getDownloadDirectory() async {
+  Future<String?> getDownloadDirectorypath() async {
     if (Platform.isAndroid) {
       return (await DownloadsPathProvider.downloadsDirectory)?.path;
-    } else if(Platform.isIOS) {
+    } else if (Platform.isIOS) {
       return (await getApplicationDocumentsDirectory()).path;
-    }else {
+    } else {
       return null;
     }
   }
 
-  Future<Map<Permission,PermissionStatus>> requestStoragePermission() async {
+  Future<Map<Permission, PermissionStatus>> requestStoragePermission() async {
     return await [
       Permission.storage,
     ].request();

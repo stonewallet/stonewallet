@@ -28,6 +28,7 @@ MERGED from [:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_
 MERGED from [:device_info_plus] D:\digiblock\stonewallet\build\device_info_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:path_provider_android] D:\digiblock\stonewallet\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:external_path] D:\digiblock\stonewallet\build\external_path\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:flutter_file_downloader] D:\digiblock\stonewallet\build\flutter_file_downloader\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\ae81e06d24c799147c26814497a2a305\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:17:1-23:12
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:17:1-33:12
 MERGED from [androidx.browser:browser:1.5.0] C:\Users\manee\.gradle\caches\transforms-3\d12883dde0390e08dd2a1192741cec1b\transformed\browser-1.5.0\AndroidManifest.xml:17:1-22:12
@@ -68,6 +69,8 @@ uses-permission#android.permission.INTERNET
 ADDED from D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:3:5-67
 MERGED from D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:3:5-67
 MERGED from D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:3:5-67
+MERGED from [:flutter_file_downloader] D:\digiblock\stonewallet\build\flutter_file_downloader\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-67
+MERGED from [:flutter_file_downloader] D:\digiblock\stonewallet\build\flutter_file_downloader\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-67
 	android:name
 		ADDED from D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:3:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
@@ -124,6 +127,8 @@ MERGED from [:path_provider_android] D:\digiblock\stonewallet\build\path_provide
 MERGED from [:path_provider_android] D:\digiblock\stonewallet\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:external_path] D:\digiblock\stonewallet\build\external_path\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:external_path] D:\digiblock\stonewallet\build\external_path\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_file_downloader] D:\digiblock\stonewallet\build\flutter_file_downloader\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:flutter_file_downloader] D:\digiblock\stonewallet\build\flutter_file_downloader\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\ae81e06d24c799147c26814497a2a305\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
 MERGED from [androidx.window:window-java:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\ae81e06d24c799147c26814497a2a305\transformed\jetified-window-java-1.0.0-beta04\AndroidManifest.xml:19:5-21:41
 MERGED from [androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:20:5-22:41

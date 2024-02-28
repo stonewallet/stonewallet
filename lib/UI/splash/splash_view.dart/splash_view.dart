@@ -8,6 +8,8 @@ import 'package:stone_wallet_main/widgets/customspinkit_widget.dart';
 class SplashView extends GetView<SplashController> {
   final SplashController splashController = Get.put(SplashController());
   SplashView({Key? key}) : super(key: key);
+
+  
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

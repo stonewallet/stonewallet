@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stone_wallet_main/UI/Home/home_page.dart';
 import 'package:stone_wallet_main/UI/login/createwallet_login.dart';
 
 import 'Constants/colors.dart';
 import 'Constants/text_styles.dart';
-import 'Create New Wallet/create_new_wallet.dart';
 import 'login_page.dart';
 
 class WelcomePage extends StatefulWidget {

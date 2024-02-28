@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stone_wallet_main/UI/Home/home_page.dart';
-import 'package:stone_wallet_main/UI/welcome_page.dart';
+import 'package:stone_wallet_main/UI/terms_page.dart';
 
 class SplashController extends GetxController {
   final _loading = true.obs;
@@ -29,7 +28,7 @@ class SplashController extends GetxController {
     await Future.delayed(const Duration(seconds: 5));
 
     _loading.value = false;
-     checkLoginStatus();
+    checkLoginStatus();
     // Navigate to the SignIn screen
     // Get.off(() => SigninView());
   }
@@ -41,9 +40,9 @@ class SplashController extends GetxController {
     final String? sessionId = prefs.getString('sessionId');
 
     if (csrfToken != null && sessionId != null) {
-      Get.off(() => const BottomNavigationPage());
+      Get.off(() => const TermsOfPage());
     } else {
-      Get.off(() => const WelcomePage());
+      Get.off(() => const TermsOfPage());
     }
   }
 }

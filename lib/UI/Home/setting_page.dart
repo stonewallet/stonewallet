@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/logout/logout.dart';
 import 'package:stone_wallet_main/UI/AddressBook/address_book.dart';
 import 'package:stone_wallet_main/UI/Connection%20And%20Sync/connection_and_sync.dart';
@@ -557,11 +558,11 @@ class _SettingPageState extends State<SettingPage> {
                 var response = await ApiServiceForLogOut().logOut();
 
                 if (response.message != null) {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WelcomePage(),
-                      ));
+                  Get.offAll(() => const WelcomePage());
+                  SharedPreferences sharedPreferences =
+                      await SharedPreferences.getInstance();
+                  sharedPreferences.remove('csrfToken');
+                  sharedPreferences.remove('sessionId'); 
                   Get.snackbar(
                     "Logout successfully",
                     '',

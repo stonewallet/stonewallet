@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Home/home_page.dart';
 import 'package:stone_wallet_main/UI/welcome_page.dart';
 
 import 'Constants/colors.dart';
@@ -54,45 +57,59 @@ class _TermsOfPageState extends State<TermsOfPage> {
   //     }
   //   }
   // }
-  
-Future<void> getStoragePermission() async {
-  if (Platform.isAndroid) {
-    DeviceInfoPlugin plugin = DeviceInfoPlugin();
-    AndroidDeviceInfo? android = await plugin.androidInfo;
-    if (android != null) {
-      if (android.version.sdkInt < 33) {
-        if (await Permission.storage.request().isGranted &&
-            await Permission.manageExternalStorage.request().isGranted) {
-          setState(() {
-            permissionGranted = true;
-          });
-        } else if (await Permission.storage.request().isPermanentlyDenied) {
-          await openAppSettings();
-        } else if (await Permission.audio.request().isDenied) {
-          setState(() {
-            permissionGranted = false;
-          });
-        }
-      } else {
-        if (await Permission.photos.request().isGranted &&
-            await Permission.videos.request().isGranted &&
-            await Permission.audio.request().isGranted) {
-          setState(() {
-            permissionGranted = true;
-          });
-        } else if (await Permission.photos.request().isPermanentlyDenied) {
-          await openAppSettings();
-        } else if (await Permission.photos.request().isDenied) {
-          setState(() {
-            permissionGranted = false;
-          });
+
+  Future<void> getStoragePermission() async {
+    if (Platform.isAndroid) {
+      DeviceInfoPlugin plugin = DeviceInfoPlugin();
+      AndroidDeviceInfo? android = await plugin.androidInfo;
+      if (android != null) {
+        if (android.version.sdkInt < 33) {
+          if (await Permission.storage.request().isGranted &&
+              await Permission.manageExternalStorage.request().isGranted) {
+            setState(() {
+              permissionGranted = true;
+            });
+          } else if (await Permission.storage.request().isPermanentlyDenied) {
+            await openAppSettings();
+          } else if (await Permission.audio.request().isDenied) {
+            setState(() {
+              permissionGranted = false;
+            });
+          }
+        } else {
+          if (await Permission.photos.request().isGranted &&
+              await Permission.videos.request().isGranted &&
+              await Permission.audio.request().isGranted) {
+            setState(() {
+              permissionGranted = true;
+            });
+          } else if (await Permission.photos.request().isPermanentlyDenied) {
+            await openAppSettings();
+          } else if (await Permission.photos.request().isDenied) {
+            setState(() {
+              permissionGranted = false;
+            });
+          }
         }
       }
+    } else if (Platform.isIOS) {
+      if (await Permission.photos.request().isGranted &&
+          await Permission.microphone.request().isGranted &&
+          await Permission.mediaLibrary.request().isGranted &&
+          await Permission.storage.request().isGranted) {
+        setState(() {
+          permissionGranted = true;
+        });
+      } else if (await Permission.photos.request().isPermanentlyDenied) {
+        await openAppSettings();
+      } else if (await Permission.photos.request().isDenied) {
+        setState(() {
+          permissionGranted = false;
+        });
+      }
     }
-  } else {
-    // Handle iOS specific logic here if needed
   }
-}
+
   @override
   void initState() {
     getStoragePermission();
@@ -205,10 +222,7 @@ Future<void> getStoragePermission() async {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: buttonColor),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => WelcomePage()),
-                    );
+                    checkLoginStatus();
                   },
                   child: Text("Accept",
                       style: LargeTextStyle.large20700(whiteColor))),
@@ -259,5 +273,17 @@ Future<void> getStoragePermission() async {
         ),
       ),
     ));
+  }
+
+  void checkLoginStatus() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? csrfToken = prefs.getString('csrfToken');
+    final String? sessionId = prefs.getString('sessionId');
+
+    if (csrfToken != null && sessionId != null) {
+      Get.off(() => const BottomNavigationPage());
+    } else {
+      Get.off(() => const WelcomePage());
+    }
   }
 }

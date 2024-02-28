@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:stone_wallet_main/UI/splash/splash_view.dart/splash_view.dart';
 
 import 'UI/Constants/colors.dart';
-import 'UI/terms_page.dart';
 import 'dart:io';
 
 class MyHttpOverrides extends HttpOverrides {
@@ -19,7 +18,6 @@ class MyHttpOverrides extends HttpOverrides {
 void setupHttpOverrides() {
   HttpOverrides.global = MyHttpOverrides();
 }
-
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -39,7 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: purpleColor),
         useMaterial3: true,
       ),
-      home:  SplashView(),
+      home: SplashView(),
     );
   }
 }

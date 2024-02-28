@@ -5,8 +5,11 @@ import 'package:stone_wallet_main/API/createWallet/createnewwallet.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Constants/urls.dart';
+import 'package:stone_wallet_main/UI/loding/loading_view/loding_view.dart';
 import 'create_new_wallet_3.dart';
 
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 class CreateNewWalletPage2 extends StatefulWidget {
   const CreateNewWalletPage2({super.key});
 
@@ -15,8 +18,6 @@ class CreateNewWalletPage2 extends StatefulWidget {
 }
 
 class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
-  TextEditingController userController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   bool visibility = false;
 
   @override
@@ -226,25 +227,11 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                                   style: RegularTextStyle.regular18600(
                                       whiteColor))),
                       onTap: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        walletResponse = await ApiServiceForCreateWallet()
-                            .createWallet(
-                                userController.text, passwordController.text);
-                        if (walletResponse.mnemonicSeed.isNotEmpty) {
-                          setState(() {
-                            isLoading = false;
-                          });
-                          ApiServiceForADDAssets().createPortfolio1();
-                          Get.to(() => const CreateNewWalletPage3());
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           const CreateNewWalletPage3()),
-                          // );
-                        }
+                        Get.to(() => LoadingView());
+                        // setState(() {
+                        //   isLoading = true;
+                        // });
+                      
                       },
                     )
                   ],

@@ -169,7 +169,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                         data.continent,
                                     yValueMapper: (GDPData data, _) => data.gdp,
                                     dataLabelMapper: (GDPData data, _) =>
-                                        '${((data.gdp / totalSum) * 100).toStringAsFixed(3)}%',
+                                        '${((data.gdp / totalSum) * 100).toStringAsFixed(2)}%',
                                     dataLabelSettings: DataLabelSettings(
                                       isVisible: true,
                                       alignment: ChartAlignment.center,

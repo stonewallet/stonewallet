@@ -1,6 +1,6 @@
 import 'package:stone_wallet_main/API/createWallet/createnewwallet.dart';
 
-const baseUrl = "https://3.94.82.56";
+const baseUrl = "https://54.234.68.88";
 
 const travelListUrl = "$baseUrl/travel/list/";
 const travelPostListUrl = "$baseUrl/travel/list/";

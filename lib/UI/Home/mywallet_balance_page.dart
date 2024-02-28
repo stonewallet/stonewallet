@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Send/receive.dart';
-
-import '../../API/api_provider.dart';
 import '../../API/shared_preferences.dart';
 import '../Constants/colors.dart';
 import '../Model/coin_model.dart';

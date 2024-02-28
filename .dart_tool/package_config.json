@@ -206,6 +206,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_file_downloader",
+      "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_file_downloader-1.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "flutter_launcher_icons",
       "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_launcher_icons-0.13.1",
       "packageUri": "lib/",
@@ -312,6 +318,12 @@
       "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.1.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "lottie",
+      "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/lottie-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
     },
     {
       "name": "matcher",
@@ -728,7 +740,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-02-24T09:46:23.939036Z",
+  "generated": "2024-02-28T09:55:33.517552Z",
   "generator": "pub",
   "generatorVersion": "3.2.5"
 }
