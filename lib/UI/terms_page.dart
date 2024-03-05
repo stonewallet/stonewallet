@@ -70,7 +70,7 @@ class _TermsOfPageState extends State<TermsOfPage> {
               permissionGranted = true;
             });
           } else if (await Permission.storage.request().isPermanentlyDenied) {
-            await openAppSettings();
+            await getStoragePermission();
           } else if (await Permission.audio.request().isDenied) {
             setState(() {
               permissionGranted = false;
@@ -84,8 +84,11 @@ class _TermsOfPageState extends State<TermsOfPage> {
               permissionGranted = true;
             });
           } else if (await Permission.photos.request().isPermanentlyDenied) {
-            await openAppSettings();
-          } else if (await Permission.photos.request().isDenied) {
+            await getStoragePermission();
+          } else if (await Permission.photos.request().isDenied &&
+              await Permission.microphone.request().isDenied &&
+              await Permission.mediaLibrary.request().isDenied &&
+              await Permission.storage.request().isDenied) {
             setState(() {
               permissionGranted = false;
             });
@@ -100,12 +103,20 @@ class _TermsOfPageState extends State<TermsOfPage> {
         setState(() {
           permissionGranted = true;
         });
-      } else if (await Permission.photos.request().isPermanentlyDenied) {
-        await openAppSettings();
-      } else if (await Permission.photos.request().isDenied) {
-        setState(() {
-          permissionGranted = false;
-        });
+      } else if (await Permission.photos.request().isPermanentlyDenied &&
+          await Permission.microphone.request().isDenied &&
+          await Permission.mediaLibrary.request().isDenied &&
+          await Permission.storage.request().isDenied) {
+        await getStoragePermission();
+      } else if (await Permission.photos.request().isDenied &&
+          await Permission.microphone.request().isDenied &&
+          await Permission.mediaLibrary.request().isDenied &&
+          await Permission.storage.request().isDenied) {
+        setState(
+          () {
+            getStoragePermission();
+          },
+        );
       }
     }
   }

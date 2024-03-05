@@ -218,6 +218,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                 ),
                                 // const SizedBox(height: 8),
                                 TabBar(
+                                  indicatorSize: TabBarIndicatorSize.tab,
+                                  dividerColor: transparent,
                                   tabs: [
                                     Tab(
                                       child: Text(
@@ -259,7 +261,8 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                     children: [
                                       TabBarScreenOne(),
                                       TabBarScreenTwo(),
-                                      TabBarScreenThree()
+                                      TabBarScreenThree(),
+                                      // TabBarScreenFour(),
                                     ],
                                   ),
                                 ),

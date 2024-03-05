@@ -19,5 +19,6 @@ const getPdf = "$baseUrl/travel/export/trip/pdf/";
 const createwallet = "$baseUrl/travel/add/wallet/";
 const dropdownasset = "$baseUrl/travel/get/prices/";
 const logOutPost = "$baseUrl/travel/logout/";
+const keyUrl = "$baseUrl/travel/get/wallet/keys/";
 
 late WalletResponse walletResponse;

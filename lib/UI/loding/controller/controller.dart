@@ -36,7 +36,7 @@ class LoadingController extends GetxController {
     // checkLoginStatus();
     // Navigate to the SignIn screen
     walletResponse = await ApiServiceForCreateWallet()
-        .createWallet(userController.text, passwordController.text);
+        .createWallet(name:  userController.text,pass:  passwordController.text);
     if (walletResponse.mnemonicSeed.isNotEmpty) {
       ApiServiceForADDAssets().createPortfolio1();
 

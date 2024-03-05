@@ -29,6 +29,8 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
 
   // final assetsController = Get.put(PortfolioController2());
   // final cashController = Get.put(PortfolioController3());
+  late double width;
+  late double height;
 
   @override
   void initState() {
@@ -59,13 +61,28 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
   final focus = FocusNode();
   @override
   Widget build(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+
+    Widget body;
+
+    if (searchController.text.isEmpty) {
+      body = buildContentWidget(width);
+    } else {
+      if (searchList.isEmpty) {
+        body = Text(
+          "No results found",
+          style: RegularTextStyle.regular18600(whiteColor),
+        );
+      } else {
+        body = buildSearchResults(width);
+      }
+    }
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: GetBuilder<PortfolioController>(
             builder: (controller) {
-              double width = MediaQuery.of(context).size.width;
-              double height = MediaQuery.of(context).size.height;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -199,10 +216,7 @@ class _TabBarScreenOneState extends State<TabBarScreenOne> {
                             SizedBox(
                               height: height * 0.03,
                             ),
-                            if (!isSearchidle && searchList.isNotEmpty)
-                              buildSearchResults(width)
-                            else
-                              buildContentWidget(width),
+                            body,
                           ],
                         ),
                       ],

@@ -19,7 +19,7 @@ class _CreateNewWalletRegisterPageState
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-      bool isLoading = false;
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -171,10 +171,9 @@ class _CreateNewWalletRegisterPageState
                               shadowColor: whiteColor,
                               elevation: 4),
                           onPressed: () async {
-                            
-                                      setState(() {
-                                        isLoading = true;
-                                      });
+                            setState(() {
+                              isLoading = true;
+                            });
                             if (kDebugMode) {
                               print(userNameController.text);
                               print(passwordController.text);
@@ -186,10 +185,9 @@ class _CreateNewWalletRegisterPageState
 
                             if (response.message ==
                                 "User registered successfully") {
-                                   
-                                        setState(() {
-                                          isLoading = false;
-                                        });
+                              setState(() {
+                                isLoading = false;
+                              });
                               var snackBar =
                                   SnackBar(content: Text(response.message!));
                               if (context.mounted) {
@@ -199,17 +197,39 @@ class _CreateNewWalletRegisterPageState
                               }
                             } else if (response.message ==
                                 " Invalid login credentials") {
-                              var snackBar =
-                                  SnackBar(content: Text(response.message!));
-                              if (context.mounted)
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                              setState(() {
+                                isLoading = false;
+                              });
+                              if (context.mounted) {
+                                Get.snackbar(
+                                  "${response.message}",
+                                  '',
+                                  backgroundColor: newGradient6,
+                                  colorText: whiteColor,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                  duration: const Duration(milliseconds: 4000),
+                                  snackPosition: SnackPosition.BOTTOM,
+                                );
+                              }
                             } else {
-                              var snackBar = const SnackBar(
-                                  content: Text("Something went wrong"));
-                              if (context.mounted)
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                              // var snackBar =  SnackBar(
+                              //     content: Text("${response.message}"));
+                              if (context.mounted) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Get.snackbar(
+                                  "${response.message}",
+                                  '',
+                                  backgroundColor: newGradient6,
+                                  colorText: whiteColor,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                  duration: const Duration(milliseconds: 4000),
+                                  snackPosition: SnackPosition.BOTTOM,
+                                );
+                              }
                             }
                             // Navigator.push(
                             //   context,
@@ -218,12 +238,12 @@ class _CreateNewWalletRegisterPageState
                             // );
                           },
                           child: isLoading == true
-                                        ? const CircularProgressIndicator(
-                                            color: Colors.white,
-                                          )
-                                        :  Text("Register ",
-                              textAlign: TextAlign.center,
-                              style: LargeTextStyle.large20700(textColor))),
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text("Register ",
+                                  textAlign: TextAlign.center,
+                                  style: LargeTextStyle.large20700(textColor))),
                     ),
                     const SizedBox(
                       height: 10,

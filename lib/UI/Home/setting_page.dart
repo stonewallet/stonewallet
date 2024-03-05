@@ -1,16 +1,28 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stone_wallet_main/API/generate_api/generate.dart';
 import 'package:stone_wallet_main/API/logout/logout.dart';
 import 'package:stone_wallet_main/UI/AddressBook/address_book.dart';
 import 'package:stone_wallet_main/UI/Connection%20And%20Sync/connection_and_sync.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Help%20And%20Support/help_and_support.dart';
+import 'package:stone_wallet_main/UI/Model/keyFile/key_model.dart';
 import 'package:stone_wallet_main/UI/Other%20Settings/other_settings.dart';
 import 'package:stone_wallet_main/UI/Privacy/privacy.dart';
 import 'package:stone_wallet_main/UI/Security%20And%20Backup/security_and_backup.dart';
 import 'package:stone_wallet_main/UI/Wallet/wallet.dart';
 import 'package:stone_wallet_main/UI/welcome_page.dart';
+import 'package:stone_wallet_main/widgets/customspinkit_widget.dart';
 
 import '../Constants/colors.dart';
 import '../Model/settings_model.dart';
@@ -36,16 +48,24 @@ class _SettingPageState extends State<SettingPage> {
         name: "Terms & Condition",
         image: "assets/Icons/terms-and-conditions.png"),
   ];
+  late double width;
+  late double height;
+  TextEditingController assestAmountController = TextEditingController();
+  late ApiForGetKey apiForGetKey;
 
   @override
   void initState() {
     super.initState();
+    apiForGetKey = ApiForGetKey();
   }
+
+  bool _isLoading = false;
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
 
     return Scaffold(
         backgroundColor: Colors.transparent,
@@ -139,7 +159,7 @@ class _SettingPageState extends State<SettingPage> {
                                     );
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(bottom: 30),
+                                    margin: const EdgeInsets.only(bottom: 20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -162,7 +182,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 10,
+                                          height: 20,
                                         ),
                                         Container(
                                           width: width,
@@ -183,7 +203,7 @@ class _SettingPageState extends State<SettingPage> {
                                     );
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(bottom: 30),
+                                    margin: const EdgeInsets.only(bottom: 20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -209,7 +229,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 10,
+                                          height: 20,
                                         ),
                                         Container(
                                           width: width,
@@ -230,7 +250,7 @@ class _SettingPageState extends State<SettingPage> {
                                     );
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(bottom: 30),
+                                    margin: const EdgeInsets.only(bottom: 20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -256,7 +276,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 10,
+                                          height: 20,
                                         ),
                                         Container(
                                           width: width,
@@ -277,7 +297,7 @@ class _SettingPageState extends State<SettingPage> {
                                     );
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(bottom: 30),
+                                    margin: const EdgeInsets.only(bottom: 20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -303,7 +323,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 10,
+                                          height: 20,
                                         ),
                                         Container(
                                           width: width,
@@ -324,7 +344,7 @@ class _SettingPageState extends State<SettingPage> {
                                     );
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(bottom: 30),
+                                    margin: const EdgeInsets.only(bottom: 20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -350,7 +370,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 10,
+                                          height: 20,
                                         ),
                                         Container(
                                           width: width,
@@ -394,7 +414,7 @@ class _SettingPageState extends State<SettingPage> {
                                     );
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(bottom: 30),
+                                    margin: const EdgeInsets.only(bottom: 20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -420,7 +440,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 10,
+                                          height: 20,
                                         ),
                                         Container(
                                           width: width,
@@ -441,7 +461,7 @@ class _SettingPageState extends State<SettingPage> {
                                     );
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(bottom: 30),
+                                    margin: const EdgeInsets.only(bottom: 20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -467,7 +487,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 10,
+                                          height: 20,
                                         ),
                                         Container(
                                           width: width,
@@ -480,10 +500,60 @@ class _SettingPageState extends State<SettingPage> {
                                 ),
                                 InkWell(
                                   onTap: () {
+                                    if (kDebugMode) {
+                                      print("Generate the Key");
+                                    }
+                                    // showBottomSheetText(context);
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(bottom: 20),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            SizedBox(
+                                              width: width * 0.05,
+                                            ),
+                                            const Icon(
+                                              Icons.key,
+                                              color: iconColor,
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.05,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () => setState(
+                                                  () => isVisible = !isVisible),
+                                              child: Text(
+                                                "Generate Your Key",
+                                                style: RegularTextStyle
+                                                    .regular15700(whiteColor),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        if (isVisible) buildTextForm(),
+                                        const SizedBox(
+                                          height: 0,
+                                        ),
+                                        Container(
+                                          width: width,
+                                          height: 1,
+                                          color: drawerColor,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
                                     _showLogoutConfirmationDialog(context);
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(bottom: 30),
+                                    margin: const EdgeInsets.only(bottom: 20),
                                     child: Column(
                                       children: [
                                         Row(
@@ -493,7 +563,7 @@ class _SettingPageState extends State<SettingPage> {
                                             ),
                                             const Icon(
                                               Icons.logout_sharp,
-                                              color: iconColor,
+                                              color: redColor,
                                             ),
                                             SizedBox(
                                               width: width * 0.05,
@@ -502,12 +572,12 @@ class _SettingPageState extends State<SettingPage> {
                                               "Log Out",
                                               style:
                                                   RegularTextStyle.regular15700(
-                                                      whiteColor),
+                                                      redColor),
                                             ),
                                           ],
                                         ),
                                         const SizedBox(
-                                          height: 10,
+                                          height: 20,
                                         ),
                                         Container(
                                           width: width,
@@ -562,7 +632,7 @@ class _SettingPageState extends State<SettingPage> {
                   SharedPreferences sharedPreferences =
                       await SharedPreferences.getInstance();
                   sharedPreferences.remove('csrfToken');
-                  sharedPreferences.remove('sessionId'); 
+                  sharedPreferences.remove('sessionId');
                   Get.snackbar(
                     "Logout successfully",
                     '',
@@ -599,5 +669,203 @@ class _SettingPageState extends State<SettingPage> {
         );
       },
     );
+  }
+
+  Widget buildTextForm() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(
+                  "Wallet Name",
+                  style: RegularTextStyle.regular16600(whiteColor),
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Tooltip(
+                message:
+                    'Give wallet name for specific wallet key,\n by default it will generate the key of latest wallet.',
+                child: InkWell(
+                  onTap: () {
+                    // Handle onTap event here
+                    print('Tooltip icon tapped');
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CupertinoAlertDialog(
+                          title: const Text('Information'),
+                          content: const Text(
+                              'Give wallet name for specific wallet key,\n by default it will generate the key of latest wallet.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: const Icon(
+                    Icons.info_outline,
+                    size: 20,
+                    color: whiteColor,
+                  ),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              SizedBox(
+                height: 45,
+                width: width / 2,
+                // padding: EdgeInsets.only(left: 15, right: 15),
+                // alignment: Alignment.center,
+                child: TextField(
+                  // autofocus: true,
+                  cursorColor: Colors.blue,
+                  controller: assestAmountController,
+                  textAlign: TextAlign.start,
+
+                  textAlignVertical: TextAlignVertical.center,
+                  style: RegularTextStyle.regular16600(whiteColor),
+                  decoration: InputDecoration(
+                    hintText: 'Optional',
+                    hintStyle: RegularTextStyle.regular14400(
+                        whiteColor.withOpacity(0.3)),
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(color: borderColor, width: 1.0),
+                    ),
+                    fillColor: fillColor.withOpacity(0.5),
+                    filled: true,
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderSide: BorderSide(color: borderColor, width: 1.0),
+                    ),
+                    contentPadding: const EdgeInsets.only(left: 20),
+                  ),
+                  textInputAction: TextInputAction.next,
+                ),
+              ),
+              SizedBox(
+                width: MediaQuery.sizeOf(context).width / 12,
+              ),
+              Visibility(
+                visible: !_isLoading,
+                child: TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: buttonColor2,
+                    surfaceTintColor: blackColor,
+                    foregroundColor: whiteColor,
+                    shadowColor: whiteColor,
+                    elevation: 4,
+                  ),
+                  onPressed: () async {
+                    GetKeyUrl? keyUrl = await apiForGetKey.fetchPdfData(
+                        name: assestAmountController.text);
+                    Map<Permission, PermissionStatus> statuses = await [
+                      Permission.storage,
+                      //add more permission to request here.
+                    ].request();
+
+                    final dir = await getDownloadDirectorypath();
+                    if (statuses[Permission.storage]!.isGranted) {
+                      if (dir != null) {
+                        String savename = "keys.keys";
+                        String savePath = "$dir/$savename";
+                        print(savePath);
+                        //output:  /storage/emulated/0/Download/banner.png
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        try {
+                          await Dio()
+                              .download("$baseUrl${keyUrl.message}", savePath,
+                                  onReceiveProgress: (received, total) {
+                            if (received != -1) {
+                              print(
+                                  "${(received / total * 100).toStringAsFixed(0)}%");
+                            }
+                          });
+                          print("File is saved to download folder.");
+                          Get.snackbar(
+                            "File Downloaded",
+                            '',
+                            backgroundColor: newGradient6,
+                            colorText: whiteColor,
+                            padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                            duration: const Duration(milliseconds: 4000),
+                            snackPosition: SnackPosition.BOTTOM,
+                          );
+                        } on DioException catch (e) {
+                          print(e.message);
+                        }
+                      }
+                    } else {
+                      print("No permission to read and write.");
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Permission Denied !"),
+                      ));
+                    }
+
+                    Future.delayed(const Duration(seconds: 4), () {
+                      setState(() {
+                        _isLoading = false;
+                        assestAmountController.clear();
+                      });
+                    });
+                  },
+                  child: const Text("Save and Download"),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(7, 0, 0, 0),
+                child: Visibility(
+                  visible: _isLoading,
+                  child: const CustomSpinKitFadingCube(
+                    color: whiteColor,
+                    size: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // SizedBox(
+          //   height: height / 18,
+          // ),
+          // Align(
+          //   alignment: Alignment.bottomCenter,
+          //   child:
+          // )
+        ],
+      ),
+    );
+  }
+
+  Future<String?> getDownloadDirectorypath() async {
+    if (Platform.isAndroid) {
+      return (await DownloadsPathProvider.downloadsDirectory)?.path;
+    } else if (Platform.isIOS) {
+      return (await getApplicationDocumentsDirectory()).path;
+    } else {
+      return null;
+    }
+  }
+
+  Future<Map<Permission, PermissionStatus>> requestStoragePermission() async {
+    return await [
+      Permission.storage,
+    ].request();
   }
 }

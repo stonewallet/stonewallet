@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
@@ -29,6 +27,8 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
   final cashcontroller = Get.put(PortfolioController3());
   // final assetsController = Get.put(PortfolioController2());
   // final cashController = Get.put(PortfolioController3());
+  late double width;
+  late double height;
 
   @override
   void initState() {
@@ -59,8 +59,24 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
   final focus = FocusNode();
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+
+    Widget body;
+
+    if (searchController.text.isEmpty) {
+      body = buildContentWidget(width);
+    } else {
+      if (searchList.isEmpty) {
+        body = Text(
+          "No results found",
+          style: RegularTextStyle.regular18600(whiteColor),
+        );
+      } else {
+        body = buildSearchResults(width);
+      }
+    }
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(child: GetBuilder<PortfolioController3>(
@@ -195,10 +211,7 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
                           SizedBox(
                             height: height * 0.03,
                           ),
-                          if (!isSearchidle && searchList.isNotEmpty)
-                            buildSearchResults(width)
-                          else
-                            buildContentWidget(width),
+                          body,
                         ],
                       ),
                     ],

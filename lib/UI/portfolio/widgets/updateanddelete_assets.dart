@@ -9,21 +9,21 @@ import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
 import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
+import 'package:stone_wallet_main/UI/portfolio/controller/loan_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
-
 
 class UpdateAssetsScreen extends StatefulWidget {
   final int index;
   final port.Portfolio portfolios;
- final SearchData? searchData;
+  final SearchData? searchData;
 
   // final List<port.Portfolio> cashportfolios;
   // final List<port.Portfolio> assetsportfolios;
   const UpdateAssetsScreen({
     super.key,
-     required this.index,
-     required this.portfolios,
-     this.searchData,
+    required this.index,
+    required this.portfolios,
+    this.searchData,
   });
 
   @override
@@ -42,6 +42,8 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
   final controller = Get.put(PortfolioController());
   final cashcontroller = Get.put(PortfolioController3());
   final assetscontroller = Get.put(PortfolioController2());
+
+  final loancontroller = Get.put(PortfolioControllerLoan());
   @override
   void initState() {
     super.initState();
@@ -57,9 +59,7 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
     //   print(widget.index);
     // }
 
-    
-    
-    final selectedPortfolio = widget.portfolios!;
+    final selectedPortfolio = widget.portfolios;
     assestNameController.text = selectedPortfolio.coinName;
     assestAmountController.text = selectedPortfolio.quantity.toString();
     expenseController[0].text = selectedPortfolio.coinName;
@@ -373,6 +373,7 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                       controller.update();
                                       assetscontroller.update();
                                       cashcontroller.update();
+                                      loancontroller.update();
                                       if (response.message != null) {
                                         setState(() {
                                           isLoading = false;

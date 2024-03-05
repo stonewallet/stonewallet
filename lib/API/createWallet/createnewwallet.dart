@@ -6,7 +6,7 @@ import 'package:stone_wallet_main/UI/Constants/urls.dart';
 
 class ApiServiceForCreateWallet {
   final Dio _dio = Dio();
-  Future<WalletResponse> createWallet(String name, String pass) async {
+  Future<WalletResponse> createWallet({String? name, String? pass}) async {
     try {
       if (kDebugMode) {
         print("Create wallet api hit");

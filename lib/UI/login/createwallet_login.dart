@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Create%20New%20Wallet/create_new_wallet.dart';
 import 'package:stone_wallet_main/UI/Create%20New%20Wallet/create_new_wallet_2.dart';
 import 'package:stone_wallet_main/UI/login/createwallet_register.dart';
 
@@ -166,10 +166,11 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                       width: width * 0.75,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor: buttonColor3,
-                              surfaceTintColor: blackColor,
-                              shadowColor: whiteColor,
-                              elevation: 4),
+                            backgroundColor: buttonColor3,
+                            surfaceTintColor: blackColor,
+                            shadowColor: whiteColor,
+                            elevation: 4,
+                          ),
                           onPressed: () async {
                             setState(() {
                               isLoading = true;
@@ -200,17 +201,39 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                               }
                             } else if (response.message ==
                                 " Invalid login credentials") {
-                              var snackBar =
-                                  SnackBar(content: Text(response.message!));
-                              if (context.mounted)
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                              setState(() {
+                                isLoading = false;
+                              });
+                              if (context.mounted) {
+                                Get.snackbar(
+                                  "${response.message}",
+                                  '',
+                                  backgroundColor: newGradient6,
+                                  colorText: whiteColor,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                  duration: const Duration(milliseconds: 4000),
+                                  snackPosition: SnackPosition.BOTTOM,
+                                );
+                              }
                             } else {
-                              var snackBar = const SnackBar(
-                                  content: Text("Something went wrong"));
-                              if (context.mounted)
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                              // var snackBar =  SnackBar(
+                              //     content: Text("${response.message}"));
+                              if (context.mounted) {
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Get.snackbar(
+                                  "${response.message}",
+                                  '',
+                                  backgroundColor: newGradient6,
+                                  colorText: whiteColor,
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                  duration: const Duration(milliseconds: 4000),
+                                  snackPosition: SnackPosition.BOTTOM,
+                                );
+                              }
                             }
                             // Navigator.push(
                             //   context,

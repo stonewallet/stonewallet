@@ -79,7 +79,7 @@ class _NewTripPageState extends State<NewTripPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    List<DataColumn> getColumns() {
+    List<DataColumn>  getColumns() {
       return newData.isNotEmpty
           ? newData.first.keys
               .map((String key) => DataColumn(
@@ -547,12 +547,53 @@ class _NewTripPageState extends State<NewTripPage> {
                                                   surfaceTintColor: blackColor,
                                                   shadowColor: whiteColor,
                                                   elevation: 4),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 // Navigator.push(
                                                 //   context,
                                                 //   MaterialPageRoute(builder: (context)
                                                 //   => const NewTripPage()),
                                                 // );
+                                                var response =
+                                                    await ApiProvider()
+                                                        .processTravelDelete(
+                                                            travel2response
+                                                                .id!);
+
+                                                if (response.message != null) {
+                                                  Get.back();
+                                                  Get.snackbar(
+                                                    " Deleted successfully",
+                                                    '',
+                                                    backgroundColor:
+                                                        newGradient6,
+                                                    colorText: whiteColor,
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(20, 5, 0, 0),
+                                                    duration: const Duration(
+                                                        milliseconds: 4000),
+                                                    snackPosition:
+                                                        SnackPosition.BOTTOM,
+                                                  );
+                                                  // var snackBar = SnackBar(
+                                                  //     content: Text(
+                                                  //         "Assets created successfully"));
+                                                  // ScaffoldMessenger.of(context)
+                                                  //     .showSnackBar(snackBar);
+                                                } else {
+                                                  Get.snackbar(
+                                                    "Something gone wrong",
+                                                    '',
+                                                    backgroundColor:
+                                                        newGradient6,
+                                                    colorText: whiteColor,
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(20, 5, 0, 0),
+                                                    duration: const Duration(
+                                                        milliseconds: 4000),
+                                                    snackPosition:
+                                                        SnackPosition.BOTTOM,
+                                                  );
+                                                }
                                               },
                                               child: Text("End Trip",
                                                   textAlign: TextAlign.center,
