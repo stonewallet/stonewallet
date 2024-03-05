@@ -13,8 +13,7 @@ class ADDTabThreeCash extends StatefulWidget {
   final RxList<port.Portfolio> portfolio;
   final int _portfolio;
   final String centerTitle;
-  const ADDTabThreeCash(
-      this.portfolio, this._portfolio,
+  const ADDTabThreeCash(this.portfolio, this._portfolio,
       {super.key, required this.centerTitle});
 
   @override
@@ -238,7 +237,7 @@ class ADDTabThreeCashState extends State<ADDTabThreeCash> {
 
                                       // List<Map<String, dynamic>> expensesList =
                                       //     [];
-                                    
+
                                       // for (int i = 0;
                                       //     i <=
                                       //         widget.assetsportfolio.length - 1;
@@ -321,6 +320,7 @@ class ADDTabThreeCashState extends State<ADDTabThreeCash> {
                                               milliseconds: 4000),
                                           snackPosition: SnackPosition.BOTTOM,
                                         );
+                                        cashcontroller.update();
                                       } else {
                                         // Handle errors that occur during stream processing
 

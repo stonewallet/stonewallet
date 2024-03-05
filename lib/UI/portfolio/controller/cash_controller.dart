@@ -13,6 +13,7 @@ class PortfolioController3 extends GetxController {
   void onInit() {
     super.onInit();
     fetchData();
+    cashPortfolios.refresh();
     tooltipBehavior = TooltipBehavior(enable: true);
   }
 

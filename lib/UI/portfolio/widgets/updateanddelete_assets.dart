@@ -11,6 +11,7 @@ import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart
 import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/loan_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
+import 'package:stone_wallet_main/UI/portfolio/controller/trip_controller.dart';
 
 class UpdateAssetsScreen extends StatefulWidget {
   final int index;
@@ -44,6 +45,8 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
   final assetscontroller = Get.put(PortfolioController2());
 
   final loancontroller = Get.put(PortfolioControllerLoan());
+  final tripcontroller = Get.put(PortfolioControllerTrip());
+
   @override
   void initState() {
     super.initState();
@@ -374,6 +377,7 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                       assetscontroller.update();
                                       cashcontroller.update();
                                       loancontroller.update();
+                                      tripcontroller.update();
                                       if (response.message != null) {
                                         setState(() {
                                           isLoading = false;
@@ -455,6 +459,8 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                 controller.update();
                 cashcontroller.update();
                 assetscontroller.update();
+                loancontroller.update();
+                tripcontroller.update();
                 if (response.message != null) {
                   setState(() {
                     isLoading = false;

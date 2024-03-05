@@ -133,7 +133,7 @@ class _TabBarScreenTwoState extends State<TabBarScreenTwo> {
 
                                       InnerLoansScreen(
                                           width: width, height: height),
-                                      const InnerTripTabScreenFour()
+                                       InnerTripTabScreenFour(height: height,width: width,)
                                     ],
                                   ),
                                 ),

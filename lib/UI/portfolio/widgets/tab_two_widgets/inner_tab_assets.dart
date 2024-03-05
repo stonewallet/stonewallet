@@ -9,6 +9,7 @@ import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/add_tab_two_assets.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/updateanddelete_assets.dart';
+import 'package:stone_wallet_main/widgets/debounce.dart';
 
 class InnerAssetsScreen extends StatefulWidget {
   const InnerAssetsScreen({
@@ -27,7 +28,10 @@ class _InnerAssetsScreenState extends State<InnerAssetsScreen> {
   late TextEditingController searchController = TextEditingController();
 
   int _portfolio = 1;
-  List<SearchData> searchList = [];
+
+  final _debouncer = Debouncer(milliseconds: 500);
+
+  late List<SearchData> searchList = [];
   bool isSearchidle = true;
 
   late ApiService apiService;
@@ -37,17 +41,34 @@ class _InnerAssetsScreenState extends State<InnerAssetsScreen> {
     apiService = ApiService();
     super.initState();
     _getSearch();
-    searchController.addListener(onSearchTextControlled);
+    searchController.addListener(() {
+      _debouncer.run(() {
+        _getSearch();
+      });
+    });
   }
 
-  _getSearch() async {
-    try {
-      searchList = await SearchApi()
-          .getSearchData(searchController.text.trim(), _portfolio);
-    } catch (error) {
-      // Handle error
-      print('Error in _getSearch: $error');
+  Future<void> _getSearch() async {
+    String query = searchController.text.trim();
+
+    if (query.isEmpty) {
+      // Clear on empty query
+      setState(() {
+        searchList = [];
+        isSearchidle = true;
+      });
+      return;
     }
+
+    try {
+      searchList = await SearchApi().getSearchData(query, _portfolio);
+    } catch (e) {
+      // Error handling
+    }
+
+    setState(() {
+      isSearchidle = searchList.isEmpty;
+    });
   }
 
   void onSearchTextControlled() {
@@ -60,7 +81,7 @@ class _InnerAssetsScreenState extends State<InnerAssetsScreen> {
 
   @override
   Widget build(BuildContext context) {
-     Widget body;
+    Widget body;
 
     if (searchController.text.isEmpty) {
       body = buildContentWidget(widget.width);
@@ -336,16 +357,17 @@ class _InnerAssetsScreenState extends State<InnerAssetsScreen> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(
                                       '${portfolios[index].quantity}  ${portfolios[index].coinShort}',
                                       style: RegularTextStyle.regular14400(
                                           whiteColor)),
                                 ),
-                                Align(
-                                  alignment: Alignment.topLeft,
+                               Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(
-                                      "\$ ${portfolios[index].value.toStringAsFixed(3)}",
+                                      "\$ ${portfolios[index].value.toStringAsFixed(2)}",
                                       style: RegularTextStyle.regular14400(
                                           whiteColor)),
                                 ),

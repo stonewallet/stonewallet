@@ -6,14 +6,19 @@ import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
-import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
-import 'package:stone_wallet_main/UI/portfolio/controller/loan_controller.dart';
+import 'package:stone_wallet_main/UI/portfolio/controller/trip_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/add_tab_four_assets.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/updateanddelete_assets.dart';
 import 'package:stone_wallet_main/widgets/debounce.dart';
 
 class InnerTripTabScreenFour extends StatefulWidget {
-  const InnerTripTabScreenFour({super.key});
+  const InnerTripTabScreenFour({
+    super.key,
+    required this.width,
+    required this.height,
+  });
+  final double width;
+  final double height;
 
   @override
   State<InnerTripTabScreenFour> createState() => _InnerTripTabScreenFourState();
@@ -21,15 +26,15 @@ class InnerTripTabScreenFour extends StatefulWidget {
 
 class _InnerTripTabScreenFourState extends State<InnerTripTabScreenFour> {
   late TextEditingController searchController = TextEditingController();
+
+  int _portfolio = 4;
+
   final _debouncer = Debouncer(milliseconds: 500);
 
-  late ApiService apiService;
-  int _portfolio = 4;
   late List<SearchData> searchList = [];
   bool isSearchidle = true;
-  final cashcontroller = Get.put(PortfolioController3());
-  // final assetsController = Get.put(PortfolioController2());
-  // final cashController = Get.put(PortfolioController3());
+
+  late ApiService apiService;
 
   @override
   void initState() {
@@ -74,15 +79,14 @@ class _InnerTripTabScreenFourState extends State<InnerTripTabScreenFour> {
     });
   }
 
-  final focus = FocusNode();
+  final tripcontroller = Get.put(PortfolioControllerTrip());
+
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     Widget body;
 
     if (searchController.text.isEmpty) {
-      body = buildContentWidget(width);
+      body = buildContentWidget(widget.width);
     } else {
       if (searchList.isEmpty) {
         body = Text(
@@ -90,156 +94,95 @@ class _InnerTripTabScreenFourState extends State<InnerTripTabScreenFour> {
           style: RegularTextStyle.regular18600(whiteColor),
         );
       } else {
-        body = buildSearchResults(width);
+        body = buildSearchResults(widget.width);
       }
     }
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: GetBuilder<PortfolioControllerLoan>(
-          builder: (controller) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: height * 0.02,
-                ),
-
-                // SizedBox(
-                //   height: height * 0.04,
-                // ),
-                // PieChart(
-                //   dataMap: controller.dataMap,
-                //   animationDuration: const Duration(milliseconds: 800),
-                //   chartLegendSpacing: 35,
-                //   chartRadius: MediaQuery.of(context).size.width / 3.2,
-                //   colorList: colorList,
-                //   initialAngleInDegree: 0,
-                //   chartType: ChartType.ring,
-                //   ringStrokeWidth: 32,
-                //   legendOptions: LegendOptions(
-                //     showLegendsInRow: false,
-                //     legendPosition: LegendPosition.right,
-                //     showLegends: true,
-                //     legendShape: BoxShape.circle,
-                //     legendTextStyle:
-                //         RegularTextStyle.regular16bold(whiteColor),
-                //   ),
-                //   chartValuesOptions: const ChartValuesOptions(
-                //     showChartValues: false,
-                //     showChartValuesInPercentage: false,
-                //     showChartValuesOutside: false,
-                //     decimalPlaces: 0,
-                //   ),
-                // ),
-
-                // Image.asset("assets/Icons/Group81.png"),
-                SizedBox(
-                  height: height * 0.00001,
-                ),
-                Container(
-                  width: width,
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment(0.00, -1.00),
-                        end: Alignment(0, 1),
-                        colors: [newGradient5, newGradient6],
-                      ),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(
-                            left: width * 0.05, right: width * 0.05),
-                        alignment: Alignment.center,
-                        child: TextField(
-                          controller: searchController,
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.center,
-                          style: RegularTextStyle.regular14400(whiteColor),
-                          decoration: InputDecoration(
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: textfieldColor, width: 1.0),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: textfieldColor, width: 1.0),
-                            ),
-                            hintText: "Browse",
-                            hintStyle: RegularTextStyle.regular14400(hintColor),
-                            filled: true,
-                            fillColor: textfieldColor,
-                            prefixIcon: const Icon(
-                              Icons.search_rounded,
-                              color: hintColor,
-                            ),
-                          ),
-                          textInputAction: TextInputAction.next,
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: width * 0.06),
-                                child: Text('Trip',
-                                    style: RegularTextStyle.regular15600(
-                                        whiteColor)),
-                              ),
-                              Container(
-                                  margin: EdgeInsets.only(right: width * 0.02),
-                                  child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  TabFourAssets(
-                                                    controller.loanPortfolios,
-                                                    _portfolio,
-                                                    centerTitle: 'Add New Trip',
-                                                  )),
-                                        );
-                                      },
-                                      child: const Icon(
-                                        Icons.add,
-                                        color: whiteColor,
-                                      ))),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 0.2,
-                            indent: 15,
-                            endIndent: 15,
-                          ),
-                          SizedBox(
-                            height: height * 0.03,
-                          ),
-                          body,
-                        ],
-                      ),
-                    ],
+      backgroundColor: Colors.transparent,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: widget.height * 0.02,
+            ),
+            Container(
+              height: 50,
+              padding: EdgeInsets.only(
+                left: widget.width * 0.05,
+                right: widget.width * 0.05,
+              ),
+              alignment: Alignment.center,
+              child: TextField(
+                controller: searchController,
+                textAlign: TextAlign.start,
+                textAlignVertical: TextAlignVertical.center,
+                style: RegularTextStyle.regular14400(whiteColor),
+                decoration: InputDecoration(
+                  focusedBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    borderSide: BorderSide(color: textfieldColor, width: 1.0),
+                  ),
+                  enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    borderSide: BorderSide(color: textfieldColor, width: 1.0),
+                  ),
+                  hintText: "Browse",
+                  hintStyle: RegularTextStyle.regular14400(hintColor),
+                  filled: true,
+                  fillColor: textfieldColor,
+                  prefixIcon: const Icon(
+                    Icons.search_rounded,
+                    color: hintColor,
                   ),
                 ),
-              ],
-            );
-          },
-        ));
+                textInputAction: TextInputAction.next,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Container(
+            //       margin: EdgeInsets.only(left: widget.width * 0.06),
+            //       child: Text('Trip',
+            //           style: RegularTextStyle.regular15600(whiteColor)),
+            //     ),
+            //     // Container(
+            //     //     margin: EdgeInsets.only(right: widget.width * 0.02),
+            //     //     child: TextButton(
+            //     //         onPressed: () {
+            //     //           Navigator.push(
+            //     //             context,
+            //     //             MaterialPageRoute(
+            //     //                 builder: (context) => TabFourAssets(
+            //     //                       tripcontroller.tripPortfolios,
+            //     //                       _portfolio,
+            //     //                       centerTitle: 'Add New Trip',
+            //     //                     )),
+            //     //           );
+            //     //         },
+            //     //         child: const Icon(
+            //     //           Icons.add,
+            //     //           color: whiteColor,
+            //     //         ))),
+            //   ],
+            // ),
+            Divider(
+              thickness: 1,
+              indent: 10,
+              color: Colors.black.withOpacity(0.2),
+              endIndent: 10,
+            ),
+            body,
+          ],
+        ),
+      ),
+    );
   }
 
-  Widget buildSearchResults(width) {
+  Widget buildSearchResults(double width) {
     return Column(
       children: [
         Align(
@@ -259,6 +202,7 @@ class _InnerTripTabScreenFourState extends State<InnerTripTabScreenFour> {
           itemBuilder: (context, index) {
             final product = searchList[index];
             print(product);
+
             return buildSearchDetails(product, index, width);
           },
         ),
@@ -301,13 +245,13 @@ class _InnerTripTabScreenFourState extends State<InnerTripTabScreenFour> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => UpdateAssetsScreen(
-                          // assetsController
-                          //     .assetsPortfolios,
-                          // cashController
-                          //     .cashPortfolios,
-                          index: index,
-                          portfolios: portfolios[index],
-                        ),
+
+                            // assetsController
+                            //     .assetsPortfolios,
+                            // cashController
+                            //     .cashPortfolios,
+                            index: index,
+                            portfolios: portfolios[index]),
                       ),
                     );
                   },
@@ -321,74 +265,6 @@ class _InnerTripTabScreenFourState extends State<InnerTripTabScreenFour> {
                             SizedBox(
                               width: width * 0.05,
                             ),
-                            // CachedNetworkImage(
-                            //     color: transparent,
-                            //     imageUrl: 'assets/Dollar.png',
-                            //     imageBuilder: (context, imageProvider) =>
-                            //         Padding(
-                            //           padding: const EdgeInsets.only(left: 0),
-                            //           child: ClipRRect(
-                            //             borderRadius:
-                            //                 BorderRadius.circular(20.0),
-                            //             child: Container(
-                            //               width: MediaQuery.of(context)
-                            //                       .size
-                            //                       .width /
-                            //                   19,
-                            //               height: 30,
-                            //               decoration: BoxDecoration(
-                            //                   color: transparent,
-                            //                   image: DecorationImage(
-                            //                       image: imageProvider,
-                            //                       fit: BoxFit.cover)),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //     progressIndicatorBuilder: (context, url,
-                            //             downloadProgress) =>
-                            //         Padding(
-                            //           padding: const EdgeInsets.only(left: 14),
-                            //           child: ClipRRect(
-                            //             borderRadius:
-                            //                 BorderRadius.circular(20.0),
-                            //             child: Container(
-                            //               width: MediaQuery.of(context)
-                            //                       .size
-                            //                       .width /
-                            //                   13,
-                            //               height: 30,
-                            //               decoration: const BoxDecoration(
-                            //                 color: whiteColor,
-                            //               ),
-                            //               child:
-                            //                   const CupertinoActivityIndicator(),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //     errorWidget: (context, url, error) => Padding(
-                            //           padding: const EdgeInsets.only(
-                            //             left: 0,
-                            //             right: 0,
-                            //             bottom: 0,
-                            //             top: 0,
-                            //           ),
-                            //           child: ClipRRect(
-                            //             borderRadius:
-                            //                 BorderRadius.circular(20.0),
-                            //             child: Container(
-                            //               width: MediaQuery.of(context)
-                            //                       .size
-                            //                       .width /
-                            //                   20,
-                            //               height: 30,
-                            //               decoration: const BoxDecoration(
-                            //                   color: transparent,
-                            //                   image: DecorationImage(
-                            //                       image: AssetImage(
-                            //                           'assets/Dollar.png'))),
-                            //             ),
-                            //           ),
-                            //         )),
                             Image.asset(
                               "assets/Dollar.png",
                               width: 20,
@@ -411,18 +287,26 @@ class _InnerTripTabScreenFourState extends State<InnerTripTabScreenFour> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(
-                                      '${portfolios[index].quantity}  ${portfolios[index].coinShort}',
-                                      style: RegularTextStyle.regular14400(
-                                          whiteColor)),
+                                    'Profit / Loss',
+                                    style: RegularTextStyle.regular15600(
+                                        whiteColor),
+                                  ),
                                 ),
-                                Align(
-                                  alignment: Alignment.topLeft,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(
-                                      "\$ ${portfolios[index].value.toStringAsFixed(3)}",
-                                      style: RegularTextStyle.regular14400(
-                                          whiteColor)),
+                                    "\$ ${portfolios[index].value.toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+                                      color: portfolios[index].value < 0
+                                          ? Colors.red
+                                          : Colors.green,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -495,13 +379,13 @@ class _InnerTripTabScreenFourState extends State<InnerTripTabScreenFour> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                              height: 30,
-                              width: 160,
-                              child: Text(
-                                data.coinName,
-                                style:
-                                    RegularTextStyle.regular15400(whiteColor),
-                              )),
+                            height: 30,
+                            width: 160,
+                            child: Text(
+                              data.coinName,
+                              style: RegularTextStyle.regular15400(whiteColor),
+                            ),
+                          ),
                         ],
                       ),
                       Row(

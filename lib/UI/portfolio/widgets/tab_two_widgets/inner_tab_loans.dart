@@ -14,8 +14,6 @@ import 'dart:async';
 
 import 'package:stone_wallet_main/widgets/debounce.dart';
 
-
-
 class InnerLoansScreen extends StatefulWidget {
   const InnerLoansScreen({
     super.key,
@@ -366,16 +364,17 @@ class _InnerLoansScreenState extends State<InnerLoansScreen> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(
                                       '${portfolios[index].quantity}  ${portfolios[index].coinShort}',
                                       style: RegularTextStyle.regular14400(
                                           whiteColor)),
                                 ),
-                                Align(
-                                  alignment: Alignment.topLeft,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(
-                                      "\$ ${portfolios[index].value.toStringAsFixed(3)}",
+                                      "\$ ${portfolios[index].value.toStringAsFixed(2)}",
                                       style: RegularTextStyle.regular14400(
                                           whiteColor)),
                                 ),

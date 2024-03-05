@@ -81,6 +81,7 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(child: GetBuilder<PortfolioController3>(
           builder: (controller) {
+           
             return Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -121,101 +122,81 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
                   height: height * 0.00001,
                 ),
                 Container(
-                  width: width,
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment(0.00, -1.00),
-                        end: Alignment(0, 1),
-                        colors: [newGradient5, newGradient6],
+                  height: 50,
+                  padding:
+                      EdgeInsets.only(left: width * 0.05, right: width * 0.05),
+                  alignment: Alignment.center,
+                  child: TextField(
+                    controller: searchController,
+                    textAlign: TextAlign.start,
+                    textAlignVertical: TextAlignVertical.center,
+                    style: RegularTextStyle.regular14400(whiteColor),
+                    decoration: InputDecoration(
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        borderSide:
+                            BorderSide(color: textfieldColor, width: 1.0),
                       ),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20))),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(
-                            left: width * 0.05, right: width * 0.05),
-                        alignment: Alignment.center,
-                        child: TextField(
-                          controller: searchController,
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.center,
-                          style: RegularTextStyle.regular14400(whiteColor),
-                          decoration: InputDecoration(
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: textfieldColor, width: 1.0),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: textfieldColor, width: 1.0),
-                            ),
-                            hintText: "Browse",
-                            hintStyle: RegularTextStyle.regular14400(hintColor),
-                            filled: true,
-                            fillColor: textfieldColor,
-                            prefixIcon: const Icon(
-                              Icons.search_rounded,
-                              color: hintColor,
-                            ),
-                          ),
-                          textInputAction: TextInputAction.next,
-                        ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30)),
+                        borderSide:
+                            BorderSide(color: textfieldColor, width: 1.0),
                       ),
-                      SizedBox(
-                        height: height * 0.02,
+                      hintText: "Browse",
+                      hintStyle: RegularTextStyle.regular14400(hintColor),
+                      filled: true,
+                      fillColor: textfieldColor,
+                      prefixIcon: const Icon(
+                        Icons.search_rounded,
+                        color: hintColor,
                       ),
-                      Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(left: width * 0.06),
-                                child: Text('Cash',
-                                    style: RegularTextStyle.regular15600(
-                                        whiteColor)),
-                              ),
-                              Container(
-                                  margin: EdgeInsets.only(right: width * 0.02),
-                                  child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ADDTabThreeCash(
-                                                    controller.cashPortfolios,
-                                                    _portfolio,
-                                                    centerTitle: 'Add New Cash',
-                                                  )),
-                                        );
-                                      },
-                                      child: const Icon(
-                                        Icons.add,
-                                        color: whiteColor,
-                                      ))),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 0.2,
-                            indent: 15,
-                            endIndent: 15,
-                          ),
-                          SizedBox(
-                            height: height * 0.03,
-                          ),
-                          body,
-                        ],
-                      ),
-                    ],
+                    ),
+                    textInputAction: TextInputAction.next,
                   ),
+                ),
+                SizedBox(
+                  height: height * 0.02,
+                ),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: width * 0.06),
+                          child: Text('Cash',
+                              style: RegularTextStyle.regular15600(whiteColor)),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(right: width * 0.02),
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ADDTabThreeCash(
+                                              controller.cashPortfolios,
+                                              _portfolio,
+                                              centerTitle: 'Add New Cash',
+                                            )),
+                                  );
+                                },
+                                child: const Icon(
+                                  Icons.add,
+                                  color: whiteColor,
+                                ))),
+                      ],
+                    ),
+                    const Divider(
+                      thickness: 0.2,
+                      indent: 15,
+                      endIndent: 15,
+                    ),
+                    SizedBox(
+                      height: height * 0.03,
+                    ),
+                    body,
+                  ],
                 ),
               ],
             );
@@ -395,16 +376,17 @@ class _TabBarScreenThreeState extends State<TabBarScreenThree> {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(
                                       '${portfolios[index].quantity}  ${portfolios[index].coinShort}',
                                       style: RegularTextStyle.regular14400(
                                           whiteColor)),
                                 ),
-                                Align(
-                                  alignment: Alignment.topLeft,
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(
-                                      "\$ ${portfolios[index].value.toStringAsFixed(3)}",
+                                      "\$ ${portfolios[index].value.toStringAsFixed(2)}",
                                       style: RegularTextStyle.regular14400(
                                           whiteColor)),
                                 ),

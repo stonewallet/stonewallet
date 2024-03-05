@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
-import 'package:stone_wallet_main/API/createWallet/createnewwallet.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/loding/loading_view/loding_view.dart';
-import 'create_new_wallet_3.dart';
 
-  TextEditingController userController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+TextEditingController userController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
+
 class CreateNewWalletPage2 extends StatefulWidget {
   const CreateNewWalletPage2({super.key});
 
@@ -23,6 +20,8 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
   @override
   void initState() {
     super.initState();
+    userController.clear();
+    passwordController.clear();
   }
 
   bool isLoading = false;
@@ -231,7 +230,6 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                         // setState(() {
                         //   isLoading = true;
                         // });
-                      
                       },
                     )
                   ],

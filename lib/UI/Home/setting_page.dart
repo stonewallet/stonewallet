@@ -774,6 +774,17 @@ class _SettingPageState extends State<SettingPage> {
                   onPressed: () async {
                     GetKeyUrl? keyUrl = await apiForGetKey.fetchPdfData(
                         name: assestAmountController.text);
+                    // if (keyUrl.message != null) {
+                    //   Get.snackbar(
+                    //     "${keyUrl.message}",
+                    //     '',
+                    //     backgroundColor: newGradient6,
+                    //     colorText: whiteColor,
+                    //     padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                    //     duration: const Duration(milliseconds: 4000),
+                    //     snackPosition: SnackPosition.BOTTOM,
+                    //   );
+                    // }
                     Map<Permission, PermissionStatus> statuses = await [
                       Permission.storage,
                       //add more permission to request here.
@@ -782,7 +793,9 @@ class _SettingPageState extends State<SettingPage> {
                     final dir = await getDownloadDirectorypath();
                     if (statuses[Permission.storage]!.isGranted) {
                       if (dir != null) {
-                        String savename = "keys.keys";
+                        String fileName = keyUrl.message!.split('/').last;
+
+                        String savename = "$fileName.keys";
                         String savePath = "$dir/$savename";
                         print(savePath);
                         //output:  /storage/emulated/0/Download/banner.png

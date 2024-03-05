@@ -16,10 +16,10 @@ class Portfolio {
   });
 
   factory Portfolio.fromJson(Map<String, dynamic> json) => Portfolio(
-        coinName: json["coin_name"],
-        quantity: json["quantity"]?.toDouble(),
-        subCat: json["sub_cat"],
-        value: json["value"]?.toDouble(),
+        coinName: json["coin_name"] ?? " ",
+        quantity: json["quantity"]?.toDouble() ?? 0,
+        subCat: json["sub_cat"] ?? 0,
+        value: json["value"]?.toDouble() ?? "0",
         imageUrl: json["image_url"] ?? 'assets/Dollar.png',
         coinShort: json["coin_short"] ?? '',
       );
