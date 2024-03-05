@@ -7,7 +7,6 @@ import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/trip_controller.dart';
-import 'package:stone_wallet_main/UI/portfolio/widgets/add_tab_four_assets.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/updateanddelete_assets.dart';
 import 'package:stone_wallet_main/widgets/debounce.dart';
 
