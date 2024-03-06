@@ -79,7 +79,7 @@ class _NewTripPageState extends State<NewTripPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    List<DataColumn>  getColumns() {
+    List<DataColumn> getColumns() {
       return newData.isNotEmpty
           ? newData.first.keys
               .map((String key) => DataColumn(
@@ -615,18 +615,14 @@ class _NewTripPageState extends State<NewTripPage> {
                                                     await apiForGetPdf
                                                         .fetchPdfData(
                                                             widget.travelId);
-                                                Map<Permission,
-                                                        PermissionStatus>
-                                                    statuses = await [
-                                                  Permission.storage,
-                                                  //add more permission to request here.
-                                                ].request();
-
+                                                final permissionStatus =
+                                                    await requestStoragePermission();
+                              
                                                 final dir =
                                                     await getDownloadDirectorypath();
-                                                if (statuses[
-                                                        Permission.storage]!
-                                                    .isGranted) {
+                                                if ((permissionStatus[
+                                                        Permission.storage] ==
+                                                    PermissionStatus.granted)) {
                                                   if (dir != null) {
                                                     String savename =
                                                         "${travel2response.tripName}.pdf";
@@ -709,7 +705,7 @@ class _NewTripPageState extends State<NewTripPage> {
     if (Platform.isAndroid) {
       return (await DownloadsPathProvider.downloadsDirectory)?.path;
     } else if (Platform.isIOS) {
-      return (await getApplicationDocumentsDirectory()).path;
+      return (await DownloadsPathProvider.downloadsDirectory)?.path;
     } else {
       return null;
     }

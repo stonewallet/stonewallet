@@ -21,7 +21,7 @@ void setupHttpOverrides() {
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  Paint.enableDithering = true;
+  // Paint.enableDithering = true;
   runApp(const MyApp());
 }
 

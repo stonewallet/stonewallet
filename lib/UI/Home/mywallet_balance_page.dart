@@ -48,7 +48,67 @@ class _MyWalletBalancePageState extends State<MyWalletBalancePage> {
         type: "Ripple",
         icon: "assets/Icons/ripple.png",
         amount: "1 XRP",
-        usdAmount: "\$1240")
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
+    CoinModel(
+        name: "XRP",
+        type: "Ripple",
+        icon: "assets/Icons/ripple.png",
+        amount: "1 Solana",
+        usdAmount: "\$1240"),
   ];
   late ApiServiceForHomeCoins apiServiceForHomeCoins;
 

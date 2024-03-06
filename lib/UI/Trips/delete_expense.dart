@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart';
-import 'package:stone_wallet_main/Responses/travel_list_response.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import '../../API/api_provider.dart';
 import '../Constants/colors.dart';
-import 'new_trip.dart';
 
 
 class DeleteExpensePage extends StatefulWidget {

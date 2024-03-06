@@ -16,7 +16,8 @@ class PortfolioPage extends StatefulWidget {
   State<PortfolioPage> createState() => _PortfolioPageState();
 }
 
-class _PortfolioPageState extends State<PortfolioPage> {
+class _PortfolioPageState extends State<PortfolioPage>
+    with TickerProviderStateMixin {
   late TextEditingController searchController = TextEditingController();
 
   final controller = Get.put(PortfolioController());
@@ -30,13 +31,16 @@ class _PortfolioPageState extends State<PortfolioPage> {
   ];
 
   late ApiService apiService;
+  late TabController _tabController;
 
   @override
   void initState() {
     setState(() {});
     controller;
-    controller.getChartData();
+    // controller.getChartData(5);
     apiService = ApiService();
+    _tabController = TabController(length: 3, vsync: this);
+    // _tabController.addListener(_handleTabChange);
     super.initState();
     fetchData();
   }
@@ -44,7 +48,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
   void fetchData() async {
     controller.fetchData();
     setState(() {});
-    controller.getChartData();
+    // controller.getChartData(5);
     setState(() {});
     controller.update();
   }
@@ -129,7 +133,12 @@ class _PortfolioPageState extends State<PortfolioPage> {
                         // ),
 
                         StreamBuilder<List<GDPData>>(
-                          stream: controller.getChartData(),
+                          stream: controller.portfoliosMap.entries.isEmpty
+                              ? null
+                              : Stream.fromIterable(
+                                      controller.portfoliosMap.keys)
+                                  .asyncMap((subCategory) => controller
+                                      .getChartData(_tabController.index)),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -147,7 +156,6 @@ class _PortfolioPageState extends State<PortfolioPage> {
                               ));
                             } else {
                               final List<GDPData> chartData = snapshot.data!;
-
                               double totalSum = chartData.fold(
                                   0, (sum, data) => sum + data.gdp);
 
@@ -218,6 +226,7 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                 ),
                                 // const SizedBox(height: 8),
                                 TabBar(
+                                  controller: _tabController,
                                   indicatorSize: TabBarIndicatorSize.tab,
                                   dividerColor: transparent,
                                   tabs: [
@@ -256,9 +265,10 @@ class _PortfolioPageState extends State<PortfolioPage> {
                                     ),
                                   ],
                                 ),
-                                const Expanded(
+                                Expanded(
                                   child: TabBarView(
-                                    children: [
+                                    controller: _tabController,
+                                    children: const [
                                       TabBarScreenOne(),
                                       TabBarScreenTwo(),
                                       TabBarScreenThree(),

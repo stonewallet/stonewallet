@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Trips/trips.dart';
-
 import '../../API/api_provider.dart';
-import '../../Responses/travel2_response.dart' as trip;
 import '../../Responses/travel2_response.dart';
-import '../../Responses/travel_list_response.dart';
 import '../Constants/colors.dart';
-import 'new_trip.dart';
 
 class EditTripPage extends StatefulWidget {
   final int id;

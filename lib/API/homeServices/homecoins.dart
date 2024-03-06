@@ -11,7 +11,7 @@ class ApiServiceForHomeCoins {
     setupHttpOverrides();
     try {
       final response = await _dio.get(
-        '$baseUrl/travel/home/coins/5/',
+        '$baseUrl/travel/home/coins/15/',
         options: Options(
           headers: {
             "Cookie":
