@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
@@ -9,6 +10,7 @@ import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/loan_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/add_tab_four_assets.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/updateanddelete_assets.dart';
+import 'package:stone_wallet_main/controller/local/local_database.dart';
 
 import 'dart:async';
 
@@ -89,7 +91,9 @@ class _InnerLoansScreenState extends State<InnerLoansScreen> {
     Widget body;
 
     if (searchController.text.isEmpty) {
-      body = buildContentWidget(widget.width);
+      body = BuildLoanContent(
+        width: widget.width,
+      );
     } else {
       if (searchList.isEmpty) {
         body = Text(
@@ -217,184 +221,33 @@ class _InnerLoansScreenState extends State<InnerLoansScreen> {
     );
   }
 
-  FutureBuilder<List<Portfolio>> buildContentWidget(double width) {
-    return FutureBuilder<List<Portfolio>>(
-        future: apiService.getDataForLoan(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-            return Center(
-              child: Text(
-                "No data",
-                style: LargeTextStyle.large18800(whiteColor),
-              ),
-            );
-          } else if (!snapshot.hasData) {
-            return Center(
-              child: Text(
-                "No data",
-                style: LargeTextStyle.large18800(whiteColor),
-              ),
-            );
-          } else {
-            final List<Portfolio> portfolios = snapshot.data!;
+  // FutureBuilder<List<Portfolio>> buildContentWidget(double width) {
+  //   return FutureBuilder<List<Portfolio>>(
+  //       future: apiService.getDataForLoan(),
+  //       builder: (context, snapshot) {
+  //         if (snapshot.connectionState == ConnectionState.waiting) {
+  //           return const Center(child: CircularProgressIndicator());
+  //         } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+  //           return Center(
+  //             child: Text(
+  //               "No data",
+  //               style: LargeTextStyle.large18800(whiteColor),
+  //             ),
+  //           );
+  //         } else if (!snapshot.hasData) {
+  //           return Center(
+  //             child: Text(
+  //               "No data",
+  //               style: LargeTextStyle.large18800(whiteColor),
+  //             ),
+  //           );
+  //         } else {
+  //           final List<Portfolio> portfolios = snapshot.data!;
 
-            return ListView.builder(
-              key: UniqueKey(),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                _portfolio = portfolios[index].subCat;
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UpdateAssetsScreen(
-
-                            // assetsController
-                            //     .assetsPortfolios,
-                            // cashController
-                            //     .cashPortfolios,
-                            index: index,
-                            portfolios: portfolios[index]),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: width * 0.05,
-                            ),
-                            // CachedNetworkImage(
-                            //     color: transparent,
-                            //     imageUrl:
-                            //         'https://www.${portfolios[index].imageUrl}',
-                            //     imageBuilder: (context, imageProvider) =>
-                            //         Padding(
-                            //           padding: const EdgeInsets.only(left: 0),
-                            //           child: ClipRRect(
-                            //             borderRadius:
-                            //                 BorderRadius.circular(20.0),
-                            //             child: Container(
-                            //               width: MediaQuery.of(context)
-                            //                       .size
-                            //                       .width /
-                            //                   19,
-                            //               height: 30,
-                            //               decoration: BoxDecoration(
-                            //                   color: transparent,
-                            //                   image: DecorationImage(
-                            //                       image: imageProvider,
-                            //                       fit: BoxFit.cover)),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //     progressIndicatorBuilder: (context, url,
-                            //             downloadProgress) =>
-                            //         Padding(
-                            //           padding: const EdgeInsets.only(left: 14),
-                            //           child: ClipRRect(
-                            //             borderRadius:
-                            //                 BorderRadius.circular(20.0),
-                            //             child: Container(
-                            //               width: MediaQuery.of(context)
-                            //                       .size
-                            //                       .width /
-                            //                   13,
-                            //               height: 30,
-                            //               decoration: const BoxDecoration(
-                            //                 color: whiteColor,
-                            //               ),
-                            //               child:
-                            //                   const CupertinoActivityIndicator(),
-                            //             ),
-                            //           ),
-                            //         ),
-                            //     errorWidget: (context, url, error) => Padding(
-                            //           padding: const EdgeInsets.only(
-                            //             left: 0,
-                            //             right: 0,
-                            //             bottom: 0,
-                            //             top: 0,
-                            //           ),
-                            //           child: ClipRRect(
-                            //             borderRadius:
-                            //                 BorderRadius.circular(20.0),
-                            //             child: Container(
-                            //                 width: MediaQuery.of(context)
-                            //                         .size
-                            //                         .width /
-                            //                     20,
-                            //                 height: 30,
-                            //                 decoration: const BoxDecoration(
-                            //                     color: transparent,
-                            //                     image: DecorationImage(
-                            //                         image: AssetImage(
-                            //                             'assets/Dollar.png'))),
-                            //                 child: Image.asset(
-                            //                     'assets/Dollar.png')),
-                            //           ),
-                            //         )),
-                            Image.asset(
-                              "assets/Dollar.png",
-                              width: 20,
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: width * 0.05,
-                            ),
-                            Text(portfolios[index].coinName,
-                                style:
-                                    RegularTextStyle.regular15600(iconColor2)),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Column(
-                              children: [
-                                SizedBox(
-                                  width: width * 0.05,
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
-                                  child: Text(
-                                      '${portfolios[index].quantity}  ${portfolios[index].coinShort}',
-                                      style: RegularTextStyle.regular14400(
-                                          whiteColor)),
-                                ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
-                                  child: Text(
-                                      "\$ ${portfolios[index].value.toStringAsFixed(2)}",
-                                      style: RegularTextStyle.regular14400(
-                                          whiteColor)),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              width: width * 0.05,
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-              itemCount: portfolios.length,
-            );
-          }
-        });
-  }
+  //           return
+  //         }
+  //       });
+  // }
 
   Widget buildSearchDetails(SearchData data, index, width) {
     return Column(
@@ -480,5 +333,171 @@ class _InnerLoansScreenState extends State<InnerLoansScreen> {
         ),
       ],
     );
+  }
+}
+
+List<Portfolio> dataPortfolio = [];
+
+class BuildLoanContent extends StatefulWidget {
+  const BuildLoanContent({super.key, required this.width});
+  final double width;
+
+  @override
+  State<BuildLoanContent> createState() => _BuildLoanContentState();
+}
+
+class _BuildLoanContentState extends State<BuildLoanContent> {
+  int _portfolio = 3;
+
+  bool isLoading = true;
+  List<Map<String, dynamic>> savedTime = [];
+
+  getLastSavedTime() async {
+    var time = await LocalDatabase.getSaveTime();
+    setState(() {
+      savedTime = time;
+    });
+  }
+
+//read data from db or fetch api
+  loanpagePortfolioData() async {
+    int count = await LocalDatabase.getPortfolioCount() ?? 0;
+    int savedTimeLength = savedTime.length;
+    DateTime firstDataSavedTime = savedTimeLength >= 1
+        ? DateTime.parse(savedTime[0]["lastSavedTime"] ?? "2000-01-01")
+        : DateTime(2000);
+    print(firstDataSavedTime);
+
+    DateTime currentTime = DateTime.now();
+    Duration difference = currentTime.difference(firstDataSavedTime);
+    if (difference.inMinutes > 5 || count == 0) {
+      var isApiFetching = await ApiService().getDataForLoan();
+      if (isApiFetching) {
+        if (kDebugMode) {
+          print('api fetching is called');
+        }
+        getLoanPortfolio();
+      }
+    } else {
+      if (kDebugMode) {
+        print('data from local called');
+      }
+      getLoanPortfolio();
+    }
+  }
+
+  final loancontroller = Get.put(PortfolioControllerLoan());
+
+  getLoanPortfolio() async {
+    var loan = await LocalDatabase.getData();
+    setState(() {
+      dataPortfolio = loan.map((e) => Portfolio.fromJson(e)).toList();
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    loanpagePortfolioData();
+    getLastSavedTime();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print(_portfolio);
+    return isLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : dataPortfolio.isEmpty
+            ? Center(
+                child: Text(
+                  "No data Found",
+                  style: RegularTextStyle.regular15600(whiteColor),
+                ),
+              )
+            : ListView.builder(
+                key: UniqueKey(),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  _portfolio = dataPortfolio[index].subCat;
+                  return InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateAssetsScreen(
+
+                              // assetsController
+                              //     .assetsPortfolios,
+                              // cashController
+                              //     .cashPortfolios,
+                              index: index,
+                              portfolios: dataPortfolio[index]),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: widget.width * 0.05,
+                              ),
+                              Image.asset(
+                                "assets/Dollar.png",
+                                width: 20,
+                                height: 20,
+                              ),
+                              SizedBox(
+                                width: widget.width * 0.05,
+                              ),
+                              Text(dataPortfolio[index].coinName,
+                                  style: RegularTextStyle.regular15600(
+                                      iconColor2)),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    width: widget.width * 0.05,
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                    child: Text(
+                                        '${dataPortfolio[index].quantity}  ${dataPortfolio[index].coinShort}',
+                                        style: RegularTextStyle.regular14400(
+                                            whiteColor)),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                    child: Text(
+                                        "\$ ${dataPortfolio[index].value.toStringAsFixed(2)}",
+                                        style: RegularTextStyle.regular14400(
+                                            whiteColor)),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                width: widget.width * 0.05,
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                itemCount: dataPortfolio.length,
+              );
   }
 }

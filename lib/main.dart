@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/UI/splash/splash_view.dart/splash_view.dart';
+import 'package:stone_wallet_main/controller/local/local_database.dart';
 
 import 'UI/Constants/colors.dart';
 import 'dart:io';
@@ -19,9 +20,11 @@ void setupHttpOverrides() {
   HttpOverrides.global = MyHttpOverrides();
 }
 
-void main() {
+void main() async {
   HttpOverrides.global = MyHttpOverrides();
   // Paint.enableDithering = true;
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalDatabase.createDatabase();
   runApp(const MyApp());
 }
 

@@ -4,6 +4,7 @@ import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
+import 'package:stone_wallet_main/UI/portfolio/widgets/subcat_value_widget/subcat_value.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/tab_one.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/tab_three.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/tab_two.dart';
@@ -133,12 +134,7 @@ class _PortfolioPageState extends State<PortfolioPage>
                         // ),
 
                         StreamBuilder<List<GDPData>>(
-                          stream: controller.portfoliosMap.entries.isEmpty
-                              ? null
-                              : Stream.fromIterable(
-                                      controller.portfoliosMap.keys)
-                                  .asyncMap((subCategory) => controller
-                                      .getChartData(_tabController.index)),
+                          stream: controller.getChartData(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -161,7 +157,7 @@ class _PortfolioPageState extends State<PortfolioPage>
 
                               return SfCircularChart(
                                 legend: Legend(
-                                  isVisible: true,
+                                  isVisible: false,
                                   overflowMode: LegendItemOverflowMode.scroll,
                                   position: LegendPosition.bottom,
                                   textStyle: RegularTextStyle.regular16bold(
@@ -200,6 +196,7 @@ class _PortfolioPageState extends State<PortfolioPage>
                             }
                           },
                         ),
+                        const SizedBox(height: 50, child: SubCatListView()),
 
                         // Image.asset("assets/Icons/Group81.png"),
                         SizedBox(

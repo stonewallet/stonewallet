@@ -12,6 +12,8 @@ import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/loan_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/trip_controller.dart';
+import 'package:stone_wallet_main/UI/portfolio/widgets/tab_two_widgets/inner_tab_loans.dart';
+import 'package:stone_wallet_main/controller/local/local_database.dart';
 
 class UpdateAssetsScreen extends StatefulWidget {
   final int index;
@@ -451,6 +453,10 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
             ),
             TextButton(
               onPressed: () async {
+                LocalDatabase.createDeletedatabase();
+                setState(() {
+                  dataPortfolio = [];
+                });
                 var response = await ApiServiceForADDAssets().delete(
                   expenseController[0].text,
                   double.parse(expenseController[1].text),

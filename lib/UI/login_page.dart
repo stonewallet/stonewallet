@@ -206,6 +206,9 @@ class _LoginPageState extends State<LoginPage> {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
                             } else {
+                              setState(() {
+                                isLoading = false;
+                              });
                               var snackBar = const SnackBar(
                                   content: Text("Something went wrong"));
                               if (context.mounted)

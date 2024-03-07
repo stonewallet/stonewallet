@@ -19,7 +19,7 @@ class PortfolioControllerTrip extends GetxController {
   fetchData() async {
     try {
       final apiService = ApiService();
-      final data = await apiService.getDataForLoan();
+      final data = await apiService.getDataForTrip();
       tripPortfolios.assignAll(data);
       totalValue.value = calculateTotalValue();
       tripPortfolios.refresh();

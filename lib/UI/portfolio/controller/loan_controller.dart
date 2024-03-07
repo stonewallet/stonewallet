@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart';
+import 'package:stone_wallet_main/controller/local/local_database.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PortfolioControllerLoan extends GetxController {
@@ -9,6 +10,7 @@ class PortfolioControllerLoan extends GetxController {
   RxDouble totalValue = 0.0.obs;
   RxMap<String, double> dataMap = <String, double>{}.obs;
   TooltipBehavior? tooltipBehavior;
+
   @override
   void onInit() {
     super.onInit();
@@ -16,11 +18,12 @@ class PortfolioControllerLoan extends GetxController {
     tooltipBehavior = TooltipBehavior(enable: true);
   }
 
+
   fetchData() async {
     try {
       final apiService = ApiService();
       final data = await apiService.getDataForLoan();
-      loanPortfolios.assignAll(data);
+      // loanPortfolios.assignAll(data);
       totalValue.value = calculateTotalValue();
       loanPortfolios.refresh();
       dataMap.value = getDataMap();

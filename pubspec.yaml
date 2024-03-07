@@ -182,6 +182,8 @@ dependencies:
   lottie: ^3.1.0
   overlay_tooltip: ^0.2.3
   rxdart: ^0.27.7
+  sqflite: ^2.3.2
+  flutter_vector_icons: ^2.0.0
 
 dev_dependencies:
   flutter_test:

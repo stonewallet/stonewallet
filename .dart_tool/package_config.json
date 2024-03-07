@@ -248,6 +248,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "flutter_vector_icons",
+      "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_vector_icons-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_web_plugins",
       "rootUri": "file:///C:/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
@@ -770,7 +776,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-03-06T12:03:07.413801Z",
+  "generated": "2024-03-07T18:53:24.151808Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }
