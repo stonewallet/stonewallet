@@ -125,6 +125,8 @@ class _TripsPageState extends State<TripsPage> {
                                                 const AlwaysScrollableScrollPhysics(),
                                             itemCount: travelList.length,
                                             itemBuilder: (c, i) {
+                                              final isEndTrip =
+                                                  travelList[i].endTrip;
                                               return Column(
                                                 children: [
                                                   Row(
@@ -171,8 +173,9 @@ class _TripsPageState extends State<TripsPage> {
                                                                     TextAlign
                                                                         .center,
                                                                 style: LargeTextStyle
-                                                                    .large20700(
-                                                                        whiteColor))),
+                                                                    .large20700(isEndTrip
+                                                                        ? redColor
+                                                                        : whiteColor))),
                                                       ),
                                                       const SizedBox(
                                                         width: 10,

@@ -2,6 +2,12 @@
   "configVersion": 2,
   "packages": [
     {
+      "name": "api_cache_manager",
+      "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/api_cache_manager-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "archive",
       "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/archive-3.4.10",
       "packageUri": "lib/",
@@ -776,7 +782,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-03-07T18:53:24.151808Z",
+  "generated": "2024-03-08T08:48:41.951474Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }

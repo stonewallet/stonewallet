@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
+import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
@@ -137,42 +138,7 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                 style: LargeTextStyle.large20700(whiteColor)),
                             IconButton(
                               onPressed: () async {
-                                // widget.portfolios.removeAt(widget.index);
-                                // print(widget.portfolios);
-
-                                // for (int i = 0;
-                                //     i <= widget.assetsportfolios.length - 1;
-                                //     i++) {
-                                //   expensesList.add({
-                                //     "coin_name":
-                                //         widget.assetsportfolios[i].coinName,
-                                //     "quantity":
-                                //         widget.assetsportfolios[i].quantity,
-                                //     "sub_cat":
-                                //         widget.assetsportfolios[i].subCat,
-                                //   });
-                                // }
-                                // for (int i = 0;
-                                //     i <= widget.cashportfolios.length - 1;
-                                //     i++) {
-                                //   expensesList.add({
-                                //     "coin_name":
-                                //         widget.cashportfolios[i].coinName,
-                                //     "quantity":
-                                //         widget.cashportfolios[i].quantity,
-                                //     "sub_cat": widget.cashportfolios[i].subCat,
-                                //   });
-                                // }
-
-                                // for (int i = 0;
-                                //     i <= widget.portfolios.length - 1;
-                                //     i++) {
-                                //   expensesList.add({
-                                //     "coin_name": widget.portfolios[i].coinName,
-                                //     "quantity": widget.portfolios[i].quantity,
-                                //     "sub_cat": widget.portfolios[i].subCat,
-                                //   });
-                                // }
+                                
                                 _showDeleteConfirmationDialog(context);
                               },
                               icon: const Icon(
@@ -328,47 +294,8 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                         elevation: 4),
                                     onPressed: () async {
                                       // // List <Map<String, dynamic>> productList = [];
-                                      // List<Map<String, dynamic>> expensesList =
-                                      //     [];
-
-                                      // for (int i = 0;
-                                      //     i <= widget.portfolios.length - 1;
-                                      //     i++) {
-                                      //   expensesList.add({
-                                      //     "coin_name":
-                                      //         widget.portfolios[i].coinName,
-                                      //     "quantity":
-                                      //         widget.portfolios[i].quantity,
-                                      //   });
-                                      // }
-
-                                      // // // Add new asset to expensesList
-                                      // // expensesList.add({
-                                      // //   "coin_name": expenseController[0].text,
-                                      // //   "quantity": double.parse(
-                                      // //       expenseController[1].text),
-                                      // // });
-
-                                      // setState(() {
-                                      //   isLoading = true;
-                                      // });
-
-                                      // if (widget.index != -1) {
-                                      //   expensesList[widget.index]
-                                      //           ['coin_name'] =
-                                      //       expenseController[0].text;
-                                      //   expensesList[widget.index]['quantity'] =
-                                      //       double.parse(
-                                      //           expenseController[1].text);
-                                      // } else {
-                                      //   expensesList.add({
-                                      //     "coin_name":
-                                      //         expenseController[0].text,
-                                      //     "quantity": double.parse(
-                                      //         expenseController[1].text),
-                                      //   });
-                                      // }
-
+                                      
+                                      ApiService().removeCachedData();
                                       var response =
                                           await ApiServiceForADDAssets().update(
                                         expenseController[0].text,
@@ -453,10 +380,7 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
             ),
             TextButton(
               onPressed: () async {
-                LocalDatabase.createDeletedatabase();
-                setState(() {
-                  dataPortfolio = [];
-                });
+                ApiService().removeCachedData();
                 var response = await ApiServiceForADDAssets().delete(
                   expenseController[0].text,
                   double.parse(expenseController[1].text),

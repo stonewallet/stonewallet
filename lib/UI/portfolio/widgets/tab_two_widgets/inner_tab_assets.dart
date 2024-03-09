@@ -363,7 +363,7 @@ class _InnerAssetsScreenState extends State<InnerAssetsScreen> {
                                       style: RegularTextStyle.regular14400(
                                           whiteColor)),
                                 ),
-                               Padding(
+                                Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(50, 0, 0, 0),
                                   child: Text(

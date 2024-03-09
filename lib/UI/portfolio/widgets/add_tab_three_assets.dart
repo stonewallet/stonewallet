@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
+import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
@@ -233,6 +234,7 @@ class ADDTabThreeCashState extends State<ADDTabThreeCash> {
                                         shadowColor: whiteColor,
                                         elevation: 4),
                                     onPressed: () async {
+                                      ApiService().removeCachedDataForCash();
                                       //  List <Map<String, dynamic>> productList = [];
 
                                       // List<Map<String, dynamic>> expensesList =

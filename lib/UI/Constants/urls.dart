@@ -20,5 +20,7 @@ const createwallet = "$baseUrl/travel/add/wallet/";
 const dropdownasset = "$baseUrl/travel/get/prices/";
 const logOutPost = "$baseUrl/travel/logout/";
 const keyUrl = "$baseUrl/travel/get/wallet/keys/";
+const endTripUrl = "$baseUrl/travel/trip/end/";
+const resumeTripUrl = "$baseUrl/travel/trip/resume/";
 
 late WalletResponse walletResponse;

@@ -65,6 +65,17 @@ class LocalDatabase {
     return await db.delete("portfolio");
   }
 
+    // Delete a single portfolio entry
+  static Future<int> deletePortfolio(String coinName) async {
+    var db = await createDatabase();
+
+    return await db.delete(
+      "portfolio",
+      where: "coin_name = ?",
+      whereArgs: [coinName],
+    );
+  }
+
   //insert time after saving to the database
 
   static Future insertSavedTime(int pageno) async {

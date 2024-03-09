@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:stone_wallet_main/UI/Trips/provider/new_trip_provider.dart';
 import 'package:stone_wallet_main/UI/splash/splash_view.dart/splash_view.dart';
 import 'package:stone_wallet_main/controller/local/local_database.dart';
 
@@ -33,14 +35,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Stone Wallet',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: purpleColor),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => TripProvider(),
+        )
+      ],
+      child: GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Stone Wallet',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: purpleColor),
+          useMaterial3: true,
+        ),
+        home: SplashView(),
       ),
-      home: SplashView(),
     );
   }
 }

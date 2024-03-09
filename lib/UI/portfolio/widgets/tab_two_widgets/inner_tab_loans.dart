@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
@@ -10,7 +9,6 @@ import 'package:stone_wallet_main/UI/Model/portfolio/search_model.dart';
 import 'package:stone_wallet_main/UI/portfolio/controller/loan_controller.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/add_tab_four_assets.dart';
 import 'package:stone_wallet_main/UI/portfolio/widgets/updateanddelete_assets.dart';
-import 'package:stone_wallet_main/controller/local/local_database.dart';
 
 import 'dart:async';
 
@@ -32,7 +30,7 @@ class InnerLoansScreen extends StatefulWidget {
 class _InnerLoansScreenState extends State<InnerLoansScreen> {
   late TextEditingController searchController = TextEditingController();
 
-  int _portfolio = 3;
+  final int _portfolio = 3;
 
   final _debouncer = Debouncer(milliseconds: 500);
 
@@ -255,15 +253,7 @@ class _InnerLoansScreenState extends State<InnerLoansScreen> {
       children: [
         InkWell(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => UpdateAssetsScreen(
-            //       index: index,
-            //       searchData: data,
-            //     ),
-            //   ),
-            // );
+          
           },
           child: Container(
             height: 80,
@@ -336,8 +326,6 @@ class _InnerLoansScreenState extends State<InnerLoansScreen> {
   }
 }
 
-List<Portfolio> dataPortfolio = [];
-
 class BuildLoanContent extends StatefulWidget {
   const BuildLoanContent({super.key, required this.width});
   final double width;
@@ -347,157 +335,170 @@ class BuildLoanContent extends StatefulWidget {
 }
 
 class _BuildLoanContentState extends State<BuildLoanContent> {
+  List<Portfolio> dataPortfolio = [];
   int _portfolio = 3;
-
+  late ApiService apiService;
   bool isLoading = true;
   List<Map<String, dynamic>> savedTime = [];
 
-  getLastSavedTime() async {
-    var time = await LocalDatabase.getSaveTime();
-    setState(() {
-      savedTime = time;
-    });
-  }
+//   getLastSavedTime() async {
+//     var time = await LocalDatabase.getSaveTime();
+//     setState(() {
+//       savedTime = time;
+//     });
+//   }
 
-//read data from db or fetch api
-  loanpagePortfolioData() async {
-    int count = await LocalDatabase.getPortfolioCount() ?? 0;
-    int savedTimeLength = savedTime.length;
-    DateTime firstDataSavedTime = savedTimeLength >= 1
-        ? DateTime.parse(savedTime[0]["lastSavedTime"] ?? "2000-01-01")
-        : DateTime(2000);
-    print(firstDataSavedTime);
+// //read data from db or fetch api
+//   loanpagePortfolioData() async {
+//     int count = await LocalDatabase.getPortfolioCount() ?? 0;
+//     print("No of news saved ${count}");
+//     int savedTimeLength = savedTime.length;
+//     DateTime firstDataSavedTime = savedTimeLength >= 1
+//         ? DateTime.parse(savedTime[0]["lastSavedTime"] ?? "2000-01-01")
+//         : DateTime(2000);
+//     print(firstDataSavedTime);
 
-    DateTime currentTime = DateTime.now();
-    Duration difference = currentTime.difference(firstDataSavedTime);
-    if (difference.inMinutes > 5 || count == 0) {
-      var isApiFetching = await ApiService().getDataForLoan();
-      if (isApiFetching) {
-        if (kDebugMode) {
-          print('api fetching is called');
-        }
-        getLoanPortfolio();
-      }
-    } else {
-      if (kDebugMode) {
-        print('data from local called');
-      }
-      getLoanPortfolio();
-    }
-  }
+//     DateTime currentTime = DateTime.now();
+//     Duration difference = currentTime.difference(firstDataSavedTime);
+//     if (count == 0) {
+//       var isApiFetching = await ApiService().getDataForLoan();
+//       if (isApiFetching) {
+//         if (kDebugMode) {
+//           print('api fetching is called');
+//         }
+//         getLoanPortfolio();
+//       }
+//     } else {
+//       if (kDebugMode) {
+//         print('data from local called');
+//       }
+//       getLoanPortfolio();
+//     }
+//   }
 
-  final loancontroller = Get.put(PortfolioControllerLoan());
-
-  getLoanPortfolio() async {
-    var loan = await LocalDatabase.getData();
-    setState(() {
-      dataPortfolio = loan.map((e) => Portfolio.fromJson(e)).toList();
-      isLoading = false;
-    });
-  }
+//   getLoanPortfolio() async {
+//     var loan = await LocalDatabase.getData();
+//     setState(() {
+//       dataPortfolio = loan.map((e) => Portfolio.fromJson(e)).toList();
+//       isLoading = false;
+//     });
+//   }
 
   @override
   void initState() {
-    loanpagePortfolioData();
-    getLastSavedTime();
+    // loanpagePortfolioData();
+    // getLastSavedTime();
+    apiService = ApiService();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     print(_portfolio);
-    return isLoading
-        ? const Center(
-            child: CircularProgressIndicator(),
-          )
-        : dataPortfolio.isEmpty
-            ? Center(
-                child: Text(
-                  "No data Found",
-                  style: RegularTextStyle.regular15600(whiteColor),
-                ),
-              )
-            : ListView.builder(
-                key: UniqueKey(),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (BuildContext context, int index) {
-                  _portfolio = dataPortfolio[index].subCat;
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UpdateAssetsScreen(
+    return FutureBuilder<List<Portfolio>>(
+        future: apiService.getDataForLoan(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+            return Center(
+              child: Text(
+                "No data",
+                style: LargeTextStyle.large18800(whiteColor),
+              ),
+            );
+          } else if (!snapshot.hasData) {
+            return Center(
+              child: Text(
+                "No data",
+                style: LargeTextStyle.large18800(whiteColor),
+              ),
+            );
+          } else {
+            final List<Portfolio> portfolios = snapshot.data!;
 
-                              // assetsController
-                              //     .assetsPortfolios,
-                              // cashController
-                              //     .cashPortfolios,
-                              index: index,
-                              portfolios: dataPortfolio[index]),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(bottom: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: widget.width * 0.05,
-                              ),
-                              Image.asset(
-                                "assets/Dollar.png",
-                                width: 20,
-                                height: 20,
-                              ),
-                              SizedBox(
-                                width: widget.width * 0.05,
-                              ),
-                              Text(dataPortfolio[index].coinName,
-                                  style: RegularTextStyle.regular15600(
-                                      iconColor2)),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  SizedBox(
-                                    width: widget.width * 0.05,
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(50, 0, 0, 0),
-                                    child: Text(
-                                        '${dataPortfolio[index].quantity}  ${dataPortfolio[index].coinShort}',
-                                        style: RegularTextStyle.regular14400(
-                                            whiteColor)),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(50, 0, 0, 0),
-                                    child: Text(
-                                        "\$ ${dataPortfolio[index].value.toStringAsFixed(2)}",
-                                        style: RegularTextStyle.regular14400(
-                                            whiteColor)),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                width: widget.width * 0.05,
-                              )
-                            ],
-                          )
-                        ],
+            return ListView.builder(
+              key: UniqueKey(),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateAssetsScreen(
+
+                            // assetsController
+                            //     .assetsPortfolios,
+                            // cashController
+                            //     .cashPortfolios,
+                            index: index,
+                            portfolios: portfolios[index]),
                       ),
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(
+                              width: widget.width * 0.05,
+                            ),
+                            Image.asset(
+                              "assets/Dollar.png",
+                              width: 20,
+                              height: 20,
+                            ),
+                            SizedBox(
+                              width: widget.width * 0.05,
+                            ),
+                            Text(portfolios[index].coinName,
+                                style:
+                                    RegularTextStyle.regular15600(iconColor2)),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Column(
+                              children: [
+                                SizedBox(
+                                  width: widget.width * 0.05,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                  child: Text(
+                                      '${portfolios[index].quantity}  ${portfolios[index].coinShort}',
+                                      style: RegularTextStyle.regular14400(
+                                          whiteColor)),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(50, 0, 0, 0),
+                                  child: Text(
+                                      "\$ ${portfolios[index].value.toStringAsFixed(2)}",
+                                      style: RegularTextStyle.regular14400(
+                                          whiteColor)),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: widget.width * 0.05,
+                            )
+                          ],
+                        )
+                      ],
                     ),
-                  );
-                },
-                itemCount: dataPortfolio.length,
-              );
+                  ),
+                );
+              },
+              itemCount: portfolios.length,
+            );
+          }
+        });
   }
 }

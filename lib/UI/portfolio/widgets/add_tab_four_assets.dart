@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
+import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
@@ -54,7 +55,7 @@ class TabFourAssetsState extends State<TabFourAssets> {
           backgroundColor: appBarBackgroundColor,
           leading: InkWell(
             onTap: () {
-              Navigator.pop(context);
+              Get.back();
             },
             child: const Icon(
               Icons.arrow_back_ios,
@@ -309,7 +310,7 @@ class TabFourAssetsState extends State<TabFourAssets> {
                                       setState(() {
                                         isLoading = true;
                                       });
-
+                                      ApiService().removeCachedData();
                                       // Call the API service to add the asset
                                       // await ApiServiceForADDAssets().addAsset(
                                       //   expensesList

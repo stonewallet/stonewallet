@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:stone_wallet_main/API/Endtrip/endtrip.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/API/pdf/getpdf.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
@@ -16,7 +18,7 @@ import 'package:stone_wallet_main/UI/Model/Getpdf/getpdf_model.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_expense.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_purchase.dart';
 import 'package:stone_wallet_main/UI/Trips/add_user_trip.dart';
-import '../../Responses/travel2_response.dart';
+import 'package:stone_wallet_main/UI/Trips/provider/new_trip_provider.dart';
 import '../Constants/colors.dart';
 import 'edit_trip.dart';
 
@@ -29,10 +31,10 @@ class NewTripPage extends StatefulWidget {
 }
 
 class _NewTripPageState extends State<NewTripPage> {
-  List<Product> events = [];
-  List<Map<String, dynamic>> newData = [];
-  int totalQuantity = 0;
-  List numbers = [];
+  // List<Product> events = [];
+  // List<Map<String, dynamic>> newData = [];
+  // int totalQuantity = 0;
+  // List numbers = [];
 
   late ApiForGetPdf apiForGetPdf;
 
@@ -45,43 +47,30 @@ class _NewTripPageState extends State<NewTripPage> {
   }
 
   fetch() async {
-    events.clear();
-
-    travel2response = await ApiProvider().processTravel2(widget.travelId);
-    await ApiProvider().processTravel2(widget.travelId).then((value) {
-      events.clear();
-
-      events.addAll(value.product!);
-      for (int i = 0; i <= events.length - 1; i++) {
-        newData.add({
-          "Item Name": events[i].productName,
-          "Quantity": events[i].quantity,
-          "Bought": events[i].pricePaid,
-          "Sold": events[i].priceSold
-        });
-        // totalQuantity = events[i].quantity! ;
-        numbers.add(events[i].quantity!);
-      }
-      totalQuantity = numbers.reduce((value, element) => value + element);
-      setState(() {});
-    });
+    final provider = Provider.of<TripProvider>(context, listen: false);
+    trip.Travel2Response travel2response =
+        await ApiProvider().processTravel2(widget.travelId);
+    provider.setTravelData(travel2response);
   }
 
-  trip.Travel2Response travel2response = trip.Travel2Response();
+  // trip.Travel2Response travel2response = trip.Travel2Response();
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<TripProvider>(
+      context,
+    );
     if (kDebugMode) {
-      print("travel2response ${travel2response.id}");
-      print(numbers);
+      print("travel2response ${provider.travel2response.id}");
+      print(provider.numbers);
     }
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
     List<DataColumn> getColumns() {
-      return newData.isNotEmpty
-          ? newData.first.keys
+      return provider.newData.isNotEmpty
+          ? provider.newData.first.keys
               .map((String key) => DataColumn(
                     label: SizedBox(
                         width: 75,
@@ -94,9 +83,9 @@ class _NewTripPageState extends State<NewTripPage> {
           : [];
     }
 
-    print("totalQuantity $totalQuantity");
+    print("totalQuantity ${provider.totalQuantity}");
     List<DataRow> getRows() {
-      return newData.map((Map<String, dynamic> rowData) {
+      return provider.newData.map((Map<String, dynamic> rowData) {
         return DataRow(
           cells: rowData.keys.map((String key) {
             return DataCell(
@@ -136,567 +125,583 @@ class _NewTripPageState extends State<NewTripPage> {
                 image: AssetImage("assets/background_new_wallet.png"),
                 fit: BoxFit.fill,
               )),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
-                  Container(
-                    width: width,
-                    height: height * 0.85,
-                    decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment(0.00, -1.00),
-                          end: Alignment(0, 1),
-                          colors: [newGradient5, newGradient6],
-                        ),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20))),
-                    child: travel2response.id == null
-                        ? const Center(
-                            child: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: CircularProgressIndicator(
-                                  color: whiteColor,
-                                )))
-                        : Column(
-                            children: [
-                              SizedBox(
-                                height: height * 0.03,
-                              ),
-                              Text("Trip ${travel2response.tripName}",
-                                  style: LargeTextStyle.large20700(whiteColor)),
-                              const SizedBox(
-                                height: 8,
-                              ),
-                              Container(
-                                width: width * 0.3,
-                                height: 2,
-                                color: lineColor,
-                              ),
-                              Container(
-                                width: width * 0.9,
-                                height: 1,
-                                color: lineColor2,
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EditTripPage(
-                                                      travel2response.id!,
-                                                      travel2response.tripName!,
-                                                      travel2response.product!,
-                                                      travel2response.expenses!,
-                                                      travel2response
-                                                          .createdAt!,
-                                                      travel2response.user!,
-                                                    )),
-                                          );
-                                        },
-                                        child: const Icon(
-                                          Icons.edit,
-                                          color: whiteColor,
-                                          size: 30,
-                                        )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                        onTap: () async {
-                                          _showDeleteConfirmationDialog(
-                                              context);
-                                          print(travel2response.id!);
-                                        },
-                                        child: const Icon(
-                                          Icons.delete,
-                                          color: redColor,
-                                          size: 30,
-                                        ))
-                                  ],
+              child: Consumer<TripProvider>(
+                builder: (context, value, child) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
+                    Container(
+                      width: width,
+                      height: height * 0.85,
+                      decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(0.00, -1.00),
+                            end: Alignment(0, 1),
+                            colors: [newGradient5, newGradient6],
+                          ),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20))),
+                      child: value.travel2response.id == null
+                          ? const Center(
+                              child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: CircularProgressIndicator(
+                                    color: whiteColor,
+                                  )))
+                          : Column(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.03,
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 15),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Date",
-                                            style:
-                                                RegularTextStyle.regular16600(
-                                                    whiteColor)),
-                                        Text(
-                                          travel2response.createdAt!,
-                                          style: RegularTextStyle.regular16600(
-                                              whiteColor),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text("Total Quantity",
-                                            style:
-                                                RegularTextStyle.regular16600(
-                                                    whiteColor)),
-                                        Text(
-                                          totalQuantity.toString(),
-                                          style: RegularTextStyle.regular16600(
-                                              whiteColor),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      height: 150,
-                                      child: ListView(
-                                        // padding: EdgeInsets.symmetric(horizontal: 10),
-                                        // physics:,
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        children: [
-                                          DataTable(
-                                            headingRowHeight: 30,
-                                            dataRowMaxHeight: double
-                                                .infinity, // Code to be changed.
-                                            dataRowMinHeight: 30,
-                                            columnSpacing: 5,
-                                            border: TableBorder.all(
-                                                color: lineColor2,
-                                                borderRadius:
-                                                    BorderRadius.circular(15)),
-                                            // dataRowColor: MaterialStateProperty.all(Colors.transparent),
-
-                                            columns: getColumns(),
-
-                                            rows: getRows(),
-                                          ),
-                                        ],
+                                Text("Trip ${value.travel2response.tripName}",
+                                    style:
+                                        LargeTextStyle.large20700(whiteColor)),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Container(
+                                  width: width * 0.3,
+                                  height: 2,
+                                  color: lineColor,
+                                ),
+                                Container(
+                                  width: width * 0.9,
+                                  height: 1,
+                                  color: lineColor2,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditTripPage(
+                                                        value.travel2response
+                                                            .id!,
+                                                        value.travel2response
+                                                            .tripName!,
+                                                        value.travel2response
+                                                            .product!,
+                                                        value.travel2response
+                                                            .expenses!,
+                                                        value.travel2response
+                                                            .createdAt!,
+                                                        value.travel2response
+                                                            .user!,
+                                                      )),
+                                            ).then((value) => fetch());
+                                          },
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: whiteColor,
+                                            size: 30,
+                                          )),
+                                      const SizedBox(
+                                        width: 10,
                                       ),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AddNewPurchasePage(
-                                                            travel2response)),
-                                              );
-                                            },
-                                            child: const Icon(
-                                              Icons.add,
-                                              color: whiteColor,
-                                            ))
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text("Expenses",
-                                            style:
-                                                RegularTextStyle.regular18600(
-                                                    whiteColor)),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Stack(
-                                      children: [
-                                        Container(
-                                          height: 150,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 15, vertical: 10),
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              border: Border.all(
-                                                  color: lineColor2)),
-                                          child: ListView.builder(
-                                            itemCount: travel2response
-                                                .expenses!.length,
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return Column(
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                          travel2response
-                                                              .expenses![index]
-                                                              .expenseName!,
-                                                          style: RegularTextStyle
-                                                              .regular16600(
-                                                                  whiteColor)),
-                                                      Text(
-                                                          "\$ ${travel2response.expenses![index].expenseAmount!.toString()}",
-                                                          style: RegularTextStyle
-                                                              .regular16600(
-                                                                  whiteColor))
-                                                    ],
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 5,
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          ),
-
-                                          // Column(
-                                          //   children: [
-                                          //     Row(
-                                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          //       children: [
-                                          //         Text("Transport", style:  RegularTextStyle.regular16600(whiteColor)),
-                                          //         Text("\$ ${travel2response.expenses!.transport.toString()}",style:  RegularTextStyle.regular16600(whiteColor))
-                                          //       ],
-                                          //     ),
-                                          //     const SizedBox(height: 5,),
-                                          //     Row(
-                                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          //       children: [
-                                          //         Text("Hotel", style: RegularTextStyle.regular16600(whiteColor)),
-                                          //         Text("\$ ${travel2response.expenses!.hotel.toString()}",style:  RegularTextStyle.regular16600(whiteColor),)
-                                          //       ],
-                                          //     ),
-                                          //     const SizedBox(height: 5,),
-                                          //     Row(
-                                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          //       children: [
-                                          //         Text("Food", style:  RegularTextStyle.regular16600(whiteColor)),
-                                          //         Text("\$ ${travel2response.expenses!.food.toString()}",style: RegularTextStyle.regular16600(whiteColor))
-                                          //       ],
-                                          //     ),
-                                          //     const SizedBox(height: 5,),
-                                          //     Row(
-                                          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          //       children: [
-                                          //         Text("Food", style:  RegularTextStyle.regular16600(whiteColor)),
-                                          //         Text("\$ ${travel2response.expenses!.food.toString()}",style: RegularTextStyle.regular16600(whiteColor))
-                                          //       ],
-                                          //     ),
-                                          //
-                                          //     const SizedBox(height: 5,),
-                                          //      Row(
-                                          //       children: [
-                                          //         InkWell(
-                                          //             onTap: (){
-                                          //               Navigator.push(
-                                          //                 context,
-                                          //                 MaterialPageRoute(builder: (context)
-                                          //                 =>  AddNewExpensePage( travel2response)),
-                                          //               ).then((value) {
-                                          //                 return fetch();
-                                          //               });
-                                          //             },
-                                          //             child: const Icon(Icons.add, color: whiteColor,)),
-                                          //         Icon(Icons.remove, color: whiteColor,)
-                                          //       ],
-                                          //     )
-                                          //
-                                          //   ],
-                                          // ),
-                                        ),
-                                        Positioned(
-                                          bottom: 5,
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.45,
-                                          child: Row(
-                                            children: [
-                                              InkWell(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              AddNewExpensePage(
-                                                                  travel2response)),
-                                                    );
-                                                  },
-                                                  child: const Icon(
-                                                    Icons.add,
-                                                    color: whiteColor,
-                                                  )),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              // InkWell(
-                                              //     onTap: () {
-                                              //       Navigator.push(
-                                              //         context,
-                                              //         MaterialPageRoute(
-                                              //             builder: (context) =>
-                                              //                 DeleteExpensePage(
-                                              //                     travel2response)),
-                                              //       ).then((value) {
-                                              //         return fetch();
-                                              //       });
-                                              //     },
-                                              //     child: const Icon(
-                                              //       Icons.remove,
-                                              //       color: whiteColor,
-                                              //     )),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 5),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          border:
-                                              Border.all(color: lineColor2)),
-                                      child: Row(
+                                      InkWell(
+                                          onTap: () async {
+                                            _showDeleteConfirmationDialog(
+                                                context, value);
+                                            if (kDebugMode) {
+                                              print(value.travel2response.id!);
+                                            }
+                                          },
+                                          child: const Icon(
+                                            Icons.delete,
+                                            color: redColor,
+                                            size: 30,
+                                          ))
+                                    ],
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  child: Column(
+                                    children: [
+                                      Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
+                                          Text("Date",
+                                              style:
+                                                  RegularTextStyle.regular16600(
+                                                      whiteColor)),
                                           Text(
-                                            "Total Profit",
-                                            style:
-                                                RegularTextStyle.regular16600(
-                                                    whiteColor),
-                                          ),
-                                          Text(
-                                            "\$ ${travel2response.profit!.toString()}",
+                                            value.travel2response.createdAt!,
                                             style:
                                                 RegularTextStyle.regular16600(
                                                     whiteColor),
                                           )
                                         ],
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        SizedBox(
-                                          height: 45,
-                                          // width: width * 0.35,
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor: buttonColor2,
-                                                  surfaceTintColor: blackColor,
-                                                  shadowColor: whiteColor,
-                                                  elevation: 4),
-                                              onPressed: () {
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Total Quantity",
+                                              style:
+                                                  RegularTextStyle.regular16600(
+                                                      whiteColor)),
+                                          Text(
+                                            value.totalQuantity.toString(),
+                                            style:
+                                                RegularTextStyle.regular16600(
+                                                    whiteColor),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      SizedBox(
+                                        height: 150,
+                                        child: ListView(
+                                          // padding: EdgeInsets.symmetric(horizontal: 10),
+                                          // physics:,
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          children: [
+                                            DataTable(
+                                              headingRowHeight: 30,
+                                              dataRowMaxHeight: double
+                                                  .infinity, // Code to be changed.
+                                              dataRowMinHeight: 30,
+                                              columnSpacing: 5,
+                                              border: TableBorder.all(
+                                                  color: lineColor2,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              // dataRowColor: MaterialStateProperty.all(Colors.transparent),
+
+                                              columns: value.newData.isNotEmpty
+                                                  ? value.newData.first.keys
+                                                      .map(
+                                                        (String key) =>
+                                                            DataColumn(
+                                                          label: SizedBox(
+                                                            width: 75,
+                                                            child: Center(
+                                                              child: Text(
+                                                                key,
+                                                                style: RegularTextStyle
+                                                                    .regular14600(
+                                                                        whiteColor),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .toList()
+                                                  : [],
+
+                                              rows: value.newData.map(
+                                                (Map<String, dynamic> rowData) {
+                                                  return DataRow(
+                                                    cells: rowData.keys.map(
+                                                      (String key) {
+                                                        return DataCell(
+                                                          SizedBox(
+                                                            width: 75,
+                                                            child: Center(
+                                                              child: Text(
+                                                                rowData[key]
+                                                                    .toString(),
+                                                                style: RegularTextStyle
+                                                                    .regular14600(
+                                                                        whiteColor),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    ).toList(),
+                                                  );
+                                                },
+                                              ).toList(),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          InkWell(
+                                              onTap: () {
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          const AddUserTripPage()),
+                                                          AddNewPurchasePage(value
+                                                              .travel2response)),
+                                                ).then((value) => fetch());
+                                              },
+                                              child: const Icon(
+                                                Icons.add,
+                                                color: whiteColor,
+                                              ))
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text("Expenses",
+                                              style:
+                                                  RegularTextStyle.regular18600(
+                                                      whiteColor)),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Stack(
+                                        children: [
+                                          Container(
+                                            height: 150,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15, vertical: 10),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                border: Border.all(
+                                                    color: lineColor2)),
+                                            child: ListView.builder(
+                                              itemCount: value.travel2response
+                                                  .expenses!.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return Column(
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                            value
+                                                                .travel2response
+                                                                .expenses![
+                                                                    index]
+                                                                .expenseName!,
+                                                            style: RegularTextStyle
+                                                                .regular16600(
+                                                                    whiteColor)),
+                                                        Text(
+                                                            "\$ ${value.travel2response.expenses![index].expenseAmount!.toString()}",
+                                                            style: RegularTextStyle
+                                                                .regular16600(
+                                                                    whiteColor))
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                  ],
                                                 );
                                               },
-                                              child: Text(
-                                                  "Invite Trip\nPartner",
-                                                  textAlign: TextAlign.center,
-                                                  style: RegularTextStyle
-                                                      .regular16400(
-                                                          whiteColor))),
+                                            ),
+                                          ),
+                                          Positioned(
+                                            bottom: 5,
+                                            left: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.45,
+                                            child: Row(
+                                              children: [
+                                                InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                AddNewExpensePage(
+                                                                    value
+                                                                        .travel2response)),
+                                                      ).then(
+                                                          (value) => fetch());
+                                                    },
+                                                    child: const Icon(
+                                                      Icons.add,
+                                                      color: whiteColor,
+                                                    )),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                // InkWell(
+                                                //     onTap: () {
+                                                //       Navigator.push(
+                                                //         context,
+                                                //         MaterialPageRoute(
+                                                //             builder: (context) =>
+                                                //                 DeleteExpensePage(
+                                                //                     travel2response)),
+                                                //       ).then((value) {
+                                                //         return fetch();
+                                                //       });
+                                                //     },
+                                                //     child: const Icon(
+                                                //       Icons.remove,
+                                                //       color: whiteColor,
+                                                //     )),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            border:
+                                                Border.all(color: lineColor2)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "Total Profit",
+                                              style:
+                                                  RegularTextStyle.regular16600(
+                                                      whiteColor),
+                                            ),
+                                            Text(
+                                              "\$ ${value.travel2response.profit!.toString()}",
+                                              style:
+                                                  RegularTextStyle.regular16600(
+                                                      whiteColor),
+                                            )
+                                          ],
                                         ),
-                                        SizedBox(
-                                          height: 45,
-                                          // width: width * 0.35,
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor: buttonColor2,
-                                                  surfaceTintColor: blackColor,
-                                                  shadowColor: whiteColor,
-                                                  elevation: 4),
-                                              onPressed: () async {
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(builder: (context)
-                                                //   => const NewTripPage()),
-                                                // );
-                                                var response =
-                                                    await ApiProvider()
-                                                        .processTravelDelete(
-                                                            travel2response
-                                                                .id!);
-
-                                                if (response.message != null) {
-                                                  Get.back();
-                                                  Get.snackbar(
-                                                    " Deleted successfully",
-                                                    '',
+                                      ),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          SizedBox(
+                                            height: 45,
+                                            // width: width * 0.35,
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
                                                     backgroundColor:
-                                                        newGradient6,
-                                                    colorText: whiteColor,
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(20, 5, 0, 0),
-                                                    duration: const Duration(
-                                                        milliseconds: 4000),
-                                                    snackPosition:
-                                                        SnackPosition.BOTTOM,
+                                                        buttonColor2,
+                                                    surfaceTintColor:
+                                                        blackColor,
+                                                    shadowColor: whiteColor,
+                                                    elevation: 4),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const AddUserTripPage()),
                                                   );
-                                                  // var snackBar = SnackBar(
-                                                  //     content: Text(
-                                                  //         "Assets created successfully"));
-                                                  // ScaffoldMessenger.of(context)
-                                                  //     .showSnackBar(snackBar);
-                                                } else {
-                                                  Get.snackbar(
-                                                    "Something gone wrong",
-                                                    '',
+                                                },
+                                                child: Text(
+                                                    "Invite Trip\nPartner",
+                                                    textAlign: TextAlign.center,
+                                                    style: RegularTextStyle
+                                                        .regular16400(
+                                                            whiteColor))),
+                                          ),
+                                          SizedBox(
+                                            height: 45,
+                                            // width: width * 0.35,
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
                                                     backgroundColor:
-                                                        newGradient6,
-                                                    colorText: whiteColor,
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(20, 5, 0, 0),
-                                                    duration: const Duration(
-                                                        milliseconds: 4000),
-                                                    snackPosition:
-                                                        SnackPosition.BOTTOM,
-                                                  );
-                                                }
-                                              },
-                                              child: Text("End Trip",
-                                                  textAlign: TextAlign.center,
-                                                  style: RegularTextStyle
-                                                      .regular16600(
-                                                          whiteColor))),
-                                        ),
-                                        SizedBox(
-                                          height: 45,
-                                          // width: width * 0.35,
-                                          child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                  backgroundColor: buttonColor2,
-                                                  surfaceTintColor: blackColor,
-                                                  shadowColor: whiteColor,
-                                                  elevation: 4),
-                                              onPressed: () async {
-                                                GetPdf? pdfUrl =
-                                                    await apiForGetPdf
-                                                        .fetchPdfData(
-                                                            widget.travelId);
-                                                final permissionStatus =
-                                                    await requestStoragePermission();
-                              
-                                                final dir =
-                                                    await getDownloadDirectorypath();
-                                                if ((permissionStatus[
-                                                        Permission.storage] ==
-                                                    PermissionStatus.granted)) {
-                                                  if (dir != null) {
-                                                    String savename =
-                                                        "${travel2response.tripName}.pdf";
-                                                    String savePath =
-                                                        "${dir}/$savename";
-                                                    print(savePath);
-                                                    //output:  /storage/emulated/0/Download/banner.png
+                                                        buttonColor2,
+                                                    surfaceTintColor:
+                                                        blackColor,
+                                                    shadowColor: whiteColor,
+                                                    elevation: 4),
+                                                onPressed: () async {
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(builder: (context)
+                                                  //   => const NewTripPage()),
+                                                  // );
+                                                  var response =
+                                                      await ApiForEndTrip()
+                                                          .endTrip(value
+                                                              .travel2response
+                                                              .id!);
 
-                                                    try {
-                                                      await Dio().download(
-                                                          "$baseUrl${pdfUrl.url}",
-                                                          savePath,
-                                                          onReceiveProgress:
-                                                              (received,
-                                                                  total) {
-                                                        if (received != -1) {
-                                                          print(
-                                                              "${(received / total * 100).toStringAsFixed(0)}%");
-
-                                                          //you can build progressbar feature too
-                                                        }
-                                                      });
-                                                      print(
-                                                          "File is saved to download folder.");
-                                                      Get.snackbar(
-                                                        "File Downloaded",
-                                                        '',
-                                                        backgroundColor:
-                                                            newGradient6,
-                                                        colorText: whiteColor,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .fromLTRB(
-                                                                20, 5, 0, 0),
-                                                        duration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    4000),
-                                                        snackPosition:
-                                                            SnackPosition
-                                                                .BOTTOM,
-                                                      );
-                                                    } on DioError catch (e) {
-                                                      print(e.message);
-                                                    }
+                                                  if (response.message !=
+                                                      null) {
+                                                    Get.back();
+                                                    Get.snackbar(
+                                                      " Ended successfully",
+                                                      '',
+                                                      backgroundColor:
+                                                          newGradient6,
+                                                      colorText: whiteColor,
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(
+                                                          20, 5, 0, 0),
+                                                      duration: const Duration(
+                                                          milliseconds: 4000),
+                                                      snackPosition:
+                                                          SnackPosition.BOTTOM,
+                                                    );
+                                                    // var snackBar = SnackBar(
+                                                    //     content: Text(
+                                                    //         "Assets created successfully"));
+                                                    // ScaffoldMessenger.of(context)
+                                                    //     .showSnackBar(snackBar);
+                                                  } else {
+                                                    Get.snackbar(
+                                                      "Something gone wrong",
+                                                      '',
+                                                      backgroundColor:
+                                                          newGradient6,
+                                                      colorText: whiteColor,
+                                                      padding: const EdgeInsets
+                                                          .fromLTRB(
+                                                          20, 5, 0, 0),
+                                                      duration: const Duration(
+                                                          milliseconds: 4000),
+                                                      snackPosition:
+                                                          SnackPosition.BOTTOM,
+                                                    );
                                                   }
-                                                } else {
-                                                  print(
-                                                      "No permission to read and write.");
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                    content: Text(
-                                                        "Permission Denied !"),
-                                                  ));
-                                                }
-                                              },
-                                              child: Text("Export",
-                                                  textAlign: TextAlign.center,
-                                                  style: RegularTextStyle
-                                                      .regular16600(
-                                                          whiteColor))),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 30,
-                                    ),
-                                  ],
+                                                },
+                                                child: Text("End Trip",
+                                                    textAlign: TextAlign.center,
+                                                    style: RegularTextStyle
+                                                        .regular16600(
+                                                            whiteColor))),
+                                          ),
+                                          SizedBox(
+                                            height: 45,
+                                            // width: width * 0.35,
+                                            child: ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        buttonColor2,
+                                                    surfaceTintColor:
+                                                        blackColor,
+                                                    shadowColor: whiteColor,
+                                                    elevation: 4),
+                                                onPressed: () async {
+                                                  GetPdf? pdfUrl =
+                                                      await apiForGetPdf
+                                                          .fetchPdfData(
+                                                              widget.travelId);
+                                                  final permissionStatus =
+                                                      await requestStoragePermission();
+
+                                                  final dir =
+                                                      await getDownloadDirectorypath();
+                                                  if ((permissionStatus[
+                                                          Permission.storage] ==
+                                                      PermissionStatus
+                                                          .granted)) {
+                                                    if (dir != null) {
+                                                      String savename =
+                                                          "${value.travel2response.tripName}.pdf";
+                                                      String savePath =
+                                                          "${dir}/$savename";
+                                                      print(savePath);
+                                                      //output:  /storage/emulated/0/Download/banner.png
+
+                                                      try {
+                                                        await Dio().download(
+                                                            "$baseUrl${pdfUrl.url}",
+                                                            savePath,
+                                                            onReceiveProgress:
+                                                                (received,
+                                                                    total) {
+                                                          if (received != -1) {
+                                                            print(
+                                                                "${(received / total * 100).toStringAsFixed(0)}%");
+
+                                                            //you can build progressbar feature too
+                                                          }
+                                                        });
+                                                        print(
+                                                            "File is saved to download folder.");
+                                                        Get.snackbar(
+                                                          "File Downloaded",
+                                                          '',
+                                                          backgroundColor:
+                                                              newGradient6,
+                                                          colorText: whiteColor,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .fromLTRB(
+                                                                  20, 5, 0, 0),
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      4000),
+                                                          snackPosition:
+                                                              SnackPosition
+                                                                  .BOTTOM,
+                                                        );
+                                                      } on DioError catch (e) {
+                                                        print(e.message);
+                                                      }
+                                                    }
+                                                  } else {
+                                                    print(
+                                                        "No permission to read and write.");
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(SnackBar(
+                                                      content: Text(
+                                                          "Permission Denied !"),
+                                                    ));
+                                                  }
+                                                },
+                                                child: Text("Export",
+                                                    textAlign: TextAlign.center,
+                                                    style: RegularTextStyle
+                                                        .regular16600(
+                                                            whiteColor))),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                  ),
-                ],
+                              ],
+                            ),
+                    ),
+                  ],
+                ),
               )),
         ));
   }
@@ -717,7 +722,8 @@ class _NewTripPageState extends State<NewTripPage> {
     ].request();
   }
 
-  void _showDeleteConfirmationDialog(BuildContext context) {
+  void _showDeleteConfirmationDialog(
+      BuildContext context, TripProvider provider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -784,7 +790,7 @@ class _NewTripPageState extends State<NewTripPage> {
                 //   );
                 // }
                 var response = await ApiProvider()
-                    .processTravelDelete(travel2response.id!);
+                    .processTravelDelete(provider.travel2response.id!);
                 if (response.message != null) {
                   var snackBar = SnackBar(content: Text(response.message!));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);

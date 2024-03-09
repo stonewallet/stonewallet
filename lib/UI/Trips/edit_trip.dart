@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stone_wallet_main/API/Endtrip/endtrip.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import '../../API/api_provider.dart';
 import '../../Responses/travel2_response.dart';
@@ -150,7 +151,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                   Text("Trip Name",
                                       style: RegularTextStyle.regular16600(
                                           Colors.white)),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 6,
                                   ),
                                   SizedBox(
@@ -193,7 +194,7 @@ class _EditTripPageState extends State<EditTripPage> {
                             ),
                             ListView.builder(
                                 shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 itemBuilder: (BuildContext context, int index) {
                                   if (index >= productName.length) {
                                     productName.add(TextEditingController(
@@ -230,7 +231,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                 style: RegularTextStyle
                                                     .regular16600(
                                                         Colors.white)),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 6,
                                             ),
                                             SizedBox(
@@ -294,7 +295,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                 style: RegularTextStyle
                                                     .regular16600(
                                                         Colors.white)),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 6,
                                             ),
                                             SizedBox(
@@ -355,11 +356,13 @@ class _EditTripPageState extends State<EditTripPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text("Price Paid",
-                                                style: RegularTextStyle
-                                                    .regular16600(
-                                                        Colors.white)),
-                                            SizedBox(
+                                            Text(
+                                              "Price Paid",
+                                              style:
+                                                  RegularTextStyle.regular16600(
+                                                      Colors.white),
+                                            ),
+                                            const SizedBox(
                                               height: 6,
                                             ),
                                             SizedBox(
@@ -424,7 +427,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                 style: RegularTextStyle
                                                     .regular16600(
                                                         Colors.white)),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 6,
                                             ),
                                             SizedBox(
@@ -507,7 +510,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                             style:
                                                 RegularTextStyle.regular16600(
                                                     Colors.white)),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 6,
                                         ),
                                         SizedBox(
@@ -527,8 +530,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                 RegularTextStyle.regular16600(
                                                     whiteColor),
                                             decoration: const InputDecoration(
-                                              focusedBorder:
-                                                  OutlineInputBorder(
+                                              focusedBorder: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30)),
                                                 borderSide: BorderSide(
@@ -537,8 +539,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                               ),
                                               fillColor: fillColor,
                                               filled: true,
-                                              enabledBorder:
-                                                  OutlineInputBorder(
+                                              enabledBorder: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(30)),
                                                 borderSide: BorderSide(
@@ -546,8 +547,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                                     width: 1.0),
                                               ),
                                               contentPadding:
-                                                  EdgeInsets.only(
-                                                      left: 20),
+                                                  EdgeInsets.only(left: 20),
                                             ),
                                             textInputAction:
                                                 TextInputAction.next,
@@ -558,7 +558,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                   );
                                 }),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
 
@@ -616,6 +616,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                       };
 
                                       print(edit);
+                                      ApiForEndTrip().resumeTrip(widget.id);
                                       var response = await ApiProvider().processTravelPut(
                                           widget.id, edit
                                           // widget.id, nameController.text, int.parse(quantityController.text),int.parse(pricePaidController.text),
