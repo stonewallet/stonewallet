@@ -710,7 +710,7 @@ class _NewTripPageState extends State<NewTripPage> {
     if (Platform.isAndroid) {
       return (await DownloadsPathProvider.downloadsDirectory)?.path;
     } else if (Platform.isIOS) {
-      return (await DownloadsPathProvider.downloadsDirectory)?.path;
+      return (await getApplicationDocumentsDirectory()).path;
     } else {
       return null;
     }

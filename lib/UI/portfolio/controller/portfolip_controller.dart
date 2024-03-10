@@ -5,7 +5,6 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PortfolioController extends GetxController {
   final portfolios = <Portfolio>[].obs;
- 
 
   Stream<List<Portfolio>> get portfoliosStream => portfolios.stream;
   final RxMap<int, List<Portfolio>> portfoliosMap =
@@ -97,7 +96,8 @@ class PortfolioController extends GetxController {
       yield [];
     }
   }
-    Future<Map<int, double>> getTotalValuesBySubCat() async {
+
+  Future<Map<int, double>> getTotalValuesBySubCat() async {
     final apiService = ApiService();
     final data = await apiService.getDataForChart();
 
@@ -106,10 +106,13 @@ class PortfolioController extends GetxController {
     for (var portfolio in data) {
       final subCat = portfolio.subCat;
 
-      if (totalValues.containsKey(subCat)) {
-        totalValues[subCat] = totalValues[subCat]! + portfolio.value;
-      } else {
-        totalValues[subCat] = portfolio.value;
+      // Check if the subcategory is 0, 1, or 2
+      if (subCat == 0 || subCat == 1 || subCat == 2) {
+        if (totalValues.containsKey(subCat)) {
+          totalValues[subCat] = totalValues[subCat]! + portfolio.value;
+        } else {
+          totalValues[subCat] = portfolio.value;
+        }
       }
     }
 

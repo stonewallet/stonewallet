@@ -64,8 +64,6 @@ class _SubCatListViewState extends State<SubCatListView> {
                   icon = icons[1];
                 } else if (subCat == 2) {
                   icon = icons[2];
-                } else if (subCat == 3) {
-                  icon = icons[2];
                 }
                 return SizedBox(
                   width: 160,

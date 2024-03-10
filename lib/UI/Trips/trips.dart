@@ -174,7 +174,7 @@ class _TripsPageState extends State<TripsPage> {
                                                                         .center,
                                                                 style: LargeTextStyle
                                                                     .large20700(isEndTrip
-                                                                        ? redColor
+                                                                        ? stockGreenColor
                                                                         : whiteColor))),
                                                       ),
                                                       const SizedBox(
