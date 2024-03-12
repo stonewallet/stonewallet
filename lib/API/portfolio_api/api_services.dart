@@ -59,28 +59,45 @@ class ApiService {
   Future<List<Portfolio>> getData1() async {
     setupHttpOverrides();
     try {
-      final response = await _dio.get(
-        portfolio,
-        options: Options(
-          headers: {
-            "Cookie":
-                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-            "X-CSRFToken": MySharedPreferences()
-                .getCsrfToken(await SharedPreferences.getInstance())
-          },
-          sendTimeout: const Duration(seconds: 10),
-          receiveTimeout: const Duration(seconds: 10 * 1000),
-        ),
-      );
+      var isCacheExit = await APICacheManager().isAPICacheKeyExist("Get_Assets");
+      if (!isCacheExit) {
+        final response = await _dio.get(
+          portfolio,
+          options: Options(
+            headers: {
+              "Cookie":
+                  "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+              "X-CSRFToken": MySharedPreferences()
+                  .getCsrfToken(await SharedPreferences.getInstance())
+            },
+            sendTimeout: const Duration(seconds: 10),
+            receiveTimeout: const Duration(seconds: 10),
+          ),
+        );
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = response.data;
+        if (response.statusCode == 200) {
+          final List<dynamic> data = response.data;
+
+          final filteredData =
+              data.where((item) => item['sub_cat'] == 1).toList();
+          APICacheDBModel cacheDBModel = APICacheDBModel(
+            key: "Get_Assets",
+            syncData: json.encode(filteredData),
+          );
+          await APICacheManager().addCacheData(cacheDBModel);
+          return filteredData.map((item) => Portfolio.fromJson(item)).toList();
+        } else {
+          throw Exception('Failed to load data');
+        }
+      } else {
+        print("Cache Api: hit");
+        var cacheData = await APICacheManager().getCacheData("Get_Assets");
+        final List<dynamic> data = json.decode(cacheData.syncData);
 
         final filteredData =
             data.where((item) => item['sub_cat'] == 1).toList();
+
         return filteredData.map((item) => Portfolio.fromJson(item)).toList();
-      } else {
-        throw Exception('Failed to load data');
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.badResponse && e.response != null) {
@@ -163,8 +180,8 @@ class ApiService {
     }
   }
 
-  Future<void> removeCachedDataForCash() async {
-    await APICacheManager().deleteCache("Get_Cash");
+  Future<void> removeCachedData(String key) async {
+    await APICacheManager().deleteCache(key);
   }
   // Future<bool> getDataForLoan() async {
   //   setupHttpOverrides();
@@ -219,9 +236,9 @@ class ApiService {
   //     throw Exception('Error: $e');
   //   }
   // }
-  Future<void> removeCachedData() async {
-    await APICacheManager().deleteCache("Get_Loan");
-  }
+  // Future<void> removeCachedData() async {
+  //   await APICacheManager().deleteCache("Get_Loan");
+  // }
 
   Future<List<Portfolio>> getDataForLoan() async {
     setupHttpOverrides();

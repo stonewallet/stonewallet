@@ -68,6 +68,25 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.stone_wallet_main.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+        <provider
+            android:name="com.crazecoder.openfile.FileProvider"
+            android:authorities="com.example.stone_wallet_main.fileProvider.com.crazecoder.openfile"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
         <activity
             android:name="io.flutter.plugins.urllauncher.WebViewActivity"
             android:exported="false"
@@ -79,6 +98,18 @@
         <uses-library
             android:name="androidx.window.sidecar"
             android:required="false" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="com.example.stone_wallet_main.androidx-startup"
+            android:exported="false" >
+            <meta-data
+                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+                android:value="androidx.startup" />
+            <meta-data
+                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 
 </manifest>

@@ -138,7 +138,6 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                 style: LargeTextStyle.large20700(whiteColor)),
                             IconButton(
                               onPressed: () async {
-                                
                                 _showDeleteConfirmationDialog(context);
                               },
                               icon: const Icon(
@@ -294,8 +293,11 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
                                         elevation: 4),
                                     onPressed: () async {
                                       // // List <Map<String, dynamic>> productList = [];
-                                      
-                                      ApiService().removeCachedData();
+
+                                      ApiService().removeCachedData("Get_Cash");
+                                      ApiService().removeCachedData("Get_Loan");
+                                      ApiService()
+                                          .removeCachedData("Get_Assets");
                                       var response =
                                           await ApiServiceForADDAssets().update(
                                         expenseController[0].text,
@@ -380,7 +382,9 @@ class UpdateAssetsScreenState extends State<UpdateAssetsScreen> {
             ),
             TextButton(
               onPressed: () async {
-                ApiService().removeCachedData();
+                ApiService().removeCachedData("Get_Cash");
+                ApiService().removeCachedData("Get_Loan");
+                ApiService().removeCachedData("Get_Assets");
                 var response = await ApiServiceForADDAssets().delete(
                   expenseController[0].text,
                   double.parse(expenseController[1].text),

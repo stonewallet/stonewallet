@@ -310,7 +310,7 @@ class TabFourAssetsState extends State<TabFourAssets> {
                                       setState(() {
                                         isLoading = true;
                                       });
-                                      ApiService().removeCachedData();
+                                      ApiService().removeCachedData("Get_Loan");
                                       // Call the API service to add the asset
                                       // await ApiServiceForADDAssets().addAsset(
                                       //   expensesList

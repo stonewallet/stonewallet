@@ -234,7 +234,7 @@ class ADDTabThreeCashState extends State<ADDTabThreeCash> {
                                         shadowColor: whiteColor,
                                         elevation: 4),
                                     onPressed: () async {
-                                      ApiService().removeCachedDataForCash();
+                                      ApiService().removeCachedData("Get_Cash");
                                       //  List <Map<String, dynamic>> productList = [];
 
                                       // List<Map<String, dynamic>> expensesList =

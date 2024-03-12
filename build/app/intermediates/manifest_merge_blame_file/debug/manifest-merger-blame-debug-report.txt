@@ -13,32 +13,32 @@
 13         to allow setting breakpoints, to provide hot reload, etc.
 14    -->
 15    <uses-permission android:name="android.permission.INTERNET" />
-15-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:3:5-67
-15-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:3:22-64
+15-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:5:5-67
+15-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:5:22-64
 16    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-16-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:4:5-79
-16-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:4:22-76
+16-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:6:5-79
+16-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:6:22-76
 17    <uses-permission android:name="android.permission.WAKE_LOCK" />
-17-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:5:5-68
-17-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:5:22-65
+17-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:7:5-68
+17-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:7:22-65
 18    <uses-permission android:name="android.permission.CAMERA" />
-18-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:7:5-65
-18-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:7:22-62
+18-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:9:5-65
+18-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:9:22-62
 19    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-19-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:8:5-80
-19-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:8:22-77
+19-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:10:5-80
+19-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:10:22-77
 20    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" android:protectionLevel="signature|privileged"/> -->
-20-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:9:5-81
-20-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:9:22-78
+20-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:11:5-81
+20-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:11:22-78
 21    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-21-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:13:6-76
-21-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:13:23-73
+21-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:15:6-76
+21-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:15:23-73
 22    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-22-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:14:6-76
-22-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:14:23-74
+22-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:16:6-76
+22-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:16:23-74
 23    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-23-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:15:6-75
-23-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:15:23-73
+23-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:17:6-75
+23-->D:\digiblock\stonewallet\android\app\src\main\AndroidManifest.xml:17:23-73
 24
 25    <permission
 25-->[androidx.core:core:1.10.1] C:\Users\manee\.gradle\caches\transforms-3\c4988ff80110f75080a936fc6f044848\transformed\core-1.10.1\AndroidManifest.xml:22:5-24:47
@@ -92,27 +92,79 @@
 68            android:name="flutterEmbedding"
 69            android:value="2" />
 70
-71        <activity
-71-->[:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-13:74
-72            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
-72-->[:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-74
-73            android:exported="false"
-73-->[:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-37
-74            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-74-->[:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-71
-75
-76        <uses-library
-76-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
-77            android:name="androidx.window.extensions"
-77-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
-78            android:required="false" />
-78-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
-79        <uses-library
-79-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
-80            android:name="androidx.window.sidecar"
-80-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
-81            android:required="false" />
-81-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
-82    </application>
-83
-84</manifest>
+71        <provider
+72            android:name="androidx.core.content.FileProvider"
+73            android:authorities="com.example.stone_wallet_main.fileProvider"
+74            android:exported="false"
+75            android:grantUriPermissions="true" >
+76            <meta-data
+76-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-19:53
+77                android:name="android.support.FILE_PROVIDER_PATHS"
+77-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:18:17-67
+78                android:resource="@xml/filepaths" />
+78-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:19:17-50
+79        </provider>
+80        <provider
+80-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:11:9-20:20
+81            android:name="com.crazecoder.openfile.FileProvider"
+81-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-64
+82            android:authorities="com.example.stone_wallet_main.fileProvider.com.crazecoder.openfile"
+82-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-88
+83            android:exported="false"
+83-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-37
+84            android:grantUriPermissions="true" >
+84-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-47
+85            <meta-data
+85-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-19:53
+86                android:name="android.support.FILE_PROVIDER_PATHS"
+86-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:18:17-67
+87                android:resource="@xml/filepaths" />
+87-->[:open_file] D:\digiblock\stonewallet\build\open_file\intermediates\merged_manifest\debug\AndroidManifest.xml:19:17-50
+88        </provider>
+89
+90        <activity
+90-->[:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-13:74
+91            android:name="io.flutter.plugins.urllauncher.WebViewActivity"
+91-->[:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-74
+92            android:exported="false"
+92-->[:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-37
+93            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+93-->[:url_launcher_android] D:\digiblock\stonewallet\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-71
+94
+95        <uses-library
+95-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+96            android:name="androidx.window.extensions"
+96-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+97            android:required="false" />
+97-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+98        <uses-library
+98-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+99            android:name="androidx.window.sidecar"
+99-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+100            android:required="false" />
+100-->[androidx.window:window:1.0.0-beta04] C:\Users\manee\.gradle\caches\transforms-3\25cee5f028ac2a6b79fd6278ff5b59e2\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+101
+102        <provider
+102-->[androidx.emoji2:emoji2:1.2.0] C:\Users\manee\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+103            android:name="androidx.startup.InitializationProvider"
+103-->[androidx.emoji2:emoji2:1.2.0] C:\Users\manee\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+104            android:authorities="com.example.stone_wallet_main.androidx-startup"
+104-->[androidx.emoji2:emoji2:1.2.0] C:\Users\manee\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+105            android:exported="false" >
+105-->[androidx.emoji2:emoji2:1.2.0] C:\Users\manee\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+106            <meta-data
+106-->[androidx.emoji2:emoji2:1.2.0] C:\Users\manee\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+107                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+107-->[androidx.emoji2:emoji2:1.2.0] C:\Users\manee\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+108                android:value="androidx.startup" />
+108-->[androidx.emoji2:emoji2:1.2.0] C:\Users\manee\.gradle\caches\transforms-3\e04bc3769bedd8dd6f8ca688986b0355\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+109            <meta-data
+109-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\manee\.gradle\caches\transforms-3\8c1e738388b632b23acecc5b0cf3e292\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+110                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+110-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\manee\.gradle\caches\transforms-3\8c1e738388b632b23acecc5b0cf3e292\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+111                android:value="androidx.startup" />
+111-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\manee\.gradle\caches\transforms-3\8c1e738388b632b23acecc5b0cf3e292\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+112        </provider>
+113    </application>
+114
+115</manifest>

@@ -5,6 +5,7 @@ import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,8 @@ import 'package:stone_wallet_main/UI/Trips/add_new_expense.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_purchase.dart';
 import 'package:stone_wallet_main/UI/Trips/add_user_trip.dart';
 import 'package:stone_wallet_main/UI/Trips/provider/new_trip_provider.dart';
+import 'package:stone_wallet_main/UI/Trips/widgets/invite_trip.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../Constants/colors.dart';
 import 'edit_trip.dart';
 
@@ -523,7 +526,9 @@ class _NewTripPageState extends State<NewTripPage> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const AddUserTripPage()),
+                                                            const InviteUserTripScreen(
+                                                                centerTitle:
+                                                                    'Invite User')),
                                                   );
                                                 },
                                                 child: Text(
@@ -630,7 +635,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                       String savename =
                                                           "${value.travel2response.tripName}.pdf";
                                                       String savePath =
-                                                          "${dir}/$savename";
+                                                          "$dir/$savename";
                                                       print(savePath);
                                                       //output:  /storage/emulated/0/Download/banner.png
 
@@ -650,6 +655,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                         });
                                                         print(
                                                             "File is saved to download folder.");
+
                                                         Get.snackbar(
                                                           "File Downloaded",
                                                           '',
@@ -668,19 +674,32 @@ class _NewTripPageState extends State<NewTripPage> {
                                                               SnackPosition
                                                                   .BOTTOM,
                                                         );
-                                                      } on DioError catch (e) {
+                                                        if (Platform
+                                                            .isAndroid) {
+                                                          OpenFile.open(
+                                                              savePath);
+                                                        } else if (Platform
+                                                            .isIOS) {
+                                                          await launchUrl(
+                                                              Uri.file(
+                                                                  savePath));
+                                                        }
+                                                      } on DioException catch (e) {
                                                         print(e.message);
                                                       }
                                                     }
                                                   } else {
-                                                    print(
-                                                        "No permission to read and write.");
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(SnackBar(
-                                                      content: Text(
-                                                          "Permission Denied !"),
-                                                    ));
+                                                    if (kDebugMode) {
+                                                      print(
+                                                          "No permission to read and write.");
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                              SnackBar(
+                                                        content: Text(
+                                                            "Permission Denied !"),
+                                                      ));
+                                                    }
                                                   }
                                                 },
                                                 child: Text("Export",

@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/add_assets/add_assets.dart';
+import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart'
@@ -311,7 +313,13 @@ class TabTwoAssetsState extends State<TabTwoAssets> {
                                       // await ApiServiceForADDAssets().addAsset(
                                       //   expensesList
                                       // );
-                                      print(widget._portfolio);
+                                      if (kDebugMode) {
+                                        print(widget._portfolio);
+                                      }
+                                      ApiService().removeCachedData("Get_Cash");
+                                      ApiService().removeCachedData("Get_Loan");
+                                      ApiService()
+                                          .removeCachedData("Get_Assets");
                                       var response =
                                           await ApiServiceForADDAssets()
                                               .addAsset(
