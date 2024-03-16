@@ -59,7 +59,8 @@ class ApiService {
   Future<List<Portfolio>> getData1() async {
     setupHttpOverrides();
     try {
-      var isCacheExit = await APICacheManager().isAPICacheKeyExist("Get_Assets");
+      var isCacheExit =
+          await APICacheManager().isAPICacheKeyExist("Get_Assets");
       if (!isCacheExit) {
         final response = await _dio.get(
           portfolio,
@@ -271,12 +272,12 @@ class ApiService {
           await APICacheManager().addCacheData(cacheDBModel);
           return filteredData.map((item) => Portfolio.fromJson(item)).toList();
         } else {
-          throw Exception('Failed to load data${response.statusCode}');
+          throw Exception('Failed to load data ${response.statusCode}');
         }
       } else {
         print("Cache Api: hit");
         var cacheData = await APICacheManager().getCacheData("Get_Loan");
-        final List<dynamic> data = json.decode(cacheData.syncData);
+        final data = jsonDecode(cacheData.syncData);
 
         final filteredData =
             data.where((item) => item['sub_cat'] == 3).toList();

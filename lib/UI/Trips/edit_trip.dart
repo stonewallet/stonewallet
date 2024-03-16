@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/API/Endtrip/endtrip.dart';
+import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import '../../API/api_provider.dart';
 import '../../Responses/travel2_response.dart';
@@ -617,6 +618,7 @@ class _EditTripPageState extends State<EditTripPage> {
 
                                       print(edit);
                                       ApiForEndTrip().resumeTrip(widget.id);
+                                      ApiService().removeCachedData("Get_Trip");
                                       var response = await ApiProvider().processTravelPut(
                                           widget.id, edit
                                           // widget.id, nameController.text, int.parse(quantityController.text),int.parse(pricePaidController.text),
@@ -637,7 +639,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                         setState(() {
                                           isLoading = false;
                                         });
-                                        var snackBar = SnackBar(
+                                        var snackBar = const SnackBar(
                                             content:
                                                 Text("Something gone wrong"));
                                         ScaffoldMessenger.of(context)
@@ -645,7 +647,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                       }
                                     },
                                     child: isLoading == true
-                                        ? CircularProgressIndicator(
+                                        ? const CircularProgressIndicator(
                                             color: Colors.white,
                                           )
                                         : Text("Edit Trip",

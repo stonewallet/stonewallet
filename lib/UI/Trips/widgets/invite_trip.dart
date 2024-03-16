@@ -1,19 +1,25 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stone_wallet_main/API/createNotification/createnotification.dart';
 import 'package:stone_wallet_main/API/shared_preferences.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Constants/urls.dart';
-import 'package:stone_wallet_main/UI/portfolio/controller/assets_controller.dart';
-import 'package:stone_wallet_main/UI/portfolio/controller/cash_controller.dart';
-import 'package:stone_wallet_main/UI/portfolio/controller/portfolip_controller.dart';
+import 'package:stone_wallet_main/UI/Model/InviteUser/inviteusermodel.dart';
 
 class InviteUserTripScreen extends StatefulWidget {
   final String centerTitle;
-  const InviteUserTripScreen({super.key, required this.centerTitle});
+  final String tripName;
+  final int iD;
+  const InviteUserTripScreen(
+      {super.key,
+      required this.centerTitle,
+      required this.tripName,
+      required this.iD});
 
   @override
   State<InviteUserTripScreen> createState() => InviteUserTripScreenState();
@@ -24,31 +30,27 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
   bool isSwitch = true;
   bool isLoading = false;
 
-  TextEditingController assestNameController = TextEditingController();
-  TextEditingController assestAmountController = TextEditingController();
-
-  final controller = Get.put(PortfolioController());
-
-  final assetscontroller = Get.put(PortfolioController2());
-
-  final cashcontroller = Get.put(PortfolioController3());
   List<dynamic> searchList = [];
 
   final focus = FocusNode();
 
   bool isSearchidle = true;
   TextEditingController searchController = TextEditingController();
+  late ApiServiceForCreateNotification apiServiceForCreateNotification;
+  late int selectedUserId;
+  late String selectedUserName;
   @override
   void initState() {
     super.initState();
     _getSearch();
+    apiServiceForCreateNotification = ApiServiceForCreateNotification();
     searchController.addListener(onSearchTextControlled);
   }
 
   _getSearch() async {
     try {
       final response = await Dio().get(
-        dropdownasset,
+        iniviteGetUser,
         queryParameters: {'search': searchController.text.trim()},
         options: Options(headers: {
           "Cookie":
@@ -58,30 +60,30 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
         }),
       );
 
-      Map<String, dynamic> data = response.data as Map<String, dynamic>;
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
 
-      if (searchController.text.isEmpty) {
+        List<InviteUserModel> searchContent = [];
+        for (var searchData in data) {
+          if (searchData is Map<String, dynamic> &&
+              searchData.containsKey('username')) {
+            InviteUserModel user = InviteUserModel.fromJson(searchData);
+            searchContent.add(user);
+          }
+        }
+
         setState(() {
-          searchList = data.entries
-              .map((entry) => '${entry.key} - ${entry.value}')
-              .toList();
-        });
-      } else {
-        setState(() {
-          searchList = data.entries
-              .where((entry) =>
-                  entry.key
-                      .toString()
-                      .toLowerCase()
-                      .contains(searchController.text.toLowerCase()) ||
-                  entry.value
-                      .toString()
-                      .toLowerCase()
-                      .contains(searchController.text.toLowerCase()))
-              .map((entry) => '${entry.key}: ${entry.value}')
-              .toList();
+          searchList = searchContent;
         });
       }
+
+      // List<dynamic> data =
+      //     response.data; // Change here to extract the list directly
+
+      // setState(() {
+      //   // Update the searchList directly with the fetched data
+      //   searchList = data;
+      // });
     } catch (error) {
       print('Error fetching suggestions: $error');
       // Handle error
@@ -197,31 +199,26 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
                                     height: 10,
                                   ),
                                   SearchField(
-                                    controller: assestNameController,
+                                    controller: searchController,
                                     suggestionDirection:
                                         SuggestionDirection.flex,
                                     onSearchTextChanged: (query) {
                                       final filter = searchList
-                                          .where((element) => element
+                                          .where((element) => element.username
                                               .toLowerCase()
                                               .contains(query.toLowerCase()))
                                           .toList();
                                       return filter
                                           .map((e) =>
-                                              SearchFieldListItem<String>(e,
-                                                  child: searchChild(e)))
+                                              SearchFieldListItem<String>(
+                                                  e.username,
+                                                  child:
+                                                      searchChild(e.username)))
                                           .toList();
                                     },
                                     onTap: () {},
                                     autovalidateMode:
                                         AutovalidateMode.onUserInteraction,
-                                    // validator: (value) {
-                                    //   if (value == null ||
-                                    //       !searchList.contains(value.trim())) {
-                                    //     return 'Enter a valid name';
-                                    //   }
-                                    //   return null;
-                                    // },
                                     key: const Key('searchfield'),
                                     itemHeight: 50,
                                     scrollbarDecoration: ScrollbarDecoration(),
@@ -251,18 +248,16 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
                                       filled: true,
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                      ),
+                                              horizontal: 20),
                                     ),
                                     suggestionsDecoration: SuggestionDecoration(
                                       color: blackColor,
-                                      borderRadius: BorderRadius.circular(24),
+                                      borderRadius: BorderRadius.circular(4),
                                     ),
                                     suggestions: searchList
                                         .map((e) => SearchFieldListItem<String>(
-                                              e,
-                                              child: searchChild(e),
-                                            ))
+                                            e.username,
+                                            child: searchChild(e.username)))
                                         .toList(),
                                     focusNode: focus,
                                     suggestionState: Suggestion.expand,
@@ -270,13 +265,17 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
                                         (SearchFieldListItem<String>? x) {
                                       if (x != null) {
                                         final suggestionText = x.searchKey;
-
-                                        final parts = suggestionText.split('-');
-
-                                        final key = parts[0].trim();
-                                        final value = parts[1].trim();
-                                        assestNameController.text = key;
-                                        assestAmountController.text = value;
+                                        searchController.text = suggestionText;
+                                        selectedUserName = suggestionText;
+                                        selectedUserId = searchList
+                                            .firstWhere((element) =>
+                                                element.username ==
+                                                suggestionText)
+                                            .id;
+                                        if (kDebugMode) {
+                                          print(
+                                              "input - :${searchController.text} get user: $selectedUserName get id :$selectedUserId");
+                                        }
                                       }
                                       focus.unfocus();
                                     },
@@ -285,8 +284,8 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
                               ),
                             ),
 
-                            const SizedBox(
-                              height: 120,
+                            SizedBox(
+                              height: height / 3,
                             ),
 
                             Padding(
@@ -306,51 +305,42 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
                                         isLoading = true;
                                       });
 
-                                      // final amount = double.parse(
-                                      //     assestAmountController.text);
-                                      // final lastamount =
-                                      //     amount.toStringAsFixed(3);
-                                      // var response =
-                                      //     await ApiServiceForADDAssets()
-                                      //         .addAsset(
-                                      //   assestNameController.text,
-                                      //   double.parse(lastamount),
-                                      //   widget._portfolio,
-                                      // );
+                                      var response =
+                                          await apiServiceForCreateNotification
+                                              .createNotofication(
+                                        userId: selectedUserId.toString(),
+                                        userName: selectedUserName,
+                                        tripName: widget.tripName,
+                                        tripId: widget.iD.toString(),
+                                      );
 
-                                      // controller.update();
-                                      // assetscontroller.update();
-                                      // cashcontroller.update();
-                                      // // Handle each emitted response here
-                                      // if (response.message != null) {
-                                      //   setState(() {
-                                      //     isLoading = false;
-                                      //   });
-                                      //   Get.back();
-                                      //   Get.snackbar(
-                                      //     "Assets created successfully",
-                                      //     '',
-                                      //     backgroundColor: newGradient6,
-                                      //     colorText: whiteColor,
-                                      //     padding: const EdgeInsets.fromLTRB(
-                                      //         20, 5, 0, 0),
-                                      //     duration: const Duration(
-                                      //         milliseconds: 4000),
-                                      //     snackPosition: SnackPosition.BOTTOM,
-                                      //   );
-                                      // } else {
-                                      //   // Handle errors that occur during stream processing
-
-                                      //   setState(() {
-                                      //     isLoading = false;
-                                      //   });
-                                      //   var snackBar = const SnackBar(
-                                      //       content:
-                                      //           Text("Something gone wrong"));
-                                      //   ScaffoldMessenger.of(context)
-                                      //       .showSnackBar(snackBar);
-
-                                      // }
+                                      // Handle each emitted response here
+                                      if (response.message != null) {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        Get.back();
+                                        Get.snackbar(
+                                          "Invitation Send successfully",
+                                          '',
+                                          backgroundColor: newGradient6,
+                                          colorText: whiteColor,
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 5, 0, 0),
+                                          duration: const Duration(
+                                              milliseconds: 4000),
+                                          snackPosition: SnackPosition.BOTTOM,
+                                        );
+                                      } else {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                        var snackBar = const SnackBar(
+                                            content:
+                                                Text("Something gone wrong"));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                      }
                                     },
                                     child: isLoading == true
                                         ? const CircularProgressIndicator(

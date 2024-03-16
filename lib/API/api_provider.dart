@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:api_cache_manager/models/cache_db_model.dart';
+import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,40 +44,63 @@ class ApiProvider {
         print(MySharedPreferences()
             .getSessionId(await SharedPreferences.getInstance()));
       }
+      var isCacheExit = await APICacheManager().isAPICacheKeyExist("Get_Trip");
+      if (!isCacheExit) {
+        Response response = await _dio.get(
+          travelListUrl,
+          options: Options(
+            headers: {
+              "Cookie":
+                  "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+              "X-CSRFToken": MySharedPreferences()
+                  .getCsrfToken(await SharedPreferences.getInstance())
+            },
+            sendTimeout: const Duration(seconds: 1),
+            receiveTimeout: const Duration(seconds: 30 * 1000),
+          ),
+        );
+        if (kDebugMode) {
+          print("travel list ${response.data}");
+          print("api hit : hit ");
+        }
 
-      Response response = await _dio.get(
-        travelListUrl,
-        options: Options(headers: {
-          "Cookie":
-              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-          "X-CSRFToken": MySharedPreferences()
-              .getCsrfToken(await SharedPreferences.getInstance())
-        },
-          sendTimeout: const Duration(seconds: 1),
-          receiveTimeout: const Duration(seconds: 30 * 1000),
-        ),
-      );
-      if (kDebugMode) {
-        print("travel list ${response.data}");
-      }
+        if (response.statusCode == 200) {
+          List res = response.data;
+          List<TravelList> travelList = [];
 
-      if (response.statusCode == 200) {
-        List res = response.data;
+          res.forEach((element) {
+            String str = json.encode(element);
+            var travel = TravelList.fromJson(json.decode(str));
+            travelList.add(travel);
+          });
+          print("data $travelList");
+          APICacheManager().addCacheData(
+            APICacheDBModel(
+              key: "Get_Trip",
+              syncData: jsonEncode(res),
+            ),
+          );
+          return travelList;
+        } else {
+          var jsonData = jsonDecode(response.data);
+          if (kDebugMode) {
+            print(jsonData["error"]);
+          }
+          return [];
+        }
+      } else {
+        print("Cache Api: hit");
+        var cacheData = await APICacheManager().getCacheData("Get_Trip");
+        final data = jsonDecode(cacheData.syncData);
+
         List<TravelList> travelList = [];
 
-        res.forEach((element) {
-          String str = json.encode(element);
-          var travel = TravelList.fromJson(json.decode(str));
+        data.forEach((element) {
+          var travel = TravelList.fromJson(element);
           travelList.add(travel);
         });
         print("data $travelList");
         return travelList;
-      } else {
-        var jsonData = jsonDecode(response.data);
-        if (kDebugMode) {
-          print(jsonData["error"]);
-        }
-        return [];
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.badResponse && e.response != null) {
@@ -130,12 +155,13 @@ class ApiProvider {
           ]
         },
 
-        options: Options(headers: {
-          "Cookie":
-              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-          "X-CSRFToken": MySharedPreferences()
-              .getCsrfToken(await SharedPreferences.getInstance())
-        },
+        options: Options(
+          headers: {
+            "Cookie":
+                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences()
+                .getCsrfToken(await SharedPreferences.getInstance())
+          },
           sendTimeout: const Duration(seconds: 1),
           receiveTimeout: const Duration(seconds: 30 * 1000),
         ),
@@ -165,12 +191,13 @@ class ApiProvider {
       Response response = await _dio.put(
         "$travelList2Url/$id/",
         data: addEvents,
-        options: Options(headers: {
-          "Cookie":
-              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-          "X-CSRFToken": MySharedPreferences()
-              .getCsrfToken(await SharedPreferences.getInstance())
-        },
+        options: Options(
+          headers: {
+            "Cookie":
+                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences()
+                .getCsrfToken(await SharedPreferences.getInstance())
+          },
           sendTimeout: const Duration(seconds: 1),
           receiveTimeout: const Duration(seconds: 30 * 1000),
         ),
@@ -304,12 +331,13 @@ class ApiProvider {
       }
       Response response = await _dio.get(
         "$travelList2Url/$id/",
-        options: Options(headers: {
-          "Cookie":
-              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-          "X-CSRFToken": MySharedPreferences()
-              .getCsrfToken(await SharedPreferences.getInstance())
-        },
+        options: Options(
+          headers: {
+            "Cookie":
+                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences()
+                .getCsrfToken(await SharedPreferences.getInstance())
+          },
           sendTimeout: const Duration(seconds: 1),
           receiveTimeout: const Duration(seconds: 30 * 1000),
         ),
@@ -369,12 +397,13 @@ class ApiProvider {
         //   // "profit": profit
         // },
 
-        options: Options(headers: {
-          "Cookie":
-              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-          "X-CSRFToken": MySharedPreferences()
-              .getCsrfToken(await SharedPreferences.getInstance())
-        },
+        options: Options(
+          headers: {
+            "Cookie":
+                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences()
+                .getCsrfToken(await SharedPreferences.getInstance())
+          },
           sendTimeout: const Duration(seconds: 1),
           receiveTimeout: const Duration(seconds: 30 * 1000),
         ),
@@ -413,12 +442,13 @@ class ApiProvider {
       }
       Response response = await _dio.delete(
         "$travelList2Url/$id/",
-        options: Options(headers: {
-          "Cookie":
-              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-          "X-CSRFToken": MySharedPreferences()
-              .getCsrfToken(await SharedPreferences.getInstance())
-        },
+        options: Options(
+          headers: {
+            "Cookie":
+                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences()
+                .getCsrfToken(await SharedPreferences.getInstance())
+          },
           sendTimeout: const Duration(seconds: 1),
           receiveTimeout: const Duration(seconds: 30 * 1000),
         ),
@@ -457,14 +487,16 @@ class ApiProvider {
       Response response = await _dio.post(
         addUserUrl,
         data: {"trip_id": id},
-        options: Options(headers: {
-          "Cookie":
-              "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-          "X-CSRFToken": MySharedPreferences()
-              .getCsrfToken(await SharedPreferences.getInstance())
-        },
+        options: Options(
+          headers: {
+            "Cookie":
+                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences()
+                .getCsrfToken(await SharedPreferences.getInstance())
+          },
           sendTimeout: const Duration(seconds: 1),
-          receiveTimeout: const Duration(seconds: 30 * 1000),),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
       );
       if (kDebugMode) {
         print("addUser ${response.data}");

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:stone_wallet_main/API/createNotification/createnotification.dart';
 import 'package:stone_wallet_main/UI/Trips/provider/new_trip_provider.dart';
 import 'package:stone_wallet_main/UI/splash/splash_view.dart/splash_view.dart';
 import 'package:stone_wallet_main/controller/local/local_database.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => TripProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ApiServiceForCreateNotification(),
         )
       ],
       child: GetMaterialApp(

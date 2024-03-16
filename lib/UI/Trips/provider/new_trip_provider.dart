@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stone_wallet_main/API/GetNotification/get_notification.dart';
+import 'package:stone_wallet_main/Responses/notification_count_response.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart';
 
 class TripProvider extends ChangeNotifier {
@@ -32,6 +34,13 @@ class TripProvider extends ChangeNotifier {
     _totalQuantity = _numbers.reduce((value, element) => value + element);
     notifyListeners();
   }
-
- 
+NotificationResponse? cartItemCount;
+  Future<void> fetchCartItemCount() async {
+    try {
+      cartItemCount = await ApiServiceForNotification().getCount();
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching cart item count: $e');
+    }
+  }
 }

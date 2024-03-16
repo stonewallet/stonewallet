@@ -110,7 +110,7 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                   Text("Expense Name",
                                       style: RegularTextStyle.regular16600(
                                           Colors.white)),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 6,
                                   ),
                                   SizedBox(
@@ -127,8 +127,8 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                           TextAlignVertical.center,
                                       style: RegularTextStyle.regular16600(
                                           whiteColor),
-                                      decoration: InputDecoration(
-                                        focusedBorder: const OutlineInputBorder(
+                                      decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
@@ -136,14 +136,14 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                         ),
                                         fillColor: fillColor,
                                         filled: true,
-                                        enabledBorder: const OutlineInputBorder(
+                                        enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
                                               color: borderColor, width: 1.0),
                                         ),
                                         contentPadding:
-                                            const EdgeInsets.only(left: 20),
+                                            EdgeInsets.only(left: 20),
                                       ),
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -161,7 +161,7 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                   Text("Expense Amount",
                                       style: RegularTextStyle.regular16600(
                                           Colors.white)),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 6,
                                   ),
                                   SizedBox(
@@ -178,8 +178,8 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                           TextAlignVertical.center,
                                       style: RegularTextStyle.regular16600(
                                           whiteColor),
-                                      decoration: InputDecoration(
-                                        focusedBorder: const OutlineInputBorder(
+                                      decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
@@ -187,14 +187,14 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                         ),
                                         fillColor: fillColor,
                                         filled: true,
-                                        enabledBorder: const OutlineInputBorder(
+                                        enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
                                               color: borderColor, width: 1.0),
                                         ),
                                         contentPadding:
-                                            const EdgeInsets.only(left: 20),
+                                            EdgeInsets.only(left: 20),
                                       ),
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -203,7 +203,7 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                               ),
                             ),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
 
@@ -289,7 +289,7 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                           isLoading = false;
                                         });
                                         Navigator.pop(context);
-                                        var snackBar = SnackBar(
+                                        var snackBar = const SnackBar(
                                             content: Text(
                                                 "Expense created successfully"));
                                         ScaffoldMessenger.of(context)
@@ -298,7 +298,7 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                         setState(() {
                                           isLoading = false;
                                         });
-                                        var snackBar = SnackBar(
+                                        var snackBar = const SnackBar(
                                             content:
                                                 Text("Something gone wrong"));
                                         ScaffoldMessenger.of(context)

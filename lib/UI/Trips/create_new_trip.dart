@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 
 import '../../API/api_provider.dart';
@@ -628,7 +629,6 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                             transportController.text.isEmpty ||
                                             hotelController.text.isEmpty ||
                                             foodController.text.isEmpty) {
-                                       
                                           Get.snackbar(
                                             "Something went wrong",
                                             'Please fill every field',
@@ -644,7 +644,8 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                           setState(() {
                                             isLoading = true;
                                           });
-
+                                          ApiService()
+                                              .removeCachedData("Get_Trip");
                                           var response = await ApiProvider()
                                               .processPostTravel(
                                             nameController.text,

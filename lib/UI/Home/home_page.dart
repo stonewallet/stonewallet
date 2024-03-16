@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stone_wallet_main/UI/Trips/provider/new_trip_provider.dart';
 import 'package:stone_wallet_main/UI/portfolio/portfolio_page.dart';
 import 'package:stone_wallet_main/UI/Home/setting_page.dart';
 import 'package:stone_wallet_main/UI/Home/stocks_page.dart';
@@ -39,7 +41,7 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
     const MyWalletBalancePage(),
     const TripsPage(),
     const StocksPage(),
-    PortfolioPage(),
+    const PortfolioPage(),
     const SettingPage()
   ];
   bool _isClickedDrawer = false;
@@ -57,10 +59,8 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
 
   @override
   void initState() {
-    setState(() {
-      // selectedPos = widget.index;
-    });
     super.initState();
+    Provider.of<TripProvider>(context, listen: false).fetchCartItemCount();
   }
 
   @override
@@ -72,7 +72,6 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: appBarBackgroundColor,
@@ -89,20 +88,66 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
           },
         ),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.add_alert,
-              color: buttonColor,
-              size: 30,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const NotificationPage()),
-              );
-            },
-          )
+          Row(
+            children: [
+              Consumer<TripProvider>(
+                builder: (context, provider, child) {
+                  final cartItemCount = provider.cartItemCount;
+                  if (cartItemCount != null && cartItemCount.message != null) {
+                    return Stack(
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.add_alert,
+                            color: buttonColor,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const NotificationPage()),
+                            );
+                          },
+                        ),
+                        Positioned(
+                          right: 5,
+                          top: 0,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.red,
+                            radius: 9,
+                            child: Text(
+                              cartItemCount.message.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return IconButton(
+                      icon: const Icon(
+                        Icons.add_alert,
+                        color: buttonColor,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NotificationPage()),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ],
       ),
       body: Stack(children: [

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/Responses/travel_list_response.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 
@@ -248,12 +249,12 @@ class _TripsPageState extends State<TripsPage> {
                                                                               () async {
                                                                             var response =
                                                                                 await ApiProvider().processTravelDelete(travelList[i].id);
-
+                                                                            ApiService().removeCachedData("Get_Trip");
                                                                             if (response.message !=
                                                                                 null) {
                                                                               Get.back();
                                                                               Get.snackbar(
-                                                                                "Assets deleted successfully",
+                                                                                "Trips deleted successfully",
                                                                                 '',
                                                                                 backgroundColor: newGradient6,
                                                                                 colorText: whiteColor,

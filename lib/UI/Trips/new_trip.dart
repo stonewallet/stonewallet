@@ -18,7 +18,6 @@ import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Model/Getpdf/getpdf_model.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_expense.dart';
 import 'package:stone_wallet_main/UI/Trips/add_new_purchase.dart';
-import 'package:stone_wallet_main/UI/Trips/add_user_trip.dart';
 import 'package:stone_wallet_main/UI/Trips/provider/new_trip_provider.dart';
 import 'package:stone_wallet_main/UI/Trips/widgets/invite_trip.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -60,9 +59,7 @@ class _NewTripPageState extends State<NewTripPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TripProvider>(
-      context,
-    );
+    final provider = Provider.of<TripProvider>(context);
     if (kDebugMode) {
       print("travel2response ${provider.travel2response.id}");
       print(provider.numbers);
@@ -526,10 +523,19 @@ class _NewTripPageState extends State<NewTripPage> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            const InviteUserTripScreen(
-                                                                centerTitle:
-                                                                    'Invite User')),
+                                                            InviteUserTripScreen(
+                                                              centerTitle:
+                                                                  'Invite User',
+                                                              tripName: value
+                                                                  .travel2response
+                                                                  .tripName!,
+                                                              iD: value
+                                                                  .travel2response
+                                                                  .id!,
+                                                            )),
                                                   );
+                                                  tripId =
+                                                      value.travel2response.id!;
                                                 },
                                                 child: Text(
                                                     "Invite Trip\nPartner",

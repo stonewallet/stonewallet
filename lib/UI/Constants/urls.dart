@@ -22,5 +22,12 @@ const logOutPost = "$baseUrl/travel/logout/";
 const keyUrl = "$baseUrl/travel/get/wallet/keys/";
 const endTripUrl = "$baseUrl/travel/trip/end/";
 const resumeTripUrl = "$baseUrl/travel/trip/resume/";
+const iniviteGetUser = "$baseUrl/travel/get/user/";
+const createNotification = "$baseUrl/travel/create/notification/";
+const getNotification = "$baseUrl/travel/list/notification/";
+const readNotification = "$baseUrl/travel/read/notification/";
+const deleteNotification = "$baseUrl/travel/notification/";
+const getNotificationCount = "$baseUrl/travel/unread/count/notification/";
 
 late WalletResponse walletResponse;
+late int tripId;
