@@ -644,8 +644,7 @@ class _CreateNewTripPageState extends State<CreateNewTripPage> {
                                           setState(() {
                                             isLoading = true;
                                           });
-                                          ApiService()
-                                              .removeCachedData("Get_Trip");
+                                        
                                           var response = await ApiProvider()
                                               .processPostTravel(
                                             nameController.text,

@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
+import 'package:stone_wallet_main/UI/Constants/strings.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-import 'package:stone_wallet_main/UI/Create%20New%20Wallet/create_new_wallet_2.dart';
 import 'package:stone_wallet_main/UI/login/createwallet_register.dart';
+
+import '../Create New Wallet/create_new_wallet_2.dart';
 
 class NewWalletLoginPage extends StatefulWidget {
   const NewWalletLoginPage({super.key});
@@ -16,8 +18,8 @@ class NewWalletLoginPage extends StatefulWidget {
 }
 
 class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  // TextEditingController userNameController = TextEditingController();
+  // TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
   @override

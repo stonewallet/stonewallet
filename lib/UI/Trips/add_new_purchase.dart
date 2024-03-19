@@ -1,6 +1,7 @@
-
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
+import 'package:stone_wallet_main/UI/Constants/strings.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import '../../API/api_provider.dart';
 import '../Constants/colors.dart';
@@ -119,7 +120,7 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                   Text("Name",
                                       style: RegularTextStyle.regular16600(
                                           Colors.white)),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 6,
                                   ),
                                   SizedBox(
@@ -136,8 +137,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                           TextAlignVertical.center,
                                       style: RegularTextStyle.regular16600(
                                           whiteColor),
-                                      decoration: InputDecoration(
-                                        focusedBorder: const OutlineInputBorder(
+                                      decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
@@ -145,14 +146,14 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                         ),
                                         fillColor: fillColor,
                                         filled: true,
-                                        enabledBorder: const OutlineInputBorder(
+                                        enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
                                               color: borderColor, width: 1.0),
                                         ),
                                         contentPadding:
-                                            const EdgeInsets.only(left: 20),
+                                            EdgeInsets.only(left: 20),
                                       ),
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -170,7 +171,7 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                   Text("Trip Quantity",
                                       style: RegularTextStyle.regular16600(
                                           Colors.white)),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 6,
                                   ),
                                   SizedBox(
@@ -187,8 +188,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                           TextAlignVertical.center,
                                       style: RegularTextStyle.regular16600(
                                           whiteColor),
-                                      decoration: InputDecoration(
-                                        focusedBorder: const OutlineInputBorder(
+                                      decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
@@ -196,14 +197,14 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                         ),
                                         fillColor: fillColor,
                                         filled: true,
-                                        enabledBorder: const OutlineInputBorder(
+                                        enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
                                               color: borderColor, width: 1.0),
                                         ),
                                         contentPadding:
-                                            const EdgeInsets.only(left: 20),
+                                            EdgeInsets.only(left: 20),
                                       ),
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -221,7 +222,7 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                   Text("Price Paid",
                                       style: RegularTextStyle.regular16600(
                                           Colors.white)),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 6,
                                   ),
                                   SizedBox(
@@ -238,8 +239,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                           TextAlignVertical.center,
                                       style: RegularTextStyle.regular16600(
                                           whiteColor),
-                                      decoration: InputDecoration(
-                                        focusedBorder: const OutlineInputBorder(
+                                      decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
@@ -247,14 +248,14 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                         ),
                                         fillColor: fillColor,
                                         filled: true,
-                                        enabledBorder: const OutlineInputBorder(
+                                        enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
                                               color: borderColor, width: 1.0),
                                         ),
                                         contentPadding:
-                                            const EdgeInsets.only(left: 20),
+                                            EdgeInsets.only(left: 20),
                                       ),
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -272,7 +273,7 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                   Text("Price Sold",
                                       style: RegularTextStyle.regular16600(
                                           Colors.white)),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 6,
                                   ),
                                   SizedBox(
@@ -289,8 +290,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                           TextAlignVertical.center,
                                       style: RegularTextStyle.regular16600(
                                           whiteColor),
-                                      decoration: InputDecoration(
-                                        focusedBorder: const OutlineInputBorder(
+                                      decoration: const InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
@@ -298,14 +299,14 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                         ),
                                         fillColor: fillColor,
                                         filled: true,
-                                        enabledBorder: const OutlineInputBorder(
+                                        enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(30)),
                                           borderSide: BorderSide(
                                               color: borderColor, width: 1.0),
                                         ),
                                         contentPadding:
-                                            const EdgeInsets.only(left: 20),
+                                            EdgeInsets.only(left: 20),
                                       ),
                                       textInputAction: TextInputAction.next,
                                     ),
@@ -314,7 +315,7 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                               ),
                             ),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
 
@@ -334,7 +335,13 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                       List<Map<String, dynamic>> list = [];
                                       List<Map<String, dynamic>> expensesList =
                                           [];
+                                      final SharedPreferences sharedPref =
+                                          await SharedPreferences.getInstance();
+                                      final String? userName =
+                                          sharedPref.getString('name');
 
+                                      print(
+                                          "name that for user${userNameController.text}");
                                       print(
                                           "nnn ${widget.travel2response.product!.length}");
                                       for (int i = 0;
@@ -351,7 +358,9 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                           "price_paid": widget.travel2response
                                               .product![i].pricePaid,
                                           "price_sold": widget.travel2response
-                                              .product![i].priceSold
+                                              .product![i].priceSold,
+                                          "user": widget
+                                              .travel2response.product![i].user,
                                         });
                                       }
                                       list.add({
@@ -361,7 +370,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                         "price_paid":
                                             int.parse(pricePaidController.text),
                                         "price_sold":
-                                            int.parse(priceSoldController.text)
+                                            int.parse(priceSoldController.text),
+                                        "user": userName,
                                       });
 
                                       for (int i = 0;
@@ -377,6 +387,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                               .travel2response
                                               .expenses![i]
                                               .expenseAmount,
+                                          "user": widget.travel2response
+                                              .expenses![i].user,
                                         });
                                       }
 

@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import '../../API/api_provider.dart';
@@ -224,6 +224,10 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                           [];
                                       List<Map<String, dynamic>> expensesList =
                                           [];
+                                      final SharedPreferences sharedPref =
+                                          await SharedPreferences.getInstance();
+                                      final String? userName =
+                                          sharedPref.getString('name');
 
                                       print(
                                           "nnn ${widget.travel2response.product!.length}");
@@ -241,7 +245,9 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                           "price_paid": widget.travel2response
                                               .product![i].pricePaid,
                                           "price_sold": widget.travel2response
-                                              .product![i].priceSold
+                                              .product![i].priceSold,
+                                          "user": widget
+                                              .travel2response.product![i].user,
                                         });
                                       }
                                       for (int i = 0;
@@ -257,6 +263,8 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                               .travel2response
                                               .expenses![i]
                                               .expenseAmount,
+                                          "user": widget.travel2response
+                                              .expenses![i].user,
                                         });
                                       }
 
@@ -265,6 +273,7 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                             expenseNameController.text,
                                         "expense_amount": int.parse(
                                             expenseAmountController.text),
+                                        "user": userName,
                                       });
 
                                       Map<String, dynamic> addExpense = {
@@ -306,7 +315,7 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                       }
                                     },
                                     child: isLoading == true
-                                        ? CircularProgressIndicator(
+                                        ? const CircularProgressIndicator(
                                             color: Colors.white,
                                           )
                                         : Text("Add Expense",

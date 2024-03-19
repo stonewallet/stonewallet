@@ -42,7 +42,7 @@ class Travel2Response {
     if (expenses != null) {
       data['expenses'] = expenses!.map((v) => v.toJson()).toList();
     }
-     data['user'] = user;
+    data['user'] = user;
     data['created_at'] = createdAt;
     data['profit'] = profit;
     return data;
@@ -56,14 +56,16 @@ class Product {
   int? priceSold;
   int? totalPricePaid;
   int? totalPriceSold;
-
-  Product(
-      {productName,
-      quantity,
-      pricePaid,
-      priceSold,
-      totalPricePaid,
-      totalPriceSold});
+  String? user;
+  Product({
+    productName,
+    quantity,
+    pricePaid,
+    priceSold,
+    totalPricePaid,
+    totalPriceSold,
+    user,
+  });
 
   Product.fromJson(Map<String, dynamic> json) {
     productName = json['product_name'];
@@ -72,6 +74,7 @@ class Product {
     priceSold = json['price_sold'];
     totalPricePaid = json['total_price_paid'];
     totalPriceSold = json['total_price_sold'];
+    user = json['user'];
   }
 
   Map<String, dynamic> toJson() {
@@ -82,6 +85,7 @@ class Product {
     data['price_sold'] = priceSold;
     data['total_price_paid'] = totalPricePaid;
     data['total_price_sold'] = totalPriceSold;
+    data['user'] = user;
     return data;
   }
 }
@@ -89,18 +93,25 @@ class Product {
 class Expenses {
   String? expenseName;
   int? expenseAmount;
+  String? user;
 
-  Expenses({expenseName, expenseAmount});
+  Expenses({
+    expenseName,
+    expenseAmount,
+    user,
+  });
 
   Expenses.fromJson(Map<String, dynamic> json) {
     expenseName = json['expense_name'];
     expenseAmount = json['expense_amount'];
+    user = json['user'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['expense_name'] = expenseName;
     data['expense_amount'] = expenseAmount;
+    data['user'] = user;
     return data;
   }
 }

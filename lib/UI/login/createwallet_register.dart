@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
+import 'package:stone_wallet_main/UI/Constants/strings.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 
 class CreateNewWalletRegisterPage extends StatefulWidget {
@@ -16,8 +17,8 @@ class CreateNewWalletRegisterPage extends StatefulWidget {
 
 class _CreateNewWalletRegisterPageState
     extends State<CreateNewWalletRegisterPage> {
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  // TextEditingController userNameController = TextEditingController();
+  // TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
   @override

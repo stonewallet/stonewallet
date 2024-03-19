@@ -5,7 +5,7 @@ import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/loding/loading_view/loding_view.dart';
 
 TextEditingController userController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
+TextEditingController passController = TextEditingController();
 
 class CreateNewWalletPage2 extends StatefulWidget {
   const CreateNewWalletPage2({super.key});
@@ -21,7 +21,7 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
   void initState() {
     super.initState();
     userController.clear();
-    passwordController.clear();
+    passController.clear();
   }
 
   bool isLoading = false;
@@ -147,7 +147,7 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                       child: TextField(
                         // autofocus: true,
                         cursorColor: Colors.blue,
-                        controller: passwordController,
+                        controller: passController,
                         textAlign: TextAlign.start,
                         textAlignVertical: TextAlignVertical.center,
                         style: RegularTextStyle.regular16600(whiteColor),
@@ -174,7 +174,7 @@ class _CreateNewWalletPage2State extends State<CreateNewWalletPage2> {
                                   ),
                             onTap: () {
                               setState(() {
-                                passwordController.clear();
+                                passController.clear();
                               });
                             },
                           ),

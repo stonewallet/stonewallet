@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:stone_wallet_main/API/GetNotification/get_notification.dart';
+import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
+import 'package:stone_wallet_main/UI/Home/provider/notification_provider.dart';
 import 'package:stone_wallet_main/UI/Model/notification_model.dart';
 
 import '../Constants/colors.dart';
@@ -28,6 +31,7 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    final notificationProvider = Provider.of<NotificationProvider>(context);
 
     return Scaffold(
       backgroundColor: const Color(0xff182C4B),
@@ -93,16 +97,24 @@ class _NotificationPageState extends State<NotificationPage> {
               itemCount: notifications.length,
               itemBuilder: (BuildContext context, int index) {
                 String message = notifications[index].message;
+                NotificationModel notification = notifications[index];
                 int maxLength = message.length ~/ 2;
                 String truncatedMessage =
                     '${message.substring(0, maxLength)}...';
+
+                // Access metaData list from NotificationModel
+                List<MetaDatum> metaData = notification.metaData;
+
+                // print(metaTitle);
 
                 return Card(
                   elevation: 2,
                   color: transparent,
                   child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    height: isVisible ? null : height / 12,
+                    duration: const Duration(milliseconds: 3),
+                    height: notificationProvider.expandedIndices.contains(index)
+                        ? null
+                        : height / 12,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -112,14 +124,20 @@ class _NotificationPageState extends State<NotificationPage> {
                         ),
                         GestureDetector(
                           onTap: () async {
-                            setState(() => isVisible = !isVisible);
-                            // var response = await apiServiceForNotification.readMessage(
-                            //     notifications[index].id);
-                            // if (response.message != null) {
-                            //   Get.to(() => ReadNotificationScreen(
-                            //         notificationModel: notifications[index],
-                            //       ));
-                            // }
+                            var response = await apiServiceForNotification
+                                .readMessage(notifications[index].id);
+                            if (response.message != null) {}
+                            notificationProvider.toggleExpansion(index);
+                            // setState(() {
+                            //   // Toggle visibility for the tapped notification
+                            //   if (expandedIndices.contains(index)) {
+                            //     expandedIndices.remove(index);
+                            //   } else {
+                            //     expandedIndices
+                            //         .clear(); // Collapse other notifications
+                            //     expandedIndices.add(index);
+                            //   }
+                            // });
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,10 +167,39 @@ class _NotificationPageState extends State<NotificationPage> {
                                     height: 25,
                                     child: IconButton(
                                       padding: const EdgeInsets.fromLTRB(
-                                          44, 0, 10, 5),
-                                      onPressed: () {
-                                        apiServiceForNotification.deleteMessage(
-                                            notifications[index].id);
+                                          40, 0, 10, 5),
+                                      onPressed: () async {
+                                        var response =
+                                            await apiServiceForNotification
+                                                .deleteMessage(
+                                                    notifications[index].id);
+                                        if (response.message != null) {
+                                          Get.back();
+                                          Get.snackbar(
+                                            " Deleted successfully",
+                                            '',
+                                            backgroundColor: newGradient6,
+                                            colorText: whiteColor,
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 5, 0, 0),
+                                            duration: const Duration(
+                                                milliseconds: 4000),
+                                            snackPosition: SnackPosition.BOTTOM,
+                                          );
+                                        
+                                        } else {
+                                          Get.snackbar(
+                                            "Something gone wrong",
+                                            '',
+                                            backgroundColor: newGradient6,
+                                            colorText: whiteColor,
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 5, 0, 0),
+                                            duration: const Duration(
+                                                milliseconds: 4000),
+                                            snackPosition: SnackPosition.BOTTOM,
+                                          );
+                                        }
                                       },
                                       icon: const Icon(
                                         Icons.delete,
@@ -166,8 +213,10 @@ class _NotificationPageState extends State<NotificationPage> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        if (isVisible)
-                          readNotification(width, notifications[index]),
+                        if (notificationProvider.expandedIndices
+                            .contains(index))
+                          readNotification(width, notifications[index],
+                              metaData[0], notificationProvider, index),
                       ],
                     ),
                   ),
@@ -180,7 +229,8 @@ class _NotificationPageState extends State<NotificationPage> {
     );
   }
 
-  Widget readNotification(double width, NotificationModel notifications) {
+  Widget readNotification(double width, NotificationModel notifications,
+      MetaDatum metaDatum, NotificationProvider notificationProvider, index) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -213,7 +263,33 @@ class _NotificationPageState extends State<NotificationPage> {
                     child: Text('Accept',
                         textAlign: TextAlign.center,
                         style: RegularTextStyle.regular18600(whiteColor))),
-                onTap: () {},
+                onTap: () async {
+                  print(metaDatum.tripId);
+                  var response = await ApiProvider()
+                      .processAddUser(int.parse(metaDatum.tripId));
+                  if (response.message != null) {
+                    notificationProvider.toggleExpansion(index);
+                    Get.snackbar(
+                      response.message!,
+                      '',
+                      backgroundColor: newGradient6,
+                      colorText: whiteColor,
+                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                      duration: const Duration(milliseconds: 4000),
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                  } else {
+                    Get.snackbar(
+                      "Something gone wrong",
+                      '',
+                      backgroundColor: newGradient6,
+                      colorText: whiteColor,
+                      padding: const EdgeInsets.fromLTRB(20, 5, 0, 0),
+                      duration: const Duration(milliseconds: 4000),
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
+                  }
+                },
               ),
               SizedBox(
                 width: width / 8,
@@ -234,7 +310,9 @@ class _NotificationPageState extends State<NotificationPage> {
                     child: Text('Decline',
                         textAlign: TextAlign.center,
                         style: LargeTextStyle.large20700(whiteColor))),
-                onTap: () async {},
+                onTap: () {
+                  notificationProvider.toggleExpansion(index);
+                },
               ),
               const SizedBox(
                 height: 10,

@@ -30,4 +30,4 @@ const deleteNotification = "$baseUrl/travel/notification/";
 const getNotificationCount = "$baseUrl/travel/unread/count/notification/";
 
 late WalletResponse walletResponse;
-late int tripId;
+late String tripId;

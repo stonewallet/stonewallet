@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'package:api_cache_manager/models/cache_db_model.dart';
-import 'package:api_cache_manager/utils/cache_manager.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/shared_preferences.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
+import 'package:stone_wallet_main/UI/Constants/strings.dart';
 import '../Responses/travel2_response.dart';
 import '../Responses/travel_list_response.dart';
 import '../Responses/trip_edit_response.dart';
@@ -44,63 +43,43 @@ class ApiProvider {
         print(MySharedPreferences()
             .getSessionId(await SharedPreferences.getInstance()));
       }
-      var isCacheExit = await APICacheManager().isAPICacheKeyExist("Get_Trip");
-      if (!isCacheExit) {
-        Response response = await _dio.get(
-          travelListUrl,
-          options: Options(
-            headers: {
-              "Cookie":
-                  "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
-              "X-CSRFToken": MySharedPreferences()
-                  .getCsrfToken(await SharedPreferences.getInstance())
-            },
-            sendTimeout: const Duration(seconds: 1),
-            receiveTimeout: const Duration(seconds: 30 * 1000),
-          ),
-        );
-        if (kDebugMode) {
-          print("travel list ${response.data}");
-          print("api hit : hit ");
-        }
 
-        if (response.statusCode == 200) {
-          List res = response.data;
-          List<TravelList> travelList = [];
+      Response response = await _dio.get(
+        travelListUrl,
+        options: Options(
+          headers: {
+            "Cookie":
+                "csrftoken=${MySharedPreferences().getCsrfToken(await SharedPreferences.getInstance())}; sessionid=${MySharedPreferences().getSessionId(await SharedPreferences.getInstance())}",
+            "X-CSRFToken": MySharedPreferences()
+                .getCsrfToken(await SharedPreferences.getInstance())
+          },
+          sendTimeout: const Duration(seconds: 1),
+          receiveTimeout: const Duration(seconds: 30 * 1000),
+        ),
+      );
+      if (kDebugMode) {
+        print("travel list ${response.data}");
+        print("api hit : hit ");
+      }
 
-          res.forEach((element) {
-            String str = json.encode(element);
-            var travel = TravelList.fromJson(json.decode(str));
-            travelList.add(travel);
-          });
-          print("data $travelList");
-          APICacheManager().addCacheData(
-            APICacheDBModel(
-              key: "Get_Trip",
-              syncData: jsonEncode(res),
-            ),
-          );
-          return travelList;
-        } else {
-          var jsonData = jsonDecode(response.data);
-          if (kDebugMode) {
-            print(jsonData["error"]);
-          }
-          return [];
-        }
-      } else {
-        print("Cache Api: hit");
-        var cacheData = await APICacheManager().getCacheData("Get_Trip");
-        final data = jsonDecode(cacheData.syncData);
-
+      if (response.statusCode == 200) {
+        List res = response.data;
         List<TravelList> travelList = [];
 
-        data.forEach((element) {
-          var travel = TravelList.fromJson(element);
+        res.forEach((element) {
+          String str = json.encode(element);
+          var travel = TravelList.fromJson(json.decode(str));
           travelList.add(travel);
         });
         print("data $travelList");
+
         return travelList;
+      } else {
+        var jsonData = jsonDecode(response.data);
+        if (kDebugMode) {
+          print(jsonData["error"]);
+        }
+        return [];
       }
     } on DioException catch (e) {
       if (e.type == DioExceptionType.badResponse && e.response != null) {
@@ -134,6 +113,10 @@ class ApiProvider {
       if (kDebugMode) {
         print("Post travel api hit");
       }
+      final SharedPreferences sharedPref =
+          await SharedPreferences.getInstance();
+      final String? userName = sharedPref.getString('name');
+
       Response response = await _dio.post(
         // "https://3.94.82.56/travel/list/",
         travelPostListUrl,
@@ -145,13 +128,26 @@ class ApiProvider {
               "quantity": quantity,
               "price_paid": pricePaid,
               "price_sold": priceSold,
+              "user": userName,
             }
           ],
           "user": [],
           "expenses": [
-            {"expense_name": "Transport", "expense_amount": transport},
-            {"expense_name": "Hotel", "expense_amount": hotel},
-            {"expense_name": "Food", "expense_amount": food}
+            {
+              "expense_name": "Transport",
+              "expense_amount": transport,
+              "user": userName
+            },
+            {
+              "expense_name": "Hotel",
+              "expense_amount": hotel,
+              "user": userName
+            },
+            {
+              "expense_name": "Food",
+              "expense_amount": food,
+              "user": userName,
+            },
           ]
         },
 

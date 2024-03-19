@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
+import 'package:stone_wallet_main/UI/Constants/strings.dart';
 import 'package:stone_wallet_main/UI/Home/home_page.dart';
 
 import 'Constants/colors.dart';
@@ -15,9 +17,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController userNameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -171,6 +170,8 @@ class _LoginPageState extends State<LoginPage> {
                               shadowColor: whiteColor,
                               elevation: 4),
                           onPressed: () async {
+                            final SharedPreferences sharedPref =
+                                await SharedPreferences.getInstance();
                             setState(() {
                               isLoading = true;
                             });
@@ -178,6 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                               print(userNameController.text);
                               print(passwordController.text);
                             }
+                              sharedPref.setString("name", userNameController.text);
                             var response = await ApiProvider().processLogin(
                                 userNameController.text,
                                 passwordController.text);

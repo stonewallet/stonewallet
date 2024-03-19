@@ -249,7 +249,7 @@ class _TripsPageState extends State<TripsPage> {
                                                                               () async {
                                                                             var response =
                                                                                 await ApiProvider().processTravelDelete(travelList[i].id);
-                                                                            ApiService().removeCachedData("Get_Trip");
+                                                                          
                                                                             if (response.message !=
                                                                                 null) {
                                                                               Get.back();

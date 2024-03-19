@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/shared_preferences.dart';
 import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Model/portfolio/portfolio_model.dart';
-import 'package:stone_wallet_main/controller/local/local_database.dart';
 import 'package:stone_wallet_main/main.dart';
 
 class ApiService {
