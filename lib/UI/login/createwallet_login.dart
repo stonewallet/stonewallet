@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stone_wallet_main/API/api_provider.dart';
 import 'package:stone_wallet_main/Responses/travel_post_response.dart';
 import 'package:stone_wallet_main/UI/Constants/colors.dart';
@@ -174,6 +175,8 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                             elevation: 4,
                           ),
                           onPressed: () async {
+                               final SharedPreferences sharedPref =
+                                await SharedPreferences.getInstance();
                             setState(() {
                               isLoading = true;
                             });
@@ -181,6 +184,8 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                               print(userNameController.text);
                               print(passwordController.text);
                             }
+                              sharedPref.setString(
+                                "name", userNameController.text);
                             var response = await ApiProvider().processLogin(
                                 userNameController.text,
                                 passwordController.text);
