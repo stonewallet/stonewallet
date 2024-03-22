@@ -5,9 +5,10 @@ class Travel2Response {
   List<Expenses>? expenses;
   String? createdAt;
   List<int>? user;
+  List<int>? userOrder;
   int? profit;
 
-  Travel2Response({id, tripName, product, expenses, createdAt, user, profit});
+  Travel2Response({id, tripName, product, expenses, createdAt, user, profit,userOrder});
 
   Travel2Response.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,7 +28,9 @@ class Travel2Response {
     if (json['user'] != null) {
       user = List<int>.from(json['user']);
     }
-
+    if (json['user_order'] != null) {
+      userOrder = List<int>.from(json['user_order']);
+    }
     createdAt = json['created_at'];
     profit = json['profit'];
   }
@@ -44,6 +47,7 @@ class Travel2Response {
     }
     data['user'] = user;
     data['created_at'] = createdAt;
+    data['user_order'] = userOrder;
     data['profit'] = profit;
     return data;
   }
@@ -57,6 +61,8 @@ class Product {
   int? totalPricePaid;
   int? totalPriceSold;
   String? user;
+  String? colourCode;
+
   Product({
     productName,
     quantity,
@@ -65,6 +71,7 @@ class Product {
     totalPricePaid,
     totalPriceSold,
     user,
+    colourCode,
   });
 
   Product.fromJson(Map<String, dynamic> json) {
@@ -75,6 +82,7 @@ class Product {
     totalPricePaid = json['total_price_paid'];
     totalPriceSold = json['total_price_sold'];
     user = json['user'];
+    colourCode = json['colour_code'];
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +94,7 @@ class Product {
     data['total_price_paid'] = totalPricePaid;
     data['total_price_sold'] = totalPriceSold;
     data['user'] = user;
+    data['colour_code'] = colourCode;
     return data;
   }
 }
@@ -94,17 +103,20 @@ class Expenses {
   String? expenseName;
   int? expenseAmount;
   String? user;
+  String? colourCode;
 
   Expenses({
     expenseName,
     expenseAmount,
     user,
+    colourCode,
   });
 
   Expenses.fromJson(Map<String, dynamic> json) {
     expenseName = json['expense_name'];
     expenseAmount = json['expense_amount'];
     user = json['user'];
+    colourCode = json['colour_code'];
   }
 
   Map<String, dynamic> toJson() {
@@ -112,6 +124,7 @@ class Expenses {
     data['expense_name'] = expenseName;
     data['expense_amount'] = expenseAmount;
     data['user'] = user;
+    data['colour_code'] = colourCode;
     return data;
   }
 }

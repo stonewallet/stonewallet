@@ -829,6 +829,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  string_to_hex:
+    dependency: "direct main"
+    description:
+      name: string_to_hex
+      sha256: "63e5dc1f4821a2449d505033fbd4569f7020ebf30ddffb54d00ebaba8e144a49"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.2"
   syncfusion_flutter_charts:
     dependency: "direct main"
     description:

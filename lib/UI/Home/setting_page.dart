@@ -13,6 +13,7 @@ import 'package:stone_wallet_main/API/generate_api/generate.dart';
 import 'package:stone_wallet_main/API/logout/logout.dart';
 import 'package:stone_wallet_main/UI/AddressBook/address_book.dart';
 import 'package:stone_wallet_main/UI/Connection%20And%20Sync/connection_and_sync.dart';
+import 'package:stone_wallet_main/UI/Constants/strings.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import 'package:stone_wallet_main/UI/Constants/urls.dart';
 import 'package:stone_wallet_main/UI/Help%20And%20Support/help_and_support.dart';
@@ -625,6 +626,10 @@ class _SettingPageState extends State<SettingPage> {
             ),
             TextButton(
               onPressed: () async {
+                final SharedPreferences sharedPref =
+                    await SharedPreferences.getInstance();
+                sharedPref.remove('name');
+
                 var response = await ApiServiceForLogOut().logOut();
 
                 if (response.message != null) {

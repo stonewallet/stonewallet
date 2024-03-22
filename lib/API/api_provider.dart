@@ -132,6 +132,7 @@ class ApiProvider {
             }
           ],
           "user": [],
+          "user_order": [],
           "expenses": [
             {
               "expense_name": "Transport",

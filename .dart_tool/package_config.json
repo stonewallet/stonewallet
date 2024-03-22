@@ -632,6 +632,12 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "string_to_hex",
+      "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/string_to_hex-0.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "syncfusion_flutter_charts",
       "rootUri": "file:///C:/Users/manee/AppData/Local/Pub/Cache/hosted/pub.dev/syncfusion_flutter_charts-24.2.4",
       "packageUri": "lib/",
@@ -788,7 +794,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2024-03-12T11:57:36.601349Z",
+  "generated": "2024-03-21T11:12:12.225653Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }

@@ -398,6 +398,7 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                         "product": list,
                                         "expenses": expensesList,
                                         "user": widget.travel2response.user,
+                                        "user_order" : widget.travel2response.userOrder,
                                       };
 
                                       print(addEvents);
@@ -414,7 +415,7 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                           isLoading = false;
                                         });
                                         Navigator.pop(context);
-                                        var snackBar = SnackBar(
+                                        var snackBar = const SnackBar(
                                             content: Text(
                                                 "Event created successfully"));
                                         ScaffoldMessenger.of(context)

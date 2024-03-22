@@ -179,7 +179,8 @@ class _LoginPageState extends State<LoginPage> {
                               print(userNameController.text);
                               print(passwordController.text);
                             }
-                              sharedPref.setString("name", userNameController.text);
+                            sharedPref.setString(
+                                "name", userNameController.text);
                             var response = await ApiProvider().processLogin(
                                 userNameController.text,
                                 passwordController.text);
@@ -200,6 +201,8 @@ class _LoginPageState extends State<LoginPage> {
                                           const BottomNavigationPage()),
                                 );
                               }
+                              userNameController.clear();
+                              passwordController.clear();
                             } else if (response.message ==
                                 " Invalid login credentials") {
                               var snackBar =

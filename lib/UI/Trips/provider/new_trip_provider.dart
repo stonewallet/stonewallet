@@ -3,7 +3,7 @@ import 'package:stone_wallet_main/API/GetNotification/get_notification.dart';
 import 'package:stone_wallet_main/Responses/notification_count_response.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart';
 
-class TripProvider extends ChangeNotifier {
+class NewTripProvider extends ChangeNotifier {
   final List<Product> _events = [];
   final List<Map<String, dynamic>> _newData = [];
   int _totalQuantity = 0;
@@ -27,14 +27,16 @@ class TripProvider extends ChangeNotifier {
         "Item Name": _events[i].productName,
         "Quantity": _events[i].quantity,
         "Bought": _events[i].pricePaid,
-        "Sold": _events[i].priceSold
+        "Sold": _events[i].priceSold,
+        "Colour Code": _events[i].colourCode
       });
       _numbers.add(_events[i].quantity!);
     }
     _totalQuantity = _numbers.reduce((value, element) => value + element);
     notifyListeners();
   }
-NotificationResponse? cartItemCount;
+
+  NotificationResponse? cartItemCount;
   Future<void> fetchCartItemCount() async {
     try {
       cartItemCount = await ApiServiceForNotification().getCount();

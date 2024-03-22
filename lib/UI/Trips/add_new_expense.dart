@@ -282,6 +282,8 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                         "product": productList,
                                         "expenses": expensesList,
                                         "user": widget.travel2response.user,
+                                        "user_order":
+                                            widget.travel2response.userOrder,
                                       };
 
                                       print(addExpense);

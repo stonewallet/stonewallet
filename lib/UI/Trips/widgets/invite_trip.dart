@@ -285,7 +285,7 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
                             ),
 
                             SizedBox(
-                              height: height / 3,
+                              height: height / 2,
                             ),
 
                             Padding(
@@ -293,13 +293,14 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
                                   const EdgeInsets.symmetric(horizontal: 15),
                               child: SizedBox(
                                 height: 45,
-                                width: width * 0.8,
+                                width: width * 0.6,
                                 child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                        backgroundColor: buttonColor2,
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 176, 231, 235),
                                         surfaceTintColor: blackColor,
                                         shadowColor: whiteColor,
-                                        elevation: 4),
+                                        elevation: 2),
                                     onPressed: () async {
                                       setState(() {
                                         isLoading = true;
@@ -349,8 +350,8 @@ class InviteUserTripScreenState extends State<InviteUserTripScreen> {
                                         : Text("Send Invitations",
                                             textAlign: TextAlign.center,
                                             style:
-                                                RegularTextStyle.regular15600(
-                                                    whiteColor))),
+                                                RegularTextStyle.regular16bold(
+                                                    buttonColor3))),
                               ),
                             )
                           ],

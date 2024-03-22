@@ -51,7 +51,7 @@ class _NewTripPageState extends State<NewTripPage> {
 
   String? userName;
   fetch() async {
-    final provider = Provider.of<TripProvider>(context, listen: false);
+    final provider = Provider.of<NewTripProvider>(context, listen: false);
     trip.Travel2Response travel2response =
         await ApiProvider().processTravel2(widget.travelId);
 
@@ -62,9 +62,15 @@ class _NewTripPageState extends State<NewTripPage> {
 
   // trip.Travel2Response travel2response = trip.Travel2Response();
 
+  Color hexToColor(String hexColor) {
+    return Color(int.parse('0xFF$hexColor'));
+  }
+
+  String? hexColor;
+
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TripProvider>(context);
+    final provider = Provider.of<NewTripProvider>(context);
     if (kDebugMode) {
       print("travel2response ${provider.travel2response.id}");
       print(provider.numbers);
@@ -130,7 +136,8 @@ class _NewTripPageState extends State<NewTripPage> {
                 image: AssetImage("assets/background_new_wallet.png"),
                 fit: BoxFit.fill,
               )),
-              child: Consumer<TripProvider>(builder: (context, value, child) {
+              child:
+                  Consumer<NewTripProvider>(builder: (context, value, child) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -293,46 +300,51 @@ class _NewTripPageState extends State<NewTripPage> {
                                                       BorderRadius.circular(
                                                           15)),
                                               columns: value.newData.isNotEmpty
-                                                  ? value.newData.first.keys
-                                                      .map((String key) =>
-                                                          DataColumn(
-                                                            label: SizedBox(
-                                                              width: 75,
-                                                              child: Center(
-                                                                child: Text(
-                                                                  key,
-                                                                  style: RegularTextStyle
-                                                                      .regular14600(
-                                                                          whiteColor),
-                                                                ),
-                                                              ),
+                                                  ? (value.newData.first.keys
+                                                      .map((String key) {
+                                                      if (key ==
+                                                          'Colour Code') {
+                                                        return const DataColumn(
+                                                            label: SizedBox());
+                                                      }
+                                                      return DataColumn(
+                                                        label: SizedBox(
+                                                          width: 75,
+                                                          child: Center(
+                                                            child: Text(
+                                                              key,
+                                                              style: RegularTextStyle
+                                                                  .regular14600(
+                                                                      whiteColor),
                                                             ),
-                                                          ))
-                                                      .toList()
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }).toList())
                                                   : [],
 
                                               rows: value.newData.map(
                                                   (Map<String, dynamic>
                                                       rowData) {
-                                                // Check if the current user matches the product's user
-                                                bool isCurrentUserProduct =
-                                                    rowData['user'] == userName;
-                                                print(
-                                                    " data key $isCurrentUserProduct");
                                                 return DataRow(
-                                                  color: MaterialStateColor
-                                                      .resolveWith(
-                                                    (Set<MaterialState>
-                                                        states) {
-                                                      // Change color based on user
-                                                      return isCurrentUserProduct
-                                                          ? whiteColor
-                                                          : Colors
-                                                              .black; // Change color for non-current users
-                                                    },
-                                                  ),
                                                   cells: rowData.keys
                                                       .map((String key) {
+                                                    String hexColor = '';
+                                                    rowData
+                                                        .forEach((key, value) {
+                                                      if (key ==
+                                                          'Colour Code') {
+                                                        hexColor =
+                                                            value.toString();
+                                                      }
+                                                    });
+
+                                                    Color color =
+                                                        hexToColor(hexColor);
+                                                    if (key == 'Colour Code') {
+                                                      return const DataCell(
+                                                          SizedBox.shrink());
+                                                    }
                                                     return DataCell(
                                                       SizedBox(
                                                         width: 75,
@@ -343,11 +355,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                             style:
                                                                 RegularTextStyle
                                                                     .regular14600(
-                                                              isCurrentUserProduct
-                                                                  ? whiteColor
-                                                                  : Colors
-                                                                      .red, // Change color based on user
-                                                            ),
+                                                                        color),
                                                           ),
                                                         ),
                                                       ),
@@ -412,13 +420,12 @@ class _NewTripPageState extends State<NewTripPage> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                bool isCurrentUserExpense =
-                                                    value
-                                                            .travel2response
-                                                            .expenses![index]
-                                                            .user ==
-                                                        userName;
-
+                                                hexColor = value
+                                                    .travel2response
+                                                    .expenses![index]
+                                                    .colourCode!;
+                                                Color color =
+                                                    hexToColor(hexColor!);
                                                 return Column(
                                                   children: [
                                                     Row(
@@ -432,13 +439,8 @@ class _NewTripPageState extends State<NewTripPage> {
                                                                 .expenses![
                                                                     index]
                                                                 .expenseName!,
-                                                            style:
-                                                                RegularTextStyle
-                                                                    .regular16600(
-                                                              isCurrentUserExpense
-                                                                  ? whiteColor
-                                                                  : Colors.red,
-                                                            )),
+                                                            style: TextStyle(
+                                                                color: color)),
                                                         Text(
                                                             "\$ ${value.travel2response.expenses![index].expenseAmount!.toString()}",
                                                             style: RegularTextStyle
@@ -731,7 +733,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                                       ScaffoldMessenger.of(
                                                               context)
                                                           .showSnackBar(
-                                                              SnackBar(
+                                                              const SnackBar(
                                                         content: Text(
                                                             "Permission Denied !"),
                                                       ));
@@ -778,7 +780,7 @@ class _NewTripPageState extends State<NewTripPage> {
   }
 
   void _showDeleteConfirmationDialog(
-      BuildContext context, TripProvider provider) {
+      BuildContext context, NewTripProvider provider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

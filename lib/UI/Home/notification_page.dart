@@ -19,10 +19,12 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   late ApiServiceForNotification apiServiceForNotification;
+  late Future<List<NotificationModel>> notificationsFuture;
 
   @override
   void initState() {
     apiServiceForNotification = ApiServiceForNotification();
+    notificationsFuture = apiServiceForNotification.getDataForNotification();
     super.initState();
   }
 
@@ -99,13 +101,10 @@ class _NotificationPageState extends State<NotificationPage> {
                 String message = notifications[index].message;
                 NotificationModel notification = notifications[index];
                 int maxLength = message.length ~/ 2;
-                String truncatedMessage =
-                    '${message.substring(0, maxLength)}...';
+                String truncatedMessage = '${message.substring(0, maxLength)}.';
 
                 // Access metaData list from NotificationModel
                 List<MetaDatum> metaData = notification.metaData;
-
-                // print(metaTitle);
 
                 return Card(
                   elevation: 2,
@@ -169,37 +168,93 @@ class _NotificationPageState extends State<NotificationPage> {
                                       padding: const EdgeInsets.fromLTRB(
                                           40, 0, 10, 5),
                                       onPressed: () async {
-                                        var response =
-                                            await apiServiceForNotification
-                                                .deleteMessage(
-                                                    notifications[index].id);
-                                        if (response.message != null) {
-                                          Get.back();
-                                          Get.snackbar(
-                                            " Deleted successfully",
-                                            '',
-                                            backgroundColor: newGradient6,
-                                            colorText: whiteColor,
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 5, 0, 0),
-                                            duration: const Duration(
-                                                milliseconds: 4000),
-                                            snackPosition: SnackPosition.BOTTOM,
-                                          );
-                                        
-                                        } else {
-                                          Get.snackbar(
-                                            "Something gone wrong",
-                                            '',
-                                            backgroundColor: newGradient6,
-                                            colorText: whiteColor,
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 5, 0, 0),
-                                            duration: const Duration(
-                                                milliseconds: 4000),
-                                            snackPosition: SnackPosition.BOTTOM,
-                                          );
-                                        }
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                'Delete',
+                                                style: RegularTextStyle
+                                                    .regular14600(blackColor),
+                                              ),
+                                              content: Text(
+                                                'Are you sure you want to Delete?',
+                                                style: RegularTextStyle
+                                                    .regular14600(blackColor),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text(
+                                                    'Cancel',
+                                                    style: RegularTextStyle
+                                                        .regular14600(
+                                                            blackColor),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    var response =
+                                                        await apiServiceForNotification
+                                                            .deleteMessage(
+                                                                notifications[
+                                                                        index]
+                                                                    .id);
+                                                    setState(() {});
+                                                    if (response.message !=
+                                                        null) {
+                                                      Get.back();
+                                                      Get.snackbar(
+                                                        " Deleted successfully",
+                                                        '',
+                                                        backgroundColor:
+                                                            newGradient6,
+                                                        colorText: whiteColor,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .fromLTRB(
+                                                                20, 5, 0, 0),
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    4000),
+                                                        snackPosition:
+                                                            SnackPosition
+                                                                .BOTTOM,
+                                                      );
+                                                    } else {
+                                                      Get.snackbar(
+                                                        "Something gone wrong",
+                                                        '',
+                                                        backgroundColor:
+                                                            newGradient6,
+                                                        colorText: whiteColor,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .fromLTRB(
+                                                                20, 5, 0, 0),
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    4000),
+                                                        snackPosition:
+                                                            SnackPosition
+                                                                .BOTTOM,
+                                                      );
+                                                    }
+                                                  },
+                                                  child: Text(
+                                                    'Delete',
+                                                    style: RegularTextStyle
+                                                        .regular14600(dotColor),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
                                       },
                                       icon: const Icon(
                                         Icons.delete,
@@ -245,24 +300,21 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
           const SizedBox(height: 10),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: Container(
-                    width: width * 0.30,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [greenAccentColor, gradientColor8],
+                child: CircleAvatar(
+                  child: Container(
+                      width: width * 0.30,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.green,
                       ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text('Accept',
-                        textAlign: TextAlign.center,
-                        style: RegularTextStyle.regular18600(whiteColor))),
+                      alignment: Alignment.center,
+                      child: const Icon(Entypo.check)),
+                ),
                 onTap: () async {
                   print(metaDatum.tripId);
                   var response = await ApiProvider()
@@ -295,21 +347,17 @@ class _NotificationPageState extends State<NotificationPage> {
                 width: width / 8,
               ),
               GestureDetector(
-                child: Container(
-                    width: width * 0.30,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      gradient: const LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [redColor, gradientColor8],
+                child: CircleAvatar(
+                  child: Container(
+                      width: width * 0.30,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(150),
+                        color: redColor,
                       ),
-                    ),
-                    alignment: Alignment.center,
-                    child: Text('Decline',
-                        textAlign: TextAlign.center,
-                        style: LargeTextStyle.large20700(whiteColor))),
+                      alignment: Alignment.center,
+                      child: const Icon(Icons.close)),
+                ),
                 onTap: () {
                   notificationProvider.toggleExpansion(index);
                 },

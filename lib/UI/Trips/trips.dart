@@ -1,10 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/Responses/travel_list_response.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
-
 import '../../API/api_provider.dart';
 import '../Constants/colors.dart';
 import 'create_new_trip.dart';
@@ -136,7 +134,7 @@ class _TripsPageState extends State<TripsPage> {
                                                             .center,
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
-                                                            .center,
+                                                            .start,
                                                     children: [
                                                       SizedBox(
                                                         height: 55,
@@ -144,12 +142,16 @@ class _TripsPageState extends State<TripsPage> {
                                                         child: ElevatedButton(
                                                             style: ElevatedButton.styleFrom(
                                                                 backgroundColor:
-                                                                    buttonColor2,
+                                                                    buttonColor3,
+                                                                shape: const RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(Radius.circular(
+                                                                            20))),
                                                                 surfaceTintColor:
                                                                     blackColor,
                                                                 shadowColor:
                                                                     whiteColor,
-                                                                elevation: 4),
+                                                                elevation: 1),
                                                             onPressed: () {
                                                               int id =
                                                                   travelList[i]
@@ -249,7 +251,7 @@ class _TripsPageState extends State<TripsPage> {
                                                                               () async {
                                                                             var response =
                                                                                 await ApiProvider().processTravelDelete(travelList[i].id);
-                                                                          
+                                                                            fetch();
                                                                             if (response.message !=
                                                                                 null) {
                                                                               Get.back();
@@ -326,13 +328,15 @@ class _TripsPageState extends State<TripsPage> {
                                     children: [
                                       SizedBox(
                                         height: 55,
-                                        width: width * 0.7,
+                                        width: width * 0.4,
                                         child: ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                                backgroundColor: buttonColor2,
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 176, 231, 235),
                                                 surfaceTintColor: blackColor,
                                                 shadowColor: whiteColor,
-                                                elevation: 4),
+                                                elevation: 2),
                                             onPressed: () {
                                               Navigator.push(
                                                 context,
@@ -343,10 +347,11 @@ class _TripsPageState extends State<TripsPage> {
                                                 return fetch();
                                               });
                                             },
-                                            child: Text("Create new trip",
+                                            child: Text("CREATE",
                                                 textAlign: TextAlign.center,
                                                 style: RegularTextStyle
-                                                    .regular14600(whiteColor))),
+                                                    .regular16bold(
+                                                        buttonColor3))),
                                       ),
                                     ],
                                   ),

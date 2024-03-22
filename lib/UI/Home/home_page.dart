@@ -60,7 +60,7 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
   @override
   void initState() {
     super.initState();
-    Provider.of<TripProvider>(context, listen: false).fetchCartItemCount();
+    Provider.of<NewTripProvider>(context, listen: false).fetchCartItemCount();
   }
 
   @override
@@ -90,7 +90,7 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
         actions: <Widget>[
           Row(
             children: [
-              Consumer<TripProvider>(
+              Consumer<NewTripProvider>(
                 builder: (context, provider, child) {
                   final cartItemCount = provider.cartItemCount;
                   if (cartItemCount != null && cartItemCount.message != null) {
@@ -108,7 +108,10 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
                               MaterialPageRoute(
                                   builder: (context) =>
                                       const NotificationPage()),
-                            );
+                            ).then((value) => Provider.of<NewTripProvider>(
+                                    context,
+                                    listen: false)
+                                .fetchCartItemCount());
                           },
                         ),
                         Positioned(
@@ -140,6 +143,8 @@ class BottomNavigationPageState extends State<BottomNavigationPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => const NotificationPage()),
+                        ).then(
+                          (value) => cartItemCount,
                         );
                       },
                     );

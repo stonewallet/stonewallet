@@ -66,7 +66,7 @@ class _SubCatListViewState extends State<SubCatListView> {
                   icon = icons[2];
                 }
                 return SizedBox(
-                  width: 160,
+                  width: MediaQuery.sizeOf(context).width / 2.1,
                   height: 50,
                   child: Card(
                     color: transparent,
