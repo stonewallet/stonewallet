@@ -20,6 +20,7 @@ class TravelList {
   DateTime createdAt;
   List<int> user;
   bool endTrip;
+  List<int> userOrder;
 
   TravelList({
     required this.id,
@@ -29,6 +30,7 @@ class TravelList {
     required this.createdAt,
     required this.user,
     required this.endTrip,
+    required this.userOrder,
   });
 
   factory TravelList.fromJson(Map<String, dynamic> json) => TravelList(
@@ -41,6 +43,7 @@ class TravelList {
         createdAt: DateTime.parse(json["created_at"]),
         user: List<int>.from(json["user"].map((x) => x)),
         endTrip: json["end_trip"],
+        userOrder: List<int>.from(json["user_order"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,6 +55,7 @@ class TravelList {
         "created_at":
             "${createdAt.year.toString().padLeft(4, '0')}-${createdAt.month.toString().padLeft(2, '0')}-${createdAt.day.toString().padLeft(2, '0')}",
         "end_trip": endTrip,
+        "user_order": userOrder,
       };
 }
 

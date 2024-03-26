@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:stone_wallet_main/API/Endtrip/endtrip.dart';
-import 'package:stone_wallet_main/API/portfolio_api/api_services.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import '../../API/api_provider.dart';
 import '../../Responses/travel2_response.dart';
@@ -13,6 +12,7 @@ class EditTripPage extends StatefulWidget {
   final List<Expenses> expenses;
   final List<int> userid;
   final String createdAt;
+  final List<int> userOrder;
   // final int profit;
   const EditTripPage(
     this.id,
@@ -20,7 +20,8 @@ class EditTripPage extends StatefulWidget {
     this.product,
     this.expenses,
     this.createdAt,
-    this.userid, {
+    this.userid,
+    this.userOrder, {
     super.key,
   });
 
@@ -595,7 +596,8 @@ class _EditTripPageState extends State<EditTripPage> {
                                           "price_paid": int.parse(
                                               productPricePaid[i].text),
                                           "price_sold": int.parse(
-                                              productPriceSold[i].text)
+                                              productPriceSold[i].text),
+                                          "user": widget.product[i].user,
                                         });
                                       }
                                       for (int i = 0;
@@ -606,6 +608,7 @@ class _EditTripPageState extends State<EditTripPage> {
                                               widget.expenses[i].expenseName,
                                           "expense_amount": int.parse(
                                               expenseController[i].text),
+                                          "user": widget.expenses[i].user,
                                         });
                                       }
 
@@ -613,12 +616,13 @@ class _EditTripPageState extends State<EditTripPage> {
                                         "trip_name": nameController.text,
                                         "product": productList,
                                         "expenses": expensesList,
-                                        "user": widget.userid
+                                        "user": widget.userid,
+                                        "user_order": widget.userOrder,
                                       };
 
                                       print(edit);
                                       ApiForEndTrip().resumeTrip(widget.id);
-                                      ApiService().removeCachedData("Get_Trip");
+
                                       var response = await ApiProvider().processTravelPut(
                                           widget.id, edit
                                           // widget.id, nameController.text, int.parse(quantityController.text),int.parse(pricePaidController.text),

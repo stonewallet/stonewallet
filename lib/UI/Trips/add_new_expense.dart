@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stone_wallet_main/API/Endtrip/endtrip.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
 import '../../API/api_provider.dart';
@@ -286,11 +288,15 @@ class _AddNewExpensePageState extends State<AddNewExpensePage> {
                                             widget.travel2response.userOrder,
                                       };
 
-                                      print(addExpense);
+                                      if (kDebugMode) {
+                                        print(addExpense);
+                                      }
 
                                       setState(() {
                                         isLoading = true;
                                       });
+                                      ApiForEndTrip().resumeTrip(
+                                          widget.travel2response.id!);
                                       var response = await ApiProvider()
                                           .processAddEvent(addExpense,
                                               widget.travel2response.id!);

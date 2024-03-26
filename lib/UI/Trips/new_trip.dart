@@ -213,6 +213,8 @@ class _NewTripPageState extends State<NewTripPage> {
                                                             .createdAt!,
                                                         value.travel2response
                                                             .user!,
+                                                        value.travel2response
+                                                            .userOrder!,
                                                       )),
                                             ).then((value) => fetch());
                                           },
@@ -228,6 +230,7 @@ class _NewTripPageState extends State<NewTripPage> {
                                           onTap: () async {
                                             _showDeleteConfirmationDialog(
                                                 context, value);
+
                                             if (kDebugMode) {
                                               print(value.travel2response.id!);
                                             }
@@ -848,7 +851,9 @@ class _NewTripPageState extends State<NewTripPage> {
                 // }
                 var response = await ApiProvider()
                     .processTravelDelete(provider.travel2response.id!);
+
                 if (response.message != null) {
+                  Get.back();
                   var snackBar = SnackBar(content: Text(response.message!));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } else {

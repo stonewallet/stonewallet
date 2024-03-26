@@ -186,6 +186,8 @@ class _CreateNewWalletRegisterPageState
 
                             if (response.message ==
                                 "User registered successfully") {
+                              userNameController.clear();
+                              passwordController.clear();
                               setState(() {
                                 isLoading = false;
                               });

@@ -77,8 +77,10 @@ class _TripsPageState extends State<TripsPage> {
                             SizedBox(
                               height: height * 0.03,
                             ),
-                            Text("Trips",
-                                style: LargeTextStyle.large20700(whiteColor)),
+                            Text(
+                              "Trips",
+                              style: LargeTextStyle.large20700(whiteColor),
+                            ),
                             const SizedBox(
                               height: 8,
                             ),
@@ -124,8 +126,20 @@ class _TripsPageState extends State<TripsPage> {
                                                 const AlwaysScrollableScrollPhysics(),
                                             itemCount: travelList.length,
                                             itemBuilder: (c, i) {
-                                              final isEndTrip =
+                                              bool isEndTrip =
                                                   travelList[i].endTrip;
+                                              bool moreThanOneUser =
+                                                  travelList[i].user.length > 1;
+
+                                              Color buttonColor = isEndTrip
+                                                  ? redColor
+                                                  : whiteColor;
+                                              if (moreThanOneUser) {
+                                                buttonColor = isEndTrip
+                                                    ? stockGreenColor
+                                                    : redColor;
+                                              }
+
                                               return Column(
                                                 children: [
                                                   Row(
@@ -176,9 +190,8 @@ class _TripsPageState extends State<TripsPage> {
                                                                     TextAlign
                                                                         .center,
                                                                 style: LargeTextStyle
-                                                                    .large20700(isEndTrip
-                                                                        ? stockGreenColor
-                                                                        : whiteColor))),
+                                                                    .large20700(
+                                                                        buttonColor))),
                                                       ),
                                                       const SizedBox(
                                                         width: 10,
@@ -198,6 +211,7 @@ class _TripsPageState extends State<TripsPage> {
                                                                             travelList[i].expenses,
                                                                             travelList[i].createdAt.toString(),
                                                                             travelList[i].user,
+                                                                            travelList[i].userOrder,
                                                                           )),
                                                                 ).then((value) {
                                                                   return fetch();

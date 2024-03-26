@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stone_wallet_main/API/Endtrip/endtrip.dart';
 import 'package:stone_wallet_main/Responses/travel2_response.dart' as trip;
 import 'package:stone_wallet_main/UI/Constants/strings.dart';
 import 'package:stone_wallet_main/UI/Constants/text_styles.dart';
@@ -398,7 +399,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                         "product": list,
                                         "expenses": expensesList,
                                         "user": widget.travel2response.user,
-                                        "user_order" : widget.travel2response.userOrder,
+                                        "user_order":
+                                            widget.travel2response.userOrder,
                                       };
 
                                       print(addEvents);
@@ -406,6 +408,8 @@ class _AddNewPurchasePageState extends State<AddNewPurchasePage> {
                                       setState(() {
                                         isLoading = true;
                                       });
+                                      ApiForEndTrip().resumeTrip(
+                                          widget.travel2response.id!);
                                       var response = await ApiProvider()
                                           .processAddEvent(addEvents,
                                               widget.travel2response.id!);

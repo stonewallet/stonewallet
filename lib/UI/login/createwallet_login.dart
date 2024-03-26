@@ -175,7 +175,7 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                             elevation: 4,
                           ),
                           onPressed: () async {
-                               final SharedPreferences sharedPref =
+                            final SharedPreferences sharedPref =
                                 await SharedPreferences.getInstance();
                             setState(() {
                               isLoading = true;
@@ -184,13 +184,15 @@ class _NewWalletLoginPageState extends State<NewWalletLoginPage> {
                               print(userNameController.text);
                               print(passwordController.text);
                             }
-                              sharedPref.setString(
+                            sharedPref.setString(
                                 "name", userNameController.text);
                             var response = await ApiProvider().processLogin(
                                 userNameController.text,
                                 passwordController.text);
 
                             if (response.message == "Login successful") {
+                              userNameController.clear();
+                              passwordController.clear();
                               setState(() {
                                 isLoading = false;
                               });
